@@ -11,7 +11,7 @@ from collections.abc import Mapping, Sequence
 from itertools import chain
 from typing import TYPE_CHECKING, Final, Literal, cast, overload
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

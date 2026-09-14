@@ -2,8 +2,8 @@ import json
 from collections.abc import Callable, Mapping, Sequence
 from typing import TYPE_CHECKING, Final, Optional, cast
 
-import httpx
-from httpx import Response
+import httpx2 as httpx
+from httpx2 import Response
 
 from litellm._logging import verbose_logger
 from litellm.litellm_core_utils.litellm_logging import Logging
@@ -15,7 +15,7 @@ from ..common_utils import BedrockError, BedrockEventStreamDecoderBase, BedrockM
 
 if TYPE_CHECKING:
     from botocore.eventstream import EventStreamMessage
-    from httpx import URL
+    from httpx2 import URL
 
     from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
     from litellm.llms.bedrock.chat.invoke_handler import AWSEventStreamDecoder

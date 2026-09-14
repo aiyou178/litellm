@@ -8,7 +8,7 @@ from datetime import datetime
 from typing import Final, Optional
 from unittest.mock import Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 from pydantic_core import PydanticSerializationError
 

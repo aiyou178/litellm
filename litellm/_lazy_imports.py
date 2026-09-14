@@ -57,8 +57,7 @@ from ._lazy_imports_registry import (
 )
 
 if TYPE_CHECKING:
-    import httpx
-
+    import httpx2 as httpx
     from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
 

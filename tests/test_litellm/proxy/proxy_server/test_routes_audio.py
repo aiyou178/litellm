@@ -12,7 +12,7 @@ from __future__ import annotations
 import io
 from unittest.mock import AsyncMock, MagicMock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.proxy import proxy_server

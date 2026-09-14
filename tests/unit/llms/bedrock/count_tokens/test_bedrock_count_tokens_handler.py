@@ -1,7 +1,7 @@
 import asyncio
 from unittest.mock import AsyncMock
 
-import httpx
+import httpx2 as httpx
 import pytest
 from botocore.credentials import RefreshableCredentials
 

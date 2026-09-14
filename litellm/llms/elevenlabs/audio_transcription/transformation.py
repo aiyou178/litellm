@@ -4,7 +4,7 @@ Translates from OpenAI's `/v1/audio/transcriptions` to ElevenLabs's `/v1/speech-
 
 from typing import Final
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 import litellm
 from litellm.litellm_core_utils.audio_utils.utils import process_audio_file

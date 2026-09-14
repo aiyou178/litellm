@@ -1,7 +1,7 @@
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from openai.types.responses import ResponseReasoningItem
 
 from litellm._logging import verbose_logger

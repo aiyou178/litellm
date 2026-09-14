@@ -11,7 +11,7 @@ from typing import Final
 from unittest.mock import MagicMock, patch
 
 import certifi
-import httpx
+import httpx2 as httpx
 import pytest
 from aiohttp import ClientSession, TCPConnector
 
@@ -1740,11 +1740,19 @@ async def test_a_retried_put_stays_a_put_and_still_refuses_redirects():
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("target", ["https://example.com/final.json?next=1", "https://other.example/final.json?next=1"])
-async def test_bounded_get_preserves_sdk_redirect_auth_and_query_handling(respx_mock, monkeypatch, target):
+async def test_bounded_get_preserves_sdk_redirect_auth_and_query_handling(monkeypatch, target):
     monkeypatch.setenv("DISABLE_AIOHTTP_TRANSPORT", "True")
-    respx_mock.get("https://example.com/spec.json?original=1").respond(302, headers={"location": target})
-    destination = respx_mock.get(target).respond(200, json={"paths": {}})
+    destination_requests = []
+
+    async def transport_handler(request: httpx.Request) -> httpx.Response:
+        if request.url.host == "example.com" and request.url.path == "/spec.json":
+            return httpx.Response(302, headers={"location": target})
+        destination_requests.append(request)
+        return httpx.Response(200, json={"paths": {}})
+
     handler = AsyncHTTPHandler()
+    await handler.client.aclose()
+    handler.client = httpx.AsyncClient(transport=httpx.MockTransport(transport_handler))
     try:
         response = await handler.get(
             "https://example.com/spec.json?original=1", max_response_bytes=100, follow_redirects=True,
@@ -1753,7 +1761,7 @@ async def test_bounded_get_preserves_sdk_redirect_auth_and_query_handling(respx_
     finally:
         await handler.close()
     assert response.json() == {"paths": {}}
-    request = destination.calls[0].request
+    request = destination_requests[0]
     assert request.headers.get("authorization") == (None if "other.example" in target else "Bearer sentinel")
     assert request.headers["accept-encoding"] == "identity"
     assert str(request.url) == target
@@ -1761,20 +1769,28 @@ async def test_bounded_get_preserves_sdk_redirect_auth_and_query_handling(respx_
 
 
 @pytest.mark.asyncio
-async def test_bounded_get_stops_redirect_loops(respx_mock, monkeypatch):
+async def test_bounded_get_stops_redirect_loops(monkeypatch):
     monkeypatch.setenv("DISABLE_AIOHTTP_TRANSPORT", "True")
-    route = respx_mock.get("https://example.com/spec.json").respond(302, headers={"location": "/spec.json"})
+    redirect_count = 0
+
+    async def transport_handler(request: httpx.Request) -> httpx.Response:
+        nonlocal redirect_count
+        redirect_count += 1
+        return httpx.Response(302, headers={"location": "/spec.json"})
+
     handler = AsyncHTTPHandler()
+    await handler.client.aclose()
+    handler.client = httpx.AsyncClient(transport=httpx.MockTransport(transport_handler))
     try:
         with pytest.raises(ValueError, match="Too many redirects"):
             await handler.get("https://example.com/spec.json", max_response_bytes=100, follow_redirects=True)
     finally:
         await handler.close()
-    assert route.call_count == 11
+    assert redirect_count == 11
 
 
 @pytest.mark.asyncio
-async def test_bounded_get_closes_stream_on_cancellation(respx_mock, monkeypatch):
+async def test_bounded_get_closes_stream_on_cancellation(monkeypatch):
     monkeypatch.setenv("DISABLE_AIOHTTP_TRANSPORT", "True")
     started = asyncio.Event()
     closed = asyncio.Event()
@@ -1788,8 +1804,12 @@ async def test_bounded_get_closes_stream_on_cancellation(respx_mock, monkeypatch
         async def aclose(self):
             closed.set()
 
-    respx_mock.get("https://example.com/slow.json").respond(200, stream=SlowStream())
+    async def transport_handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, stream=SlowStream())
+
     handler = AsyncHTTPHandler()
+    await handler.client.aclose()
+    handler.client = httpx.AsyncClient(transport=httpx.MockTransport(transport_handler))
     try:
         task = asyncio.create_task(handler.get("https://example.com/slow.json", max_response_bytes=100))
         await asyncio.wait_for(started.wait(), timeout=1)

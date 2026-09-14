@@ -143,7 +143,7 @@ def test_citation_metadata_transformation():
     """
     from unittest.mock import MagicMock
 
-    import httpx
+    import httpx2 as httpx
 
     from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
     from litellm.llms.gemini.google_genai.transformation import GoogleGenAIConfig

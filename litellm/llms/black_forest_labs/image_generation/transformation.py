@@ -10,7 +10,7 @@ API Reference: https://docs.bfl.ai/
 import time
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.image_generation.transformation import (
     BaseImageGenerationConfig,

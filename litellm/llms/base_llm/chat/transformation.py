@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator, Iterator
 from typing import TYPE_CHECKING, Any, Final, Union
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel
 
 from litellm.constants import DEFAULT_MAX_TOKENS, RESPONSE_FORMAT_TOOL_NAME

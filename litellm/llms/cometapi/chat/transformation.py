@@ -8,7 +8,7 @@ Documentation: [CometAPI Documentation Link]
 from collections.abc import AsyncIterator, Iterator
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.base_model_iterator import BaseModelResponseIterator
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

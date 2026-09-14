@@ -5,10 +5,10 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, cast
 from urllib.parse import quote
 
-import httpx
-from httpx._types import FileContent, FileTypes, RequestFiles
+import httpx2 as httpx
 
 import litellm
+from litellm.litellm_core_utils.httpx2_compat import FileContent, FileTypes, RequestFiles
 from litellm.litellm_core_utils.url_utils import encode_url_path_segment
 from litellm.llms.base_llm.videos.transformation import BaseVideoConfig
 from litellm.llms.openai.image_edit.transformation import ImageEditRequestUtils

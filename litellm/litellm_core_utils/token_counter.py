@@ -8,7 +8,7 @@ from typing import Final, Literal, cast
 
 import anyio
 import anyio.lowlevel
-import httpx
+import httpx2 as httpx
 import tiktoken
 from typing_extensions import ParamSpec, TypeVar
 

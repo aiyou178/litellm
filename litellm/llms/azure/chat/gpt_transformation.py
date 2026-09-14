@@ -2,9 +2,8 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final
 
-from httpx._models import Headers, Response
-
 import litellm
+from litellm.litellm_core_utils.httpx2_compat import Headers, Response
 from litellm.litellm_core_utils.prompt_templates.common_utils import (
     drop_tool_reference_parts_from_tool_messages,
     flatten_combinators_and_drop_non_python_regex_patterns,

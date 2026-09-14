@@ -3,7 +3,7 @@ from collections.abc import Mapping
 from functools import reduce
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.constants import LITELLM_DETAILED_TIMING
 from litellm.litellm_core_utils.core_helpers import get_litellm_metadata_from_kwargs, process_response_headers

@@ -40,7 +40,7 @@ from litellm.llms.s3_vectors.vector_stores.transformation import (
 from litellm.rag.ingestion.base_ingestion import BaseRAGIngestion
 
 if TYPE_CHECKING:
-    import httpx
+    import httpx2 as httpx
 
     from litellm import Router
     from litellm.types.rag import RAGIngestOptions

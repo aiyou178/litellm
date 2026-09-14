@@ -13,7 +13,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, TypedDict, cast
 from urllib.parse import urlencode, urlparse
 
-import httpx
+import httpx2 as httpx
 from fastapi import (
     APIRouter,
     Depends,

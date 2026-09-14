@@ -12,7 +12,7 @@ from types import MappingProxyType
 from typing import Any, Final, NoReturn, Protocol, TypeVar, cast
 
 import anyio
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ValidationError
 from typing_extensions import NotRequired, TypedDict
 

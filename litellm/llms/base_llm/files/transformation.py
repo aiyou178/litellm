@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import AsyncGenerator, Iterator, Mapping
 from typing import TYPE_CHECKING, Any, Union
 
-import httpx
+import httpx2 as httpx
 from openai.types.file_deleted import FileDeleted
 
 from litellm.files.types import FileContentStreamingResult

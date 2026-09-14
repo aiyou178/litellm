@@ -5,7 +5,7 @@ Base Search transformation configuration.
 from typing import TYPE_CHECKING, Any, Final, Literal
 from urllib.parse import urlsplit
 
-import httpx
+import httpx2 as httpx
 from pydantic import PrivateAttr
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

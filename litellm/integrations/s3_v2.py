@@ -19,7 +19,7 @@ from typing import TYPE_CHECKING, Final, Literal, cast
 from urllib.parse import quote
 from uuid import uuid4
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import print_verbose, verbose_logger

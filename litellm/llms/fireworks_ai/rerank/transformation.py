@@ -7,7 +7,7 @@ Reference: https://docs.fireworks.ai/inference-api-reference/rerank
 from collections.abc import Mapping
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._uuid import uuid
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj

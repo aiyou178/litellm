@@ -7,7 +7,7 @@ from types import SimpleNamespace
 from typing import Final
 from unittest.mock import patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 # Ensure the project root is on the import path so `litellm` can be imported when

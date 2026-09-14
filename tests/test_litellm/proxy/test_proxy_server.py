@@ -17,7 +17,7 @@ from unittest.mock import AsyncMock, MagicMock, call, create_autospec, mock_open
 
 import click
 import fastapi.routing
-import httpx
+import httpx2 as httpx
 import pytest
 import yaml
 from fastapi import FastAPI, HTTPException, Request

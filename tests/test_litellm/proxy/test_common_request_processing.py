@@ -7,7 +7,7 @@ from typing import AsyncGenerator, Callable, Final, Iterator, Literal, Optional,
 from urllib.parse import unquote_plus
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 from fastapi import HTTPException, Request, Response, status
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -9553,7 +9553,7 @@ async def test_handle_llm_api_exception_forwards_provider_headers_on_http_status
     A Bedrock passthrough failure reaches this branch, so the request id was gone
     before the client saw the response.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.proxy._types import UserAPIKeyAuth
 

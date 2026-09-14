@@ -3,7 +3,7 @@ from collections.abc import Callable
 from copy import deepcopy
 from typing import Final, cast
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger
@@ -617,7 +617,7 @@ class SagemakerLLM(BaseAWSLLM):
         print_verbose(f"raw model_response: {response}")
 
         # Transform response based on model type
-        from httpx import Response as HttpxResponse
+        from httpx2 import Response as HttpxResponse
 
         # Create a mock httpx Response object for the transformation
         mock_response: Final = HttpxResponse(

@@ -13,7 +13,7 @@ import json
 from collections.abc import AsyncIterator, Callable, Iterator
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.constants import DEFAULT_OCI_CHAT_MAX_TOKENS

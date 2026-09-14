@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Final
 
-from httpx import Response
+from httpx2 import Response
 
 import litellm
 from litellm import verbose_logger

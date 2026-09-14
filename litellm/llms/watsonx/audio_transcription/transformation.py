@@ -6,7 +6,7 @@ WatsonX follows the OpenAI spec for audio transcription.
 
 from typing import Final
 
-from httpx import Response
+from httpx2 import Response
 
 import litellm
 from litellm.litellm_core_utils.audio_utils.utils import process_audio_file

@@ -4,9 +4,8 @@ from io import BufferedReader
 from types import MappingProxyType
 from typing import Any, Final
 
-from httpx._types import RequestFiles
-
 import litellm
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.llms.azure_ai.common_utils import (
     AzureFoundryModelInfo,
     get_azure_ai_auth_headers,

@@ -9,7 +9,7 @@ Docs - https://jina.ai/embeddings/
 import types
 from typing import Final, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm import LlmProviders
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj

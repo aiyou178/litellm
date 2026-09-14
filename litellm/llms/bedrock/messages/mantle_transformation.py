@@ -11,7 +11,7 @@ from collections.abc import AsyncIterator, Mapping
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 
 from litellm.llms.anthropic.experimental_pass_through.messages.transformation import (

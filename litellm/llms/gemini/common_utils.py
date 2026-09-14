@@ -5,7 +5,7 @@ import math
 from collections.abc import Mapping, Sequence
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.constants import DEFAULT_MAX_RECURSE_DEPTH

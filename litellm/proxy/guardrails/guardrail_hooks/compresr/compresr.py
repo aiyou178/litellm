@@ -25,9 +25,9 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Final, Literal, TypeGuard
 from urllib.parse import urlparse
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException
-from httpx import Response as HttpxResponse
+from httpx2 import Response as HttpxResponse
 
 import litellm
 from litellm._logging import verbose_proxy_logger

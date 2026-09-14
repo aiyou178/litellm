@@ -5,7 +5,7 @@ import uuid
 from unittest.mock import patch
 
 import pytest
-from httpx import Request, Response
+from httpx2 import Request, Response
 
 import litellm
 from litellm import constants

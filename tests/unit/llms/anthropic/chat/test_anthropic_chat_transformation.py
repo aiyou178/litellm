@@ -768,7 +768,7 @@ def test_web_search_tool_result_in_provider_specific_fields():
     This ensures users can access the web search results via:
     response.choices[0].message.provider_specific_fields["web_search_results"]
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.types.utils import ModelResponse
 
@@ -1011,7 +1011,7 @@ def test_map_tool_choice_dict_type_function_without_name():
 
 
 def test_transform_response_with_prefix_prompt():
-    import httpx
+    import httpx2 as httpx
 
     from litellm.types.utils import ModelResponse
 
@@ -3286,7 +3286,7 @@ def test_code_execution_tool_results_extraction():
 
     Related to: https://github.com/BerriAI/litellm/issues/xxxxx
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.types.utils import ModelResponse
 
@@ -3403,7 +3403,7 @@ def test_code_execution_tool_results_in_hidden_params():
     to set provider_specific_fields on the response. Without this, server-side
     code execution results (stdout/stderr) are lost when using responses.create().
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.types.utils import ModelResponse
 
@@ -3466,7 +3466,7 @@ def test_tool_search_tool_result_not_in_tool_results():
     Test that tool_search_tool_result is NOT included in tool_results
     since it's internal metadata, not actual tool execution results.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.types.utils import ModelResponse
 
@@ -3511,7 +3511,7 @@ def test_web_search_tool_result_backwards_compatibility():
     Test that web_search_tool_result continues to be stored in web_search_results
     for backwards compatibility, not in tool_results.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.types.utils import ModelResponse
 
@@ -3615,7 +3615,7 @@ def test_compaction_block_in_provider_specific_fields():
     """
     Test that compaction blocks are included in provider_specific_fields.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.types.utils import ModelResponse
 
@@ -4074,7 +4074,7 @@ def test_compaction_block_empty_list_not_added():
     """
     Test that empty compaction_blocks list is not added to provider_specific_fields.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.types.utils import ModelResponse
 

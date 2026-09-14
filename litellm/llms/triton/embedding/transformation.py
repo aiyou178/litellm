@@ -1,6 +1,6 @@
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import AllMessageValues, BaseLLMException
 from litellm.llms.base_llm.embedding.transformation import (

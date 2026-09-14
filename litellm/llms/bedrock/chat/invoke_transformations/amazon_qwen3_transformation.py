@@ -8,7 +8,7 @@ Qwen3 + Invoke API Tutorial: https://docs.aws.amazon.com/bedrock/latest/userguid
 
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import BaseConfig
 from litellm.llms.bedrock.chat.invoke_transformations.base_invoke_transformation import (

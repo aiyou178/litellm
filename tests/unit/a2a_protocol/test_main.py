@@ -2,7 +2,7 @@
 
 import asyncio
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 pytest.importorskip("a2a.compat.v0_3.conversions")

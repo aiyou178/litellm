@@ -7,7 +7,7 @@ SearchAPI.io API Reference: https://www.searchapi.io/docs/google
 from typing import Final, Literal, TypedDict, cast
 from urllib.parse import urlencode
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.base_llm.search.transformation import (

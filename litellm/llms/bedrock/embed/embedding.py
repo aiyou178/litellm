@@ -8,7 +8,7 @@ import urllib.parse
 from collections.abc import Callable, Mapping
 from typing import TYPE_CHECKING, Final, get_args, overload
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.constants import BEDROCK_EMBEDDING_PROVIDERS_LITERAL

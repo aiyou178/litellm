@@ -15,7 +15,7 @@ asyncio.run) is exercised directly.
 
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 

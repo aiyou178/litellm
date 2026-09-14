@@ -7,7 +7,7 @@ import time
 from typing import Final
 from unittest.mock import AsyncMock, Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 from botocore.credentials import RefreshableCredentials
 
@@ -3315,18 +3315,17 @@ def _rejection(message: str) -> httpx.Response:
 
 
 def _call_azure_ai(recorder: _RecordedAzureAI, **overrides):
-    import respx
-
-    with respx.mock(assert_all_called=True) as router:
-        router.post(AZURE_AI_CHAT_COMPLETIONS_URL).mock(side_effect=recorder)
-        return litellm.completion(
-            model="azure_ai/grok-3",
-            messages=[{"role": "user", "content": "hi"}],
-            tools=[_a_tool_with_an_unsupported_field()],
-            api_base=AZURE_AI_BASE,
-            api_key="fake-key",
-            **overrides,
-        )
+    client = HTTPHandler()
+    client.client = httpx.Client(transport=httpx.MockTransport(recorder))
+    return litellm.completion(
+        model="azure_ai/grok-3",
+        messages=[{"role": "user", "content": "hi"}],
+        tools=[_a_tool_with_an_unsupported_field()],
+        api_base=AZURE_AI_BASE,
+        api_key="fake-key",
+        client=client,
+        **overrides,
+    )
 
 
 def test_a_tool_field_the_provider_rejects_is_dropped_and_the_call_retried():
@@ -3398,21 +3397,24 @@ def test_an_extra_input_outside_a_tool_is_retried_when_dropping_params_was_asked
 async def test_a_tool_field_the_provider_rejects_is_dropped_and_retried_on_the_async_path(
     httpx_transport,
 ):
-    import respx
-
     recorder = _RecordedAzureAI(
         [_rejection(TOOL_LEVEL_REJECTION), httpx.Response(200, json=A_COMPLETION)]
     )
 
-    with respx.mock(assert_all_called=True) as router:
-        router.post(AZURE_AI_CHAT_COMPLETIONS_URL).mock(side_effect=recorder)
+    client = AsyncHTTPHandler()
+    await client.client.aclose()
+    client.client = httpx.AsyncClient(transport=httpx.MockTransport(recorder))
+    try:
         response = await litellm.acompletion(
             model="azure_ai/grok-3",
             messages=[{"role": "user", "content": "hi"}],
             tools=[_a_tool_with_an_unsupported_field()],
             api_base=AZURE_AI_BASE,
             api_key="fake-key",
+            client=client,
         )
+    finally:
+        await client.close()
 
     assert len(recorder.bodies) == 2
     assert recorder.bodies[0]["tools"][0]["strict"] is True
@@ -3424,12 +3426,12 @@ async def test_a_tool_field_the_provider_rejects_is_dropped_and_retried_on_the_a
 async def test_a_provider_that_keeps_rejecting_is_not_retried_forever_on_the_async_path(
     httpx_transport,
 ):
-    import respx
-
     recorder = _RecordedAzureAI([_rejection(TOOL_LEVEL_REJECTION)])
 
-    with respx.mock(assert_all_called=True) as router:
-        router.post(AZURE_AI_CHAT_COMPLETIONS_URL).mock(side_effect=recorder)
+    client = AsyncHTTPHandler()
+    await client.client.aclose()
+    client.client = httpx.AsyncClient(transport=httpx.MockTransport(recorder))
+    try:
         with pytest.raises(litellm.BadRequestError):
             await litellm.acompletion(
                 model="azure_ai/grok-3",
@@ -3437,7 +3439,10 @@ async def test_a_provider_that_keeps_rejecting_is_not_retried_forever_on_the_asy
                 tools=[_a_tool_with_an_unsupported_field()],
                 api_base=AZURE_AI_BASE,
                 api_key="fake-key",
+                client=client,
             )
+    finally:
+        await client.close()
 
     assert len(recorder.bodies) == 2
 

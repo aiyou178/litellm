@@ -3,7 +3,7 @@ from collections.abc import AsyncGenerator, Awaitable, Callable, Mapping, Sequen
 from enum import Enum, auto
 from typing import TYPE_CHECKING, Any, ClassVar, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException
 
 if TYPE_CHECKING:

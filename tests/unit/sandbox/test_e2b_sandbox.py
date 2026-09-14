@@ -8,7 +8,7 @@ integration tests live in tests/integration/sandbox/test_e2b_sandbox.py.
 
 import json
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

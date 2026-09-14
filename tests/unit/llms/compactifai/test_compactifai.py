@@ -4,7 +4,7 @@ import sys
 from unittest.mock import AsyncMock, patch
 from typing import Optional
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from respx import MockRouter

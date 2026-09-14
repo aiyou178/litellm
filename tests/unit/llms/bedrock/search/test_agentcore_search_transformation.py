@@ -245,7 +245,7 @@ class TestAgentCoreSearch:
             config.transform_search_response(raw_response=mock_response, logging_obj=MagicMock())
 
     def test_transform_search_response_raises_on_tool_error(self):
-        """A failed tools/call comes back as HTTP 200 with result.isError; it must not be
+        """A failed tools/call comes back as HTTP 200 with result.is_error; it must not be
         reported to the caller as a successful search with zero results."""
         config = AgentCoreSearchConfig()
         mock_response = _make_mock_response(

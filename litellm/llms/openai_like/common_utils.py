@@ -1,6 +1,6 @@
 from typing import Literal
 
-import httpx
+import httpx2 as httpx
 
 
 class OpenAILikeError(Exception):

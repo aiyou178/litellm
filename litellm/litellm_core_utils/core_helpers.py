@@ -7,7 +7,7 @@ from collections.abc import Collection, Iterable, Mapping
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, Protocol
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter, ValidationError
 
 from litellm._logging import verbose_logger

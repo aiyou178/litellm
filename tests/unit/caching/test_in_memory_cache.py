@@ -5,7 +5,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from fastapi.testclient import TestClient

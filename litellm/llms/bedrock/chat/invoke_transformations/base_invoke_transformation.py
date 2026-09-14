@@ -3,7 +3,7 @@ import json
 import time
 from typing import TYPE_CHECKING, Any, Final, cast, get_args
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter, ValidationError
 
 import litellm

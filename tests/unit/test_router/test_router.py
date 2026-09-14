@@ -14,7 +14,7 @@ from types import SimpleNamespace
 from typing import Final, Literal
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import openai
 import pytest
 import respx
@@ -765,7 +765,7 @@ async def test_async_router_acreate_file_litellm_proxy_sends_target_model_names_
     import json
     from io import BytesIO
 
-    import httpx
+    import httpx2 as httpx
 
     jsonl_file = BytesIO(
         json.dumps({"body": {"model": "chained-batch", "messages": [{"role": "user", "content": "hi"}]}}).encode(
@@ -10100,7 +10100,7 @@ async def test_acreate_batch_still_falls_back_within_the_owning_model_group():
 
 @pytest.mark.asyncio
 async def test_acreate_batch_request_bedrock_tags_override_deployment_tags():
-    import httpx
+    import httpx2 as httpx
 
     from litellm.llms.bedrock.common_utils import CommonBatchFilesUtils
 

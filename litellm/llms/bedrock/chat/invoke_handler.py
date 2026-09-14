@@ -2,7 +2,7 @@ import types
 from collections.abc import AsyncIterator, Iterator
 from typing import Final, cast
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 
 import litellm

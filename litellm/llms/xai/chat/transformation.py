@@ -2,7 +2,7 @@ from collections.abc import AsyncIterator, Iterator, Mapping
 from types import MappingProxyType
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

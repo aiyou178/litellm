@@ -5,7 +5,7 @@ Translate between Cohere's `/rerank` format and Deepinfra's `/rerank` format.
 from collections.abc import Mapping, Sequence
 from typing import Final, Protocol
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import ReadOnly, TypedDict
 
 from litellm._uuid import uuid

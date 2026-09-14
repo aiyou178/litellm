@@ -4,7 +4,7 @@ from typing import Final, cast
 import json
 from unittest.mock import patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 from fastapi import HTTPException
 from pydantic import ValidationError

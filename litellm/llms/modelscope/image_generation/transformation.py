@@ -8,7 +8,7 @@ API Reference: https://modelscope.cn/docs/model-service/API-Inference/intro
 
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import override
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

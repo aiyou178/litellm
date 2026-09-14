@@ -1,7 +1,7 @@
 from collections.abc import Mapping
 from typing import Any, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import Required, TypedDict
 
 import litellm

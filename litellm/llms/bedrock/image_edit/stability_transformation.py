@@ -24,7 +24,7 @@ API Reference: https://docs.aws.amazon.com/bedrock/latest/userguide/model-parame
 import base64
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.llms.bedrock.common_utils import BedrockError
