@@ -160,6 +160,21 @@ Route.return_value = property(Route.return_value.fget, _store_route_return_value
 Route._call_side_effect = _call_route_side_effect
 
 
+_resolve_route_side_effect: Final[Callable[..., httpx.Response | httpx.Request | None]] = Route._resolve_side_effect
+
+
+def _resolve_httpx2_side_effect(
+    route: Route, request: httpx.Request, **kwargs: object
+) -> httpx.Response | httpx.Request | None:
+    result = _resolve_route_side_effect(route, request, **kwargs)
+    if isinstance(result, httpx2.Response):
+        return _to_legacy_response(result, request)
+    return result
+
+
+Route._resolve_side_effect = _resolve_httpx2_side_effect
+
+
 class HTTPX2Mocker(Mocker):
     name = "httpx2"
     targets = (

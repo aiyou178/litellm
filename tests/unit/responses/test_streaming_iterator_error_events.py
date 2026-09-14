@@ -25,7 +25,6 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-
 import litellm
 from litellm.exceptions import MidStreamFallbackError
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
@@ -538,6 +537,9 @@ def test_every_openai_sdk_response_error_code_has_explicit_status_mapping():
         ("insufficient_quota", 429),
         ("vector_store_timeout", 504),
         ("invalid_prompt", 400),
+        ("data_residency_mismatch", 403),
+        ("bio_policy", 400),
+        ("misalignment_policy_violation", 400),
         ("invalid_image", 400),
         ("invalid_image_format", 400),
         ("invalid_base64_image", 400),
