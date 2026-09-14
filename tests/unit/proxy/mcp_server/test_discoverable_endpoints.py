@@ -23,6 +23,8 @@ if TYPE_CHECKING:
     from fastapi import APIRouter
     from respx import MockRouter
 
+    import httpx2
+
     from litellm.proxy.auth.handle_jwt import JWTHandler
     from litellm.types.mcp_server.mcp_server_manager import MCPServer
 
@@ -8578,7 +8580,6 @@ async def test_resolve_active_litellm_key_transport_error_over_permanent_fault_i
     """A reconnect that dies on a missing engine binary raises the transport error last, with the
     BinaryNotFoundError as __context__. The binary is what blocks recovery, so the key read is "faulted",
     not the "unavailable" that the outer ConnectError alone would suggest."""
-    import httpx
     from prisma.engine.errors import BinaryNotFoundError
 
     from litellm.proxy.common_utils.user_api_key_cache import UserApiKeyCache
@@ -8591,7 +8592,7 @@ async def test_resolve_active_litellm_key_transport_error_over_permanent_fault_i
             try:
                 raise BinaryNotFoundError("query engine binary not found")
             except BinaryNotFoundError:
-                raise httpx.ConnectError("All connection attempts failed")
+                raise httpx2.ConnectError("All connection attempts failed")
 
     proxy_globals.user_api_key_cache = UserApiKeyCache()
     proxy_globals.prisma_client = _ReconnectFailedPrisma()
@@ -12772,7 +12773,12 @@ async def test_enforced_login_warms_verified_token_readable_without_database_loo
 @pytest.mark.parametrize("dcr_bridge", [False, True])
 @pytest.mark.parametrize("flow", ["register", "mint"])
 async def test_dcr_refusal_is_actionable_without_upstream_body(
-    upstream_status: int, auth_type: MCPAuth, dcr_bridge: bool, flow: str, monkeypatch: pytest.MonkeyPatch
+    upstream_status: int,
+    auth_type: MCPAuth,
+    dcr_bridge: bool,
+    flow: str,
+    monkeypatch: pytest.MonkeyPatch,
+    respx_mock: MockRouter,
 ) -> None:
     from typing import Final
 
@@ -12789,10 +12795,8 @@ async def test_dcr_refusal_is_actionable_without_upstream_body(
         server_id=f"refused-{auth_type}-{dcr_bridge}-{flow}-{upstream_status}",
         client_id=None,
     )
-    import respx
-
     monkeypatch.setenv("DISABLE_AIOHTTP_TRANSPORT", "True")
-    with respx.mock as upstream:
+    with respx_mock as upstream:
         registration: Final = upstream.post(server.registration_url).mock(
             return_value=httpx.Response(upstream_status, text="Forbidden private upstream details")
         )
