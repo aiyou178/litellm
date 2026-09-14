@@ -7,16 +7,17 @@
 # 4. Added proper cleanup in fixtures
 # 5. Added worker-specific isolation for parallel execution
 
+import asyncio
 import base64
 import importlib
 import os
 from pathlib import Path
 from types import SimpleNamespace
+
 import httpx2 as httpx
 import pytest
 from pytest_socket import _remove_restrictions
-
-import asyncio
+from respx import MockRouter
 
 import litellm
 from litellm import router as litellm_router_module
@@ -30,6 +31,17 @@ from litellm.llms.custom_httpx.async_client_cleanup import (
 )
 from litellm.proxy.db import tool_registry_writer as tool_registry_writer_module
 from tests.unit.litellm_core_utils.fake_secret_vault import FakeSecretVault
+from tests.test_litellm.httpx2_respx import HTTPX2Mocker
+
+
+@pytest.fixture
+def respx_mock(request: pytest.FixtureRequest):
+    marker = request.node.get_closest_marker("respx")
+    settings = dict(marker.kwargs) if marker is not None else {"assert_all_called": False}
+    settings.setdefault("using", HTTPX2Mocker.name)
+    router = MockRouter(**settings)
+    with router:
+        yield router
 
 
 def _reset_module_level_aws_auth_caches():
