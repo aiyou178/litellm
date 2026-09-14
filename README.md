@@ -1,8 +1,8 @@
 <h1 align="center">
-        🚅 LiteLLM
+        🚅 AIYou LiteLLM
     </h1>
     <p align="center">
-        <p align="center">LiteLLM AI Gateway
+        <p align="center">AIYou distribution of LiteLLM
         </p>
         <p align="center">Open Source AI Gateway for 100+ LLMs. Self-hosted. Enterprise-ready. Call any LLM in OpenAI format.</p>
         <p align="center">
@@ -14,8 +14,8 @@
     </p>
 <h4 align="center"><a href="https://docs.litellm.ai/docs/simple_proxy" target="_blank">LiteLLM Proxy Server (AI Gateway)</a> | <a href="https://docs.litellm.ai/docs/enterprise#hosted-litellm-proxy" target="_blank"> Hosted Proxy</a> | <a href="https://litellm.ai/enterprise"target="_blank">Enterprise Tier</a> | <a href="https://www.litellm.ai/ai-gateway" target="_blank">Website</a></h4>
 <h4 align="center">
-    <a href="https://pypi.org/project/litellm/" target="_blank">
-        <img src="https://img.shields.io/pypi/v/litellm.svg" alt="PyPI Version">
+        <a href="https://pypi.org/project/aiyou-litellm/" target="_blank">
+    <img src="https://img.shields.io/pypi/v/aiyou-litellm.svg" alt="PyPI Version">
     </a>
     <a href="https://github.com/BerriAI/litellm" target="_blank">
         <img src="https://img.shields.io/github/stars/BerriAI/litellm.svg?style=social" alt="GitHub Stars">
@@ -43,7 +43,7 @@
 
 ## What is LiteLLM
 
-LiteLLM is an open source AI Gateway that gives you a single, unified interface to call 100+ LLM providers — OpenAI, Anthropic, Gemini, Bedrock, Azure, and more — using the OpenAI format.
+AIYou LiteLLM is an open source AI Gateway that gives you a single, unified interface to call 100+ LLM providers — OpenAI, Anthropic, Gemini, Bedrock, Azure, and more — using the OpenAI format. This distribution builds on [LiteLLM](https://github.com/BerriAI/litellm) and uses HTTPX2 with the OpenAI Python SDK 3+.
 
 Use it as a **Python SDK** for direct library integration, or deploy the **AI Gateway (Proxy Server)** as a centralized service for your team or organization.
 
@@ -87,7 +87,7 @@ Managing LLM calls across providers gets complicated fast — different SDKs, au
 ### Python SDK
 
 ```shell
-uv add litellm
+uv add aiyou-litellm
 ```
 
 ```python
@@ -109,7 +109,7 @@ response = completion(model="anthropic/claude-sonnet-4-20250514", messages=[{"ro
 [**Getting Started - E2E Tutorial**](https://docs.litellm.ai/docs/proxy/docker_quick_start) - Setup virtual keys, make your first request
 
 ```shell
-uv tool install 'litellm[proxy]'
+uv tool install 'aiyou-litellm[proxy]'
 litellm --model gpt-4o
 ```
 
@@ -649,6 +649,10 @@ All these checks must pass before your PR can be merged.
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - [Community Slack 💭](https://www.litellm.ai/support)
 - Our emails ✉️ ishaan@berri.ai / krrish@berri.ai
+
+# Credits
+
+AIYou LiteLLM is derived from [LiteLLM](https://github.com/BerriAI/litellm). Thank you to BerriAI and the upstream LiteLLM contributors for creating and maintaining the project. This distribution remains available under the MIT license.
 
 # Contributors
 
