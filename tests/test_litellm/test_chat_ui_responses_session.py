@@ -70,7 +70,7 @@ class TestResponsesSessionChaining:
                 request=request,
             )
 
-        with mock.patch("httpx.AsyncClient.send", mock_send):
+        with mock.patch("httpx2.AsyncClient.send", mock_send):
             try:
                 await litellm.aresponses(
                     input="hello",
@@ -116,7 +116,7 @@ class TestResponsesSessionChaining:
             }
             return httpx.Response(200, json=response_json, request=request)
 
-        with mock.patch("httpx.AsyncClient.send", mock_send):
+        with mock.patch("httpx2.AsyncClient.send", mock_send):
             try:
                 await litellm.aresponses(
                     input="hello",

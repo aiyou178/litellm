@@ -518,7 +518,11 @@ def setup_and_teardown():
     yield
 
     # Teardown - no need to manually manage event loops with pytest-asyncio auto mode
-    print(f"[conftest] Module teardown complete (worker: {worker_id or 'master'})")
+    try:
+        print(f"[conftest] Module teardown complete (worker: {worker_id or 'master'})")
+    except ValueError:
+        # Hostile-stream tests may intentionally close or replace pytest capture.
+        pass
 
 
 def pytest_collection_modifyitems(config, items):

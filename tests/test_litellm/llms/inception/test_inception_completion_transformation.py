@@ -105,7 +105,7 @@ def test_inception_completion_endpoint_returns_chat_object():
             content=_fim_response_bytes(),
         )
 
-    with mock.patch("httpx.Client.send", new=fake_send):
+    with mock.patch("httpx2.Client.send", new=fake_send):
         r = litellm.completion(
             model="text-completion-inception/mercury-edit-2",
             messages=[{"role": "user", "content": "def add(a, b): return "}],
@@ -130,7 +130,7 @@ async def test_inception_fim_async():
             content=_fim_response_bytes(),
         )
 
-    with mock.patch("httpx.AsyncClient.send", new=fake_asend):
+    with mock.patch("httpx2.AsyncClient.send", new=fake_asend):
         r = await litellm.atext_completion(
             model="text-completion-inception/mercury-edit-2",
             prompt="def add(a, b): return ",
@@ -182,7 +182,7 @@ def test_inception_fim_targets_fim_endpoint():
             ).encode(),
         )
 
-    with mock.patch("httpx.Client.send", new=fake_send):
+    with mock.patch("httpx2.Client.send", new=fake_send):
         response = litellm.text_completion(
             model="text-completion-inception/mercury-edit-2",
             prompt="def add(a, b):\n    return ",
@@ -222,7 +222,7 @@ def test_inception_fim_does_not_leak_global_api_key():
     ):
         with mock.patch.object(litellm, "inception_key", None):
             with mock.patch.object(litellm, "api_key", "sk-global-should-not-leak"):
-                with mock.patch("httpx.Client.send", new=fake_send):
+                with mock.patch("httpx2.Client.send", new=fake_send):
                     litellm.text_completion(
                         model="text-completion-inception/mercury-edit-2",
                         prompt="def add(a, b): return ",
@@ -266,7 +266,7 @@ def test_inception_fim_extra_body_forwards_vllm_params():
             ).encode(),
         )
 
-    with mock.patch("httpx.Client.send", new=fake_send):
+    with mock.patch("httpx2.Client.send", new=fake_send):
         litellm.text_completion(
             model="text-completion-inception/mercury-edit-2",
             prompt="def f(",

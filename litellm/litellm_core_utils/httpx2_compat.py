@@ -4,7 +4,7 @@ import sys
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from types import ModuleType
-from typing import Final, Generic, Literal, TypeAlias, TypeGuard, TypeVar
+from typing import Final, Generic, Literal, TypeAlias, TypeVar
 
 import httpx2 as httpx
 from httpx2 import Headers, Response, Timeout
@@ -48,12 +48,12 @@ def legacy_httpx_module() -> ModuleType | None:
     return sys.modules.get("httpx")
 
 
-def is_httpx2_client(value: object, *, async_client: bool) -> TypeGuard[httpx.Client | httpx.AsyncClient]:
+def is_httpx2_client(value: object, *, async_client: bool) -> bool:
     client_type: Final = httpx.AsyncClient if async_client else httpx.Client
     return isinstance(value, client_type)
 
 
-def is_legacy_httpx_client(value: object, *, async_client: bool) -> TypeGuard[httpx.Client | httpx.AsyncClient]:
+def is_legacy_httpx_client(value: object, *, async_client: bool) -> bool:
     module: Final = legacy_httpx_module()
     if module is None:
         return False
@@ -67,6 +67,16 @@ def accepts_legacy_httpx_client(value: object, *, async_client: bool) -> bool:
     return not is_httpx2_client(value, async_client=async_client) and is_legacy_httpx_client(
         value, async_client=async_client
     )
+
+
+def normalize_timeout(timeout: object, *, supports_timeout: bool) -> float | Timeout:
+    if isinstance(timeout, Timeout) and supports_timeout:
+        return timeout
+    if isinstance(timeout, Timeout):
+        return timeout.read or 600
+    if isinstance(timeout, (int, float, str)) and not isinstance(timeout, bool):
+        return float(timeout)
+    return 600.0
 
 
 def boundary_types(kind: _BoundaryKind) -> tuple[type, ...]:
@@ -102,4 +112,5 @@ __all__ = [
     "environment_proxy_urls",
     "is_httpx2_client",
     "is_legacy_httpx_client",
+    "normalize_timeout",
 ]
