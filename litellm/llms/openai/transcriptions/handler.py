@@ -1,7 +1,7 @@
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Final, Optional, cast
 
-import httpx
+import httpx2 as httpx
 from openai import AsyncOpenAI, OpenAI
 from pydantic import BaseModel
 

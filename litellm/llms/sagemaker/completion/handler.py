@@ -4,7 +4,7 @@ from collections.abc import Callable, Mapping
 from copy import deepcopy
 from typing import Final, cast
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 from typing_extensions import ReadOnly, TypedDict
 

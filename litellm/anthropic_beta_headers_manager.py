@@ -32,7 +32,7 @@ from functools import cache
 from importlib.resources import files
 from typing import Final, Literal, TypeAlias
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 
 from litellm._logging import verbose_logger

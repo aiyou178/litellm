@@ -11,7 +11,7 @@ from types import MappingProxyType
 from typing import Final, List, Optional, Tuple, cast
 from unittest.mock import ANY, MagicMock, Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 

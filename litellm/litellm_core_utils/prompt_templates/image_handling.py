@@ -11,8 +11,8 @@ from itertools import chain
 from types import MappingProxyType
 from typing import Final
 
-import httpx
-from httpx import Response
+import httpx2 as httpx
+from httpx2 import Response
 
 import litellm
 from litellm import verbose_logger

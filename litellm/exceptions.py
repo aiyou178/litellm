@@ -14,7 +14,7 @@ import enum
 from collections.abc import Mapping, Sequence
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 import openai
 
 import litellm

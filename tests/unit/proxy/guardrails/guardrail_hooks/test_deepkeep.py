@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 import respx
-from httpx import Request, Response
+from httpx2 import Request, Response
 
 import litellm
 from litellm.exceptions import GuardrailRaisedException

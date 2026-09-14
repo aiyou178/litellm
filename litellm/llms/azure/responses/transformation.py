@@ -5,7 +5,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal
 from urllib.parse import urlsplit
 
-import httpx
+import httpx2 as httpx
 from openai.types.responses import ResponseReasoningItem
 from pydantic import TypeAdapter
 

@@ -21,7 +21,7 @@ from types import MappingProxyType
 from typing import Final, TypeVar
 from urllib.parse import urlparse
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.integrations.batch_utils import (

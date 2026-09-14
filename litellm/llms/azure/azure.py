@@ -4,7 +4,7 @@ import time
 from collections.abc import Callable, Coroutine
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 from openai import (
     APITimeoutError,
     AsyncAzureOpenAI,

@@ -6,8 +6,8 @@ from io import BufferedRandom, BufferedReader, BytesIO
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from pydantic import ConfigDict, TypeAdapter
 from typing_extensions import ReadOnly, TypedDict
 

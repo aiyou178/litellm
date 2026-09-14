@@ -21,7 +21,7 @@ from tests.unit.proxy.router_entry_point_stubs import route_entry_points_to_stub
 
 import click
 import fastapi.routing
-import httpx
+import httpx2 as httpx
 import pytest
 import yaml
 from fastapi import FastAPI, HTTPException, Request

@@ -2,7 +2,7 @@ import json
 import os
 from typing import Final, Literal, Protocol, get_args
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 
 import litellm

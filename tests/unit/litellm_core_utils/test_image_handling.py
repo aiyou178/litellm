@@ -5,7 +5,7 @@ import time
 import uuid
 
 import pytest
-from httpx import Request, Response
+from httpx2 import Request, Response
 
 import litellm
 from litellm.litellm_core_utils.prompt_templates import image_handling

@@ -9,7 +9,7 @@ from itertools import chain
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, ClassVar, Final, Literal, Optional, cast, get_args
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 
 from litellm._internal_context import with_service_target

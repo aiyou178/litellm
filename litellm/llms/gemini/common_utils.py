@@ -6,7 +6,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from types import MappingProxyType
 from typing import Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 from pydantic import JsonValue, TypeAdapter
 
 import litellm

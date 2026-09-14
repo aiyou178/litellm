@@ -2,7 +2,7 @@ import base64
 import io
 from typing import Final, overload
 
-import httpx
+import httpx2 as httpx
 from openai.types.chat import ChatCompletionChunk
 from pydantic import BaseModel, TypeAdapter
 

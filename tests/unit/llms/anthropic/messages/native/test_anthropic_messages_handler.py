@@ -6,7 +6,7 @@ import uuid
 from dataclasses import dataclass
 from typing import Any, Dict, Final, List
 
-import httpx
+import httpx2 as httpx
 import responses
 import respx
 import pytest

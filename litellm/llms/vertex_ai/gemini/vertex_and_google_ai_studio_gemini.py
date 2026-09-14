@@ -11,7 +11,7 @@ from functools import lru_cache, partial
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, Optional, Protocol, Union, cast, get_args
 
-import httpx
+import httpx2 as httpx
 from pydantic import JsonValue, TypeAdapter
 
 import litellm

@@ -13,7 +13,7 @@ Docs - https://help.aliyun.com/zh/model-studio/text-embedding-synchronous-api
 
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import ConfigDict, TypeAdapter, with_config
 from typing_extensions import NotRequired, ReadOnly, TypedDict
 

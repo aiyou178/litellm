@@ -5,7 +5,7 @@ import time
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi import status as http_status
 from pydantic import ConfigDict, TypeAdapter, with_config

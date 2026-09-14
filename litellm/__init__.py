@@ -78,7 +78,7 @@ from litellm.constants import (
     DEFAULT_SOFT_BUDGET,
     DEFAULT_ALLOWED_FAILS,
 )
-import httpx
+import httpx2 as httpx
 from openai import DefaultAsyncHttpxClient, DefaultHttpxClient
 
 # register_async_client_cleanup is lazy-loaded and called on first access

@@ -6,8 +6,8 @@ from itertools import chain
 from typing import Final
 from unittest.mock import MagicMock, patch
 
-import httpx
-from httpx import Headers
+import httpx2 as httpx
+from httpx2 import Headers
 import pytest
 import respx
 from pydantic import BaseModel, ConfigDict

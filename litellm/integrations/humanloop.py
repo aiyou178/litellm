@@ -6,7 +6,7 @@ https://humanloop.com/
 
 from typing import Final, cast
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import TypedDict
 
 import litellm

@@ -4,7 +4,7 @@ from types import SimpleNamespace
 from typing import Final
 from unittest.mock import patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from fastapi.testclient import TestClient

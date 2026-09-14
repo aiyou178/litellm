@@ -21,7 +21,7 @@ from functools import lru_cache
 from types import MappingProxyType, TracebackType
 from typing import TYPE_CHECKING, Any, ClassVar, Final, Literal, NamedTuple, cast
 
-from httpx import Response, Timeout
+from httpx2 import Response, Timeout
 from pydantic import BaseModel, JsonValue, TypeAdapter
 
 import litellm

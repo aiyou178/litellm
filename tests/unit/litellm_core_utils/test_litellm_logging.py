@@ -17,7 +17,7 @@ from types import MappingProxyType, ModuleType
 from typing import Final, Literal
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import pytest_asyncio
 import respx

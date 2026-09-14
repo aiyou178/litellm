@@ -4,7 +4,7 @@ import os
 from typing import Final
 from unittest.mock import Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 

@@ -2087,7 +2087,7 @@ async def test_async_streaming_read_timeout_triggers_midstream_fallback(
     which bypassed _handle_stream_fallback_error and prevented stream_timeout
     from triggering fallbacks the way connection-phase timeout does.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.exceptions import MidStreamFallbackError
 
@@ -5689,7 +5689,7 @@ async def test_transport_read_error_after_finish_reason_ends_stream_gracefully(
     logging_obj: Logging,
 ):
     """A trailing connection reset after the provider's finish chunk must not fail the stream."""
-    import httpx
+    import httpx2 as httpx
 
     completion_stream = TransportErrorAfterChunksIterator(
         model_responses=[
@@ -5729,7 +5729,7 @@ async def test_transport_read_error_before_finish_reason_raises(logging_obj: Log
     transport used to swallow mid-stream connection resets, so the wrapper saw a
     clean end-of-stream and fabricated finish_reason "stop".
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.exceptions import MidStreamFallbackError
 

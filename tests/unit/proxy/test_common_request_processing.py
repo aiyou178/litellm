@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from tests.unit.proxy.router_entry_point_stubs import route_entry_points_to_stubs
 
 import anthropic
-import httpx
+import httpx2 as httpx
 import openai
 import pytest
 import respx
@@ -11743,7 +11743,7 @@ async def test_handle_llm_api_exception_forwards_provider_headers_on_http_status
     A Bedrock passthrough failure reaches this branch, so the request id was gone
     before the client saw the response.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.proxy._types import UserAPIKeyAuth
 

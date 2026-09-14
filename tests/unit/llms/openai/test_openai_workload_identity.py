@@ -8,7 +8,7 @@ from functools import partial
 from pathlib import Path
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from openai import DEFAULT_MAX_RETRIES as OPENAI_SDK_DEFAULT_MAX_RETRIES

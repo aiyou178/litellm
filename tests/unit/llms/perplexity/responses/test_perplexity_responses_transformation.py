@@ -10,7 +10,7 @@ Source: litellm/llms/perplexity/responses/transformation.py
 import json
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 

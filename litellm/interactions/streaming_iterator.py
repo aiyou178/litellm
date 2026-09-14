@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import ConfigDict, TypeAdapter
 
 from litellm._logging import verbose_logger

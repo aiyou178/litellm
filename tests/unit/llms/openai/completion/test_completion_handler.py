@@ -11,7 +11,7 @@ from typing import Final
 
 import pytest
 import respx
-from httpx import Response
+from httpx2 import Response
 
 
 import litellm

@@ -6,10 +6,10 @@ import json
 from copy import deepcopy
 from unittest.mock import AsyncMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
-from httpx import Request, Response
+from httpx2 import Request, Response
 
 from litellm import DualCache
 from litellm.proxy._types import ProxyException, UserAPIKeyAuth

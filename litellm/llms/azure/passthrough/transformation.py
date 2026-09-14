@@ -3,8 +3,8 @@ from collections.abc import Callable, Collection, Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final, Optional
 
-import httpx
-from httpx import Response
+import httpx2 as httpx
+from httpx2 import Response
 
 from litellm.litellm_core_utils.litellm_logging import Logging
 from litellm.llms.azure.common_utils import BaseAzureLLM

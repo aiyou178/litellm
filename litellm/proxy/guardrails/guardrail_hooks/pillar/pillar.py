@@ -11,7 +11,7 @@ import os
 from typing import TYPE_CHECKING, Any, Final, Literal, Protocol
 from urllib.parse import quote
 
-import httpx
+import httpx2 as httpx
 
 # Third-party imports
 from fastapi import HTTPException

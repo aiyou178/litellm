@@ -10,7 +10,7 @@ from collections.abc import Awaitable
 from typing import Protocol
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient

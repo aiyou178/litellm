@@ -11,8 +11,7 @@ from collections.abc import Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, ClassVar, Final, TypedDict, cast
 
-import httpx
-from httpx._types import FileContent, RequestFiles
+import httpx2 as httpx
 from typing_extensions import ReadOnly
 
 import litellm

@@ -7,7 +7,7 @@ from collections.abc import AsyncIterator, Coroutine, Iterator, Mapping, Sequenc
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, cast, overload
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict, TypeAdapter
 
 from litellm.anthropic_beta_gated_fields import log_beta_gated_strips, strip_beta_gated_thinking

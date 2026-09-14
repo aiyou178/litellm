@@ -8,7 +8,7 @@ These are HTTP (not WebSocket) endpoints used by the WebRTC flow:
 
 from abc import ABC, abstractmethod
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.url_utils import join_api_base
 

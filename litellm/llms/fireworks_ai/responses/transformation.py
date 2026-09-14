@@ -3,7 +3,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
 from urllib.parse import unquote
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.url_utils import join_api_base
 from litellm.llms.base_llm.responses.transformation import (

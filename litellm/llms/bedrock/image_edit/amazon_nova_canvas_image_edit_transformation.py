@@ -16,8 +16,8 @@ import base64
 import os
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 
 from litellm._logging import verbose_logger
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig

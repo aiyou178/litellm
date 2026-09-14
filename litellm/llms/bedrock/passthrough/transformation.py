@@ -5,8 +5,8 @@ from itertools import chain
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final, Optional, cast
 
-import httpx
-from httpx import Response
+import httpx2 as httpx
+from httpx2 import Response
 from pydantic import TypeAdapter
 
 from litellm._logging import verbose_logger

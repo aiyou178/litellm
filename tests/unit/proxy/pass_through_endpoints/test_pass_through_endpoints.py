@@ -17,7 +17,7 @@ from typing import Final, Optional, cast
 from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import UUID
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from fastapi import APIRouter, FastAPI, HTTPException, Request, Response, UploadFile

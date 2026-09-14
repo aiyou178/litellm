@@ -19,7 +19,7 @@ from types import CodeType, FrameType, MappingProxyType, SimpleNamespace
 from typing import TYPE_CHECKING, Final, Literal, TypeVar, cast
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
-import httpx
+import httpx2 as httpx
 import openai
 import pytest
 import respx
@@ -988,7 +988,7 @@ async def test_async_router_acreate_file_litellm_proxy_sends_target_model_names_
     import json
     from io import BytesIO
 
-    import httpx
+    import httpx2 as httpx
 
     jsonl_file = BytesIO(
         json.dumps({"body": {"model": "chained-batch", "messages": [{"role": "user", "content": "hi"}]}}).encode(
@@ -14386,7 +14386,7 @@ async def test_acreate_batch_on_an_openai_group_falls_back_to_chat_while_its_bat
 
 @pytest.mark.asyncio
 async def test_acreate_batch_request_bedrock_tags_override_deployment_tags():
-    import httpx
+    import httpx2 as httpx
 
     from litellm.llms.bedrock.common_utils import CommonBatchFilesUtils
 

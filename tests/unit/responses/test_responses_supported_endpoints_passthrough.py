@@ -7,7 +7,7 @@ providers such as `custom_openai` keep bridging through `/v1/chat/completions`.
 import json
 from unittest.mock import AsyncMock, MagicMock
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 

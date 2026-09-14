@@ -22,7 +22,7 @@ from typing import Final, SupportsIndex, cast
 from unittest import mock
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from jsonschema import Draft7Validator, validate

@@ -15,12 +15,9 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, ClassVar, Final, NoReturn, Optional, TypeAlias, TypedDict, TypeVar
 
 import certifi
-import httpx
+import httpx2 as httpx
 from aiohttp import ClientSession, DummyCookieJar, TCPConnector
-from httpx import USE_CLIENT_DEFAULT, AsyncHTTPTransport, HTTPTransport
-from httpx._config import DEFAULT_LIMITS
-from httpx._types import CertTypes, RequestFiles
-from httpx._utils import get_environment_proxies
+from httpx2 import USE_CLIENT_DEFAULT, AsyncHTTPTransport, HTTPTransport
 from pydantic import TypeAdapter
 
 import litellm
@@ -40,6 +37,11 @@ from litellm.constants import (
     DEFAULT_SSL_CIPHERS,
     HTTP_HANDLER_CONNECT_TIMEOUT_SECONDS,
 )
+from litellm.litellm_core_utils.httpx2_compat import (
+    CertTypes,
+    RequestFiles,
+    environment_proxy_urls,
+)
 from litellm.litellm_core_utils.logging_utils import track_llm_api_timing
 from litellm.litellm_core_utils.request_timeout_resolver import (
     get_configured_request_timeout,
@@ -47,6 +49,8 @@ from litellm.litellm_core_utils.request_timeout_resolver import (
 from litellm.llms.custom_httpx.aiohttp_pool_diagnostics import build_pool_wait_trace_config
 from litellm.llms.custom_httpx.http2_connection_spread import AsyncHTTP2ConnectionSpread
 from litellm.types.llms.custom_http import *
+
+_DEFAULT_LIMITS: Final = httpx.Limits()
 
 if TYPE_CHECKING:
     from litellm import LlmProviders
@@ -124,7 +128,7 @@ def _environment_proxy_mounts(
     return MappingProxyType(
         {
             pattern: None if proxy_url is None else build_proxy_transport(proxy_url)
-            for pattern, proxy_url in get_environment_proxies().items()
+            for pattern, proxy_url in environment_proxy_urls().items()
         }
     )
 
@@ -754,7 +758,7 @@ class AsyncHTTPHandler:
             )
         use_http2: Final = _resolve_http2(self.http2, ssl_verify)
         replaces_aiohttp: Final = use_http2 and AsyncHTTPHandler.should_use_aiohttp_transport()
-        limits: Final = _AIOHTTP_EQUIVALENT_LIMITS if replaces_aiohttp else DEFAULT_LIMITS
+        limits: Final = _AIOHTTP_EQUIVALENT_LIMITS if replaces_aiohttp else _DEFAULT_LIMITS
         # Get unified SSL configuration
         ssl_config: Final = get_ssl_configuration(ssl_verify, http2=use_http2)
 
@@ -1298,7 +1302,7 @@ class AsyncHTTPHandler:
         shared_session: Optional["ClientSession"] = None,
         http2: bool = False,
         cert: CertTypes | None = None,
-        limits: httpx.Limits = DEFAULT_LIMITS,
+        limits: httpx.Limits = _DEFAULT_LIMITS,
     ) -> LiteLLMAiohttpTransport | AsyncHTTPTransport | AsyncHTTP2ConnectionSpread | None:
         """
         - Creates a transport for httpx.AsyncClient
@@ -1484,7 +1488,7 @@ class AsyncHTTPHandler:
         http2: bool = False,
         verify: ssl.SSLContext | bool = True,
         cert: CertTypes | None = None,
-        limits: httpx.Limits = DEFAULT_LIMITS,
+        limits: httpx.Limits = _DEFAULT_LIMITS,
     ) -> AsyncHTTPTransport | AsyncHTTP2ConnectionSpread | None:
         """
         Creates an AsyncHTTPTransport
@@ -1516,7 +1520,7 @@ class AsyncHTTPHandler:
         verify: VerifyTypes,
         cert: CertTypes | None,
         http2: bool = False,
-        limits: httpx.Limits = DEFAULT_LIMITS,
+        limits: httpx.Limits = _DEFAULT_LIMITS,
     ) -> Mapping[str, httpx.AsyncBaseTransport | None] | None:
         if not isinstance(transport, (AsyncHTTPTransport, AsyncHTTP2ConnectionSpread)):
             return None
