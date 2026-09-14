@@ -235,9 +235,9 @@ class _CiscoAIDefenseMcpMixin:
                     setattr(response_obj, "structured_content", structured_replacement)
                 except (AttributeError, TypeError, ValueError):
                     pass
-            if hasattr(response_obj, "is_error"):
+            if hasattr(response_obj, "isError"):
                 try:
-                    setattr(response_obj, "is_error", True)
+                    setattr(response_obj, "isError", True)
                 except (AttributeError, TypeError, ValueError):
                     pass
             return True

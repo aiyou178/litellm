@@ -14,7 +14,7 @@ LiteLLM's own runtime HTTP code uses `httpx2`, while legacy `httpx` remains only
 
 ## Compatibility module
 
-`litellm/litellm_core_utils/httpx2_compat.py` centralizes the private HTTPX2 imports, environment proxy parsing, type aliases, and boundary checks. Runtime code should not import `httpx2._*` directly.
+`litellm/litellm_core_utils/httpx2_compat.py` centralizes the private HTTPX2 imports, environment proxy parsing, type aliases, boundary checks, and timeout normalization. Runtime code should not import `httpx2._*` directly.
 
 ## Dependency and validation boundaries
 

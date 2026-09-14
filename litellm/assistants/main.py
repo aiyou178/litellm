@@ -13,6 +13,7 @@ from openai.types.beta.assistant import Assistant
 from openai.types.beta.assistant_deleted import AssistantDeleted
 
 import litellm
+from litellm.litellm_core_utils.httpx2_compat import normalize_timeout
 from litellm.types.router import GenericLiteLLMParams
 from litellm.utils import (
     exception_type,
@@ -84,21 +85,10 @@ def get_assistants(
     optional_params: Final = GenericLiteLLMParams(api_key=api_key, api_base=api_base, api_version=api_version, **kwargs)
     litellm_params_dict: Final = get_litellm_params(**kwargs)
 
-    ### TIMEOUT LOGIC ###
-    timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-    # set timeout for 10 minutes by default
-
-    if (
-        timeout is not None
-        and isinstance(timeout, httpx.Timeout)
-        and supports_httpx_timeout(custom_llm_provider) is False
-    ):
-        read_timeout: Final = timeout.read or 600
-        timeout = read_timeout  # default 10 min timeout
-    elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-        timeout = float(timeout)
-    elif timeout is None:
-        timeout = 600.0
+    raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+    timeout: Final[float | httpx.Timeout] = normalize_timeout(
+        raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+    )
 
     response: SyncCursorPage[Assistant] | Coroutine[None, None, AsyncCursorPage[Assistant]] | None = None
     if custom_llm_provider == "openai":
@@ -252,21 +242,10 @@ def create_assistants(
     optional_params: Final = GenericLiteLLMParams(api_key=api_key, api_base=api_base, api_version=api_version, **kwargs)
     litellm_params_dict: Final = get_litellm_params(**kwargs)
 
-    ### TIMEOUT LOGIC ###
-    timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-    # set timeout for 10 minutes by default
-
-    if (
-        timeout is not None
-        and isinstance(timeout, httpx.Timeout)
-        and supports_httpx_timeout(custom_llm_provider) is False
-    ):
-        read_timeout: Final = timeout.read or 600
-        timeout = read_timeout  # default 10 min timeout
-    elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-        timeout = float(timeout)
-    elif timeout is None:
-        timeout = 600.0
+    raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+    timeout: Final[float | httpx.Timeout] = normalize_timeout(
+        raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+    )
 
     create_assistant_data = {
         "model": model,
@@ -426,21 +405,10 @@ def delete_assistant(
     if async_delete_assistants is not None and not isinstance(async_delete_assistants, bool):
         raise ValueError("Invalid value passed in for async_delete_assistants. Only bool or None allowed")
 
-    ### TIMEOUT LOGIC ###
-    timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-    # set timeout for 10 minutes by default
-
-    if (
-        timeout is not None
-        and isinstance(timeout, httpx.Timeout)
-        and supports_httpx_timeout(custom_llm_provider) is False
-    ):
-        read_timeout: Final = timeout.read or 600
-        timeout = read_timeout  # default 10 min timeout
-    elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-        timeout = float(timeout)
-    elif timeout is None:
-        timeout = 600.0
+    raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+    timeout: Final[float | httpx.Timeout] = normalize_timeout(
+        raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+    )
 
     response: AssistantDeleted | Coroutine[None, None, AssistantDeleted] | None = None
     if custom_llm_provider == "openai":
@@ -591,21 +559,10 @@ def create_thread(
     optional_params: Final = GenericLiteLLMParams(**kwargs)
     litellm_params_dict: Final = get_litellm_params(**kwargs)
 
-    ### TIMEOUT LOGIC ###
-    timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-    # set timeout for 10 minutes by default
-
-    if (
-        timeout is not None
-        and isinstance(timeout, httpx.Timeout)
-        and supports_httpx_timeout(custom_llm_provider) is False
-    ):
-        read_timeout: Final = timeout.read or 600
-        timeout = read_timeout  # default 10 min timeout
-    elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-        timeout = float(timeout)
-    elif timeout is None:
-        timeout = 600.0
+    raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+    timeout: Final[float | httpx.Timeout] = normalize_timeout(
+        raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+    )
 
     api_base: str | None = None
     api_key: str | None = None
@@ -740,21 +697,10 @@ def get_thread(
     aget_thread: Final = kwargs.pop("aget_thread", None)
     optional_params: Final = GenericLiteLLMParams(**kwargs)
     litellm_params_dict: Final = get_litellm_params(**kwargs)
-    ### TIMEOUT LOGIC ###
-    timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-    # set timeout for 10 minutes by default
-
-    if (
-        timeout is not None
-        and isinstance(timeout, httpx.Timeout)
-        and supports_httpx_timeout(custom_llm_provider) is False
-    ):
-        read_timeout: Final = timeout.read or 600
-        timeout = read_timeout  # default 10 min timeout
-    elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-        timeout = float(timeout)
-    elif timeout is None:
-        timeout = 600.0
+    raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+    timeout: Final[float | httpx.Timeout] = normalize_timeout(
+        raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+    )
     api_base: str | None = None
     api_key: str | None = None
     response: Thread | Coroutine[None, None, Thread] | None = None
@@ -918,21 +864,10 @@ def add_message(
         custom_llm_provider=custom_llm_provider,
     )
 
-    ### TIMEOUT LOGIC ###
-    timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-    # set timeout for 10 minutes by default
-
-    if (
-        timeout is not None
-        and isinstance(timeout, httpx.Timeout)
-        and supports_httpx_timeout(custom_llm_provider) is False
-    ):
-        read_timeout: Final = timeout.read or 600
-        timeout = read_timeout  # default 10 min timeout
-    elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-        timeout = float(timeout)
-    elif timeout is None:
-        timeout = 600.0
+    raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+    timeout: Final[float | httpx.Timeout] = normalize_timeout(
+        raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+    )
     api_key: str | None = None
     api_base: str | None = None
     response: OpenAIMessage | Coroutine[None, None, OpenAIMessage] | None = None
@@ -1070,21 +1005,10 @@ def get_messages(
     optional_params: Final = GenericLiteLLMParams(**kwargs)
     litellm_params_dict: Final = get_litellm_params(**kwargs)
 
-    ### TIMEOUT LOGIC ###
-    timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-    # set timeout for 10 minutes by default
-
-    if (
-        timeout is not None
-        and isinstance(timeout, httpx.Timeout)
-        and supports_httpx_timeout(custom_llm_provider) is False
-    ):
-        read_timeout: Final = timeout.read or 600
-        timeout = read_timeout  # default 10 min timeout
-    elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-        timeout = float(timeout)
-    elif timeout is None:
-        timeout = 600.0
+    raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+    timeout: Final[float | httpx.Timeout] = normalize_timeout(
+        raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+    )
 
     response: SyncCursorPage[OpenAIMessage] | Coroutine[None, None, AsyncCursorPage[OpenAIMessage]] | None = None
     api_key: str | None = None
@@ -1262,21 +1186,10 @@ def run_thread(
     optional_params: Final = GenericLiteLLMParams(**kwargs)
     litellm_params_dict: Final = get_litellm_params(**kwargs)
 
-    ### TIMEOUT LOGIC ###
-    timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-    # set timeout for 10 minutes by default
-
-    if (
-        timeout is not None
-        and isinstance(timeout, httpx.Timeout)
-        and supports_httpx_timeout(custom_llm_provider) is False
-    ):
-        read_timeout: Final = timeout.read or 600
-        timeout = read_timeout  # default 10 min timeout
-    elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-        timeout = float(timeout)
-    elif timeout is None:
-        timeout = 600.0
+    raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+    timeout: Final[float | httpx.Timeout] = normalize_timeout(
+        raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+    )
 
     response: Run | Coroutine[None, None, Run] | None = None
     if custom_llm_provider == "openai":
