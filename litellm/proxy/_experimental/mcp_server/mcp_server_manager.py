@@ -293,6 +293,7 @@ def _requires_oauth_discovery(
 
 
 _StringList: TypeAlias = list[str]
+_MCPHTTPStatusErrors: Final = (HTTPStatusError, httpx2.HTTPStatusError)
 _StringMap: TypeAlias = dict[str, str]
 _ToolParamMap: TypeAlias = dict[str, list[str]]
 _EnvVarList: TypeAlias = list[dict[str, object]]
@@ -902,11 +903,11 @@ async def _openapi_spec_health(
         await asyncio.wait_for(load_openapi_spec_async(spec_path, max_bytes=10 * 1024 * 1024), timeout=timeout)
     except asyncio.TimeoutError:
         return "unhealthy", f"OpenAPI specification check timed out after {timeout} seconds"
-    except HTTPStatusError as exc:
+    except _MCPHTTPStatusErrors as exc:
         return "unhealthy", f"OpenAPI specification request failed (HTTP {exc.response.status_code})"
     except HTTPResponseLimitError as exc:
         return "unknown", f"OpenAPI specification probe refused: {exc}"
-    except (httpx.RequestError, ValueError, OSError) as exc:
+    except (httpx.RequestError, httpx2.RequestError, ValueError, OSError) as exc:
         return "unhealthy", f"OpenAPI specification could not be loaded ({type(exc).__name__})"
     return "healthy", None
 
@@ -4835,7 +4836,7 @@ class MCPServerManager:
             if metadata is not None and resource_scopes:
                 metadata.scopes = resource_scopes
             return metadata, attempts
-        except HTTPStatusError as exc:
+        except _MCPHTTPStatusErrors as exc:
             return await self._discover_after_status_error(server_url, exc, allow_origin_fallback=allow_origin_fallback)
         except Exception as exc:  # pragma: no cover - network/transient issues
             verbose_logger.debug("MCP OAuth discovery failed for %s: %s", server_url, exc)
@@ -4844,7 +4845,7 @@ class MCPServerManager:
     async def _discover_after_status_error(
         self,
         server_url: str,
-        exc: HTTPStatusError,
+        exc: HTTPStatusError | httpx2.HTTPStatusError,
         *,
         allow_origin_fallback: bool,
     ) -> tuple[MCPOAuthMetadata | None, tuple[str, ...]]:

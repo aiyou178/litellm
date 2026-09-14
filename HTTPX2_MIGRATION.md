@@ -10,7 +10,7 @@ LiteLLM's own runtime HTTP code uses `httpx2`, while legacy `httpx` remains only
 * `httpx2.alias_httpx()` is not called. It changes the meaning of `import httpx` for a whole process, which is unsafe for a library and too late if a host application imported OpenAI first.
 * OpenAI is upgraded to 3.x because OpenAI 2.x creates and checks legacy `httpx` clients.
 * The experimental MCP client remains on MCP 1.x and legacy `httpx`. MCP 1.x accepts legacy clients and exceptions, so this boundary is kept intact until MCP is migrated.
-* Tests that exercise LiteLLM's rewritten HTTP handlers use `httpx2` mocks. Operational scripts, documentation examples, and unrelated test suites are intentionally outside this first change.
+* Tests that inject clients and inspect HTTP exceptions use `httpx2`. RESPX route declarations remain on its legacy `httpx` API; `tests/test_litellm/httpx2_respx.py` is the default test mocker, keeps that declaration API, and routes HTTPX2 responses through conversion while leaving legacy MCP clients on their native path.
 
 ## Compatibility module
 
@@ -28,4 +28,4 @@ Public behavior changes:
 
 ## Verification
 
-The migration is validated by package import checks, `compileall`, Ruff, basedpyright on the compatibility module, and the HTTP handler test suites. Full CI requires fixing the local Rust toolchain mirror before package build.
+The migration is validated by package import checks, `compileall`, Ruff, basedpyright on the compatibility module, the HTTP handler test suites, and the full unit suite with the RESPX compatibility layer. Full CI requires fixing the local Rust toolchain mirror before package build.
