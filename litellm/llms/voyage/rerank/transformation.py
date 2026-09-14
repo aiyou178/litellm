@@ -7,7 +7,7 @@ Docs - https://docs.voyageai.com/docs/reranker
 from collections.abc import Mapping
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._uuid import uuid
 from litellm.llms.base_llm.chat.transformation import LiteLLMLoggingObj

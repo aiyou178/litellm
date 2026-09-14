@@ -11,7 +11,7 @@ import pytest
 
 import time
 
-import httpx
+import httpx2 as httpx
 from openai._legacy_response import HttpxBinaryResponseContent
 
 import litellm
@@ -5192,7 +5192,7 @@ def test_handle_anthropic_messages_response_logging_preserves_fast_mode_speed():
     response. Anthropic's fast-mode multiplier is applied off ``usage.speed``, which the
     response body never carries, so the request's optional params have to be passed in or
     fast-mode spend is logged at the standard rate."""
-    import httpx
+    import httpx2 as httpx
 
     logging_obj = LitellmLogging(
         model="claude-opus-4-8",

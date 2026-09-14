@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import Any, Final, Protocol, cast
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import _ENABLE_SECRET_REDACTION, _redact_string, verbose_logger

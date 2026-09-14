@@ -11,7 +11,7 @@ import io
 import json
 import pytest
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.custom_httpx.llm_http_handler import AsyncHTTPHandler
 from litellm.llms.vertex_ai.files.transformation import VertexAIFilesConfig

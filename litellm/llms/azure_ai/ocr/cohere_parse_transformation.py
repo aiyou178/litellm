@@ -3,7 +3,7 @@
 from collections.abc import Mapping
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.prompt_templates.image_handling import (
     async_convert_url_to_base64,

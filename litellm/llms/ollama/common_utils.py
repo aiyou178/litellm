@@ -1,6 +1,6 @@
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm import verbose_logger
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

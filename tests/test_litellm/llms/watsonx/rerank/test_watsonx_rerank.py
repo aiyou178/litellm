@@ -7,7 +7,7 @@ import re
 import uuid
 from unittest.mock import MagicMock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.watsonx.common_utils import (

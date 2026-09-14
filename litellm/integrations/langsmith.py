@@ -8,7 +8,7 @@ import types
 from datetime import datetime, timezone
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel
 
 import litellm

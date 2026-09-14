@@ -6,7 +6,7 @@ import re
 from collections.abc import Iterable, Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter, ValidationError
 
 from litellm._logging import verbose_logger

@@ -8,9 +8,9 @@ API Reference: https://platform.stability.ai/docs/api-reference
 
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
 
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.secret_managers.main import get_secret_str
 from litellm.types.images.main import ImageEditOptionalRequestParams

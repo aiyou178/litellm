@@ -4,7 +4,7 @@ OpenAI-like chat completion transformation
 
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.secret_managers.main import get_secret_str
 from litellm.types.llms.openai import AllMessageValues, ChatCompletionAssistantMessage

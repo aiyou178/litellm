@@ -9,10 +9,10 @@ Huggingface Docs: https://huggingface.co/docs/text-generation-inference/en/messa
 
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
-from httpx._models import Headers
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.aws_partition import get_aws_dns_suffix
+from litellm.litellm_core_utils.httpx2_compat import Headers
 from litellm.litellm_core_utils.logging_utils import track_llm_api_timing
 from litellm.litellm_core_utils.streaming_handler import CustomStreamWrapper
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

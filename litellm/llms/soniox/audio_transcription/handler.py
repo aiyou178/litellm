@@ -21,7 +21,7 @@ import time
 from collections.abc import Coroutine, Mapping, Sequence
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import ReadOnly, TypedDict
 
 from litellm.litellm_core_utils.audio_utils.utils import (

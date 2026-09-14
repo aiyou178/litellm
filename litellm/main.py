@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from aiohttp import ClientSession
 
 import dotenv
-import httpx
+import httpx2 as httpx
 import openai
 import tiktoken
 from pydantic import BaseModel

@@ -98,7 +98,7 @@ from litellm.constants import (
     DEFAULT_SOFT_BUDGET,
     DEFAULT_ALLOWED_FAILS,
 )
-import httpx
+import httpx2 as httpx
 
 # register_async_client_cleanup is lazy-loaded and called on first access
 

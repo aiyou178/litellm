@@ -9,7 +9,7 @@ stripping that are specific to the bedrock-mantle endpoint.
 from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.anthropic.experimental_pass_through.messages.transformation import (
     AnthropicMessagesConfig,

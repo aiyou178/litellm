@@ -6,7 +6,7 @@ import json
 from collections.abc import AsyncIterator, Iterator
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 from litellm.constants import DEFAULT_MAX_TOKENS_FOR_TRITON
 from litellm.litellm_core_utils.prompt_templates.factory import prompt_factory

@@ -2438,7 +2438,7 @@ class TestAnthropicPassthroughFastMode:
         return standard_cost * 2.0
 
     def test_non_streaming_applies_fast_multiplier(self):
-        import httpx
+        import httpx2 as httpx
 
         response_body = {
             "id": "msg_1",

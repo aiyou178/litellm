@@ -2,7 +2,7 @@ import asyncio
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException, status
 
 import litellm

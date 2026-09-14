@@ -3,7 +3,7 @@ from collections.abc import Callable
 from copy import deepcopy
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.aws_partition import get_aws_dns_suffix
 from litellm.llms.bedrock.base_aws_llm import BaseAWSLLM, pop_aws_auth_params

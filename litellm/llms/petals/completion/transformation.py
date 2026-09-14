@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Final
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 import litellm
 from litellm.llms.base_llm.chat.transformation import (

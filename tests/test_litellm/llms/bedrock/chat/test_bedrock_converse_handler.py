@@ -11,7 +11,7 @@ from typing import Final
 from unittest.mock import MagicMock, patch
 
 import boto3
-import httpx
+import httpx2 as httpx
 import pytest
 from botocore.credentials import Credentials
 from botocore.exceptions import ClientError

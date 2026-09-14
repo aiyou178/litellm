@@ -13,7 +13,7 @@ import enum
 from collections.abc import Sequence
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 import openai
 
 from litellm.types.utils import LiteLLMCommonStrings

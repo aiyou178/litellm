@@ -4,7 +4,7 @@ import types
 
 import pytest
 import respx
-from httpx import Response
+from httpx2 import Response
 from unittest.mock import AsyncMock, patch
 
 import litellm

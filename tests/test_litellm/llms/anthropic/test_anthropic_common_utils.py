@@ -1906,7 +1906,7 @@ class TestAnthropicThinkingSignatureSelfHeal:
         assert normalize_anthropic_tool_use_id(f"{base}{THOUGHT_SIGNATURE_SEPARATOR}{sig}") == base
 
     def test_anthropic_messages_config_http_retry_helpers(self):
-        import httpx
+        import httpx2 as httpx
 
         from litellm.llms.anthropic.experimental_pass_through.messages.transformation import (
             AnthropicMessagesConfig,

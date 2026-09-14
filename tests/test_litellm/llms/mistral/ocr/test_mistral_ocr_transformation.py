@@ -5,7 +5,7 @@ Tests the supported OCR parameters and their mapping behaviour.
 No real API calls are made — all tests are fully mocked/local.
 """
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.mistral.ocr.transformation import MistralOCRConfig

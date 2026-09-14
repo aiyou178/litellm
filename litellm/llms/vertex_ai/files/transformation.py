@@ -12,8 +12,8 @@ from types import MappingProxyType
 from typing import Any, Final, TypedDict
 from urllib.parse import quote, unquote
 
-import httpx
-from httpx import Headers, Response
+import httpx2 as httpx
+from httpx2 import Headers, Response
 from openai.types.file_deleted import FileDeleted
 from typing_extensions import ReadOnly, Required
 

@@ -13,7 +13,7 @@ is logged the first time such a deployment is seen.
 import contextlib
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_router_logger

@@ -7,7 +7,7 @@ from functools import lru_cache
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, cast
 
-from httpx import Response
+from httpx2 import Response
 from pydantic import BaseModel
 from typing_extensions import ReadOnly, TypedDict
 

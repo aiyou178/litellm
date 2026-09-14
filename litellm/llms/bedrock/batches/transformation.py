@@ -4,7 +4,7 @@ import time
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal, cast
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 from pydantic import TypeAdapter, ValidationError
 
 from litellm.litellm_core_utils.aws_partition import get_aws_dns_suffix, is_bedrock_arn

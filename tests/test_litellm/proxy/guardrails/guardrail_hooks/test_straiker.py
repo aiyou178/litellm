@@ -2,7 +2,7 @@ import json
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.exceptions import GuardrailRaisedException, ModifyResponseException

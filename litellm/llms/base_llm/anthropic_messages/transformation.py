@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING, Any
 
-import httpx
+import httpx2 as httpx
 
 from litellm.types.llms.anthropic_messages.anthropic_response import (
     AnthropicMessagesResponse,

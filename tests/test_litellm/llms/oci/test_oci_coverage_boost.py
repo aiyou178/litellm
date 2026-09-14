@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING
 import pytest
 from unittest.mock import patch, MagicMock, AsyncMock
 
-import httpx
+import httpx2 as httpx
 
 if TYPE_CHECKING:
     from litellm.llms.oci.chat.transformation import OCIStreamWrapper

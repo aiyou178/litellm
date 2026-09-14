@@ -1,7 +1,7 @@
 import json
 from typing import Final
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 from litellm.llms.base_llm.audio_transcription.transformation import (
     AudioTranscriptionRequestData,

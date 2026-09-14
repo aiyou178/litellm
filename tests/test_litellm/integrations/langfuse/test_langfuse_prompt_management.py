@@ -71,7 +71,7 @@ class TestLangfusePromptManagement:
             )
 
     def test_langfuse_client_init_passes_dedicated_httpx_client(self):
-        import httpx
+        import httpx2 as httpx
 
         from litellm.llms.custom_httpx.http_handler import _get_httpx_client
 

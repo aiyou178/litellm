@@ -2125,7 +2125,7 @@ def test_evicting_an_azure_client_built_on_the_callers_session_leaves_it_open(mo
     http client it was handed, so treating the wrapper as litellm's to close would
     close the caller's shared session out from under them.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.caching.evicted_client_closer import EvictedClientCloser
     from litellm.caching.llm_caching_handler import LLMClientCache

@@ -745,7 +745,7 @@ async def test_route_request_realtime_wildcard_model_resolves_credentials(
     POST /realtime/client_secrets with a request model like openai/gpt-realtime
     must match an openai/* deployment and forward its api_key upstream.
     """
-    import httpx
+    import httpx2 as httpx
     import litellm
     from unittest.mock import AsyncMock, patch
 
@@ -783,7 +783,7 @@ async def test_route_request_realtime_team_scoped_model_resolves_credentials(
     Team-scoped deployments (team_public_model_name) must be selected when
     user_api_key_team_id is present, same as /chat/completions.
     """
-    import httpx
+    import httpx2 as httpx
     import litellm
     from unittest.mock import AsyncMock, patch
 
@@ -829,7 +829,7 @@ async def test_route_request_realtime_litellm_credential_name_resolves_api_key(
     litellm_credential_name on a wildcard deployment must resolve to the stored
     api_key when routing acreate_realtime_client_secret through the router.
     """
-    import httpx
+    import httpx2 as httpx
     import litellm
     from unittest.mock import AsyncMock, patch
 
@@ -896,7 +896,7 @@ async def test_route_request_realtime_calls_resolves_api_base(monkeypatch):
     non-default (self-hosted / proxied) OpenAI endpoint is honored, instead of
     defaulting to https://api.openai.com.
     """
-    import httpx
+    import httpx2 as httpx
     import litellm
     from unittest.mock import AsyncMock, patch
 
@@ -939,7 +939,7 @@ async def test_route_request_realtime_transcription_session_resolves_credentials
     /realtime/transcription_sessions must resolve credentials through the router
     (wildcard deployment) rather than falling back to an empty OPENAI_API_KEY.
     """
-    import httpx
+    import httpx2 as httpx
     import litellm
     from unittest.mock import AsyncMock, patch
 

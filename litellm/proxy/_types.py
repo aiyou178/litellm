@@ -6,7 +6,7 @@ from datetime import datetime
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Annotated, Any, Final, Literal, NamedTuple
 
-import httpx
+import httpx2 as httpx
 from pydantic import (
     BaseModel,
     BeforeValidator,

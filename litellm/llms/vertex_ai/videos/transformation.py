@@ -11,13 +11,13 @@ from collections.abc import Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, ClassVar, Final, TypedDict, cast
 
-import httpx
-from httpx._types import FileContent, RequestFiles
+import httpx2 as httpx
 from typing_extensions import ReadOnly
 
 import litellm
 from litellm.constants import DEFAULT_GOOGLE_VIDEO_DURATION_SECONDS
 from litellm.images.utils import ImageEditRequestUtils
+from litellm.litellm_core_utils.httpx2_compat import FileContent, RequestFiles
 from litellm.llms.base_llm.videos.transformation import BaseVideoConfig
 from litellm.llms.vertex_ai.common_utils import (
     _convert_vertex_datetime_to_openai_datetime,

@@ -10,7 +10,7 @@ import os
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any, Final, Literal, Optional
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_proxy_logger
 from litellm._version import version as litellm_version

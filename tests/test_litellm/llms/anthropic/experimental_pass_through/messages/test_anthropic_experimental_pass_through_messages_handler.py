@@ -4,7 +4,7 @@ import os
 import uuid
 from typing import Any, Dict, List
 
-import httpx
+import httpx2 as httpx
 import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError

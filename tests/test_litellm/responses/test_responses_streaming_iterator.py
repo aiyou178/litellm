@@ -9,7 +9,7 @@ crashed with exit 139 whenever any CustomLogger was registered).
 import asyncio
 import time
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

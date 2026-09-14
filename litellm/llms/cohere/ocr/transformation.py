@@ -4,7 +4,7 @@ from collections.abc import Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict, TypeAdapter
 from typing_extensions import ReadOnly, TypedDict
 

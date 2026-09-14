@@ -15,11 +15,9 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, ClassVar, Final, NoReturn, Optional, TypeAlias, TypedDict, TypeVar
 
 import certifi
-import httpx
+import httpx2 as httpx
 from aiohttp import ClientSession, DummyCookieJar, TCPConnector
-from httpx import USE_CLIENT_DEFAULT, AsyncHTTPTransport, HTTPTransport
-from httpx._types import CertTypes, RequestFiles
-from httpx._utils import get_environment_proxies
+from httpx2 import USE_CLIENT_DEFAULT, AsyncHTTPTransport, HTTPTransport
 
 import litellm
 from litellm._logging import verbose_logger
@@ -37,6 +35,11 @@ from litellm.constants import (
     COMPLETION_HTTP_FALLBACK_SECONDS,
     DEFAULT_SSL_CIPHERS,
     HTTP_HANDLER_CONNECT_TIMEOUT_SECONDS,
+)
+from litellm.litellm_core_utils.httpx2_compat import (
+    CertTypes,
+    RequestFiles,
+    environment_proxy_urls,
 )
 from litellm.litellm_core_utils.logging_utils import track_llm_api_timing
 from litellm.litellm_core_utils.request_timeout_resolver import (
@@ -88,7 +91,7 @@ def _environment_proxy_mounts(
     return MappingProxyType(
         {
             pattern: None if proxy_url is None else build_proxy_transport(proxy_url)
-            for pattern, proxy_url in get_environment_proxies().items()
+            for pattern, proxy_url in environment_proxy_urls().items()
         }
     )
 

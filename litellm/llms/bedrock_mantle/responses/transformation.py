@@ -19,7 +19,7 @@ import json
 from collections.abc import Mapping
 from typing import Any, Final, cast  # noqa: TID251  # map_openai_params returns the filtered params as a bare dict
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import ReadOnly, TypedDict
 
 import litellm

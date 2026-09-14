@@ -5,7 +5,7 @@ Translates from OpenAI's `/v1/audio/transcriptions` to Deepgram's `/v1/listen`
 from typing import Final
 from urllib.parse import urlencode
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 from litellm.litellm_core_utils.audio_utils.utils import process_audio_file
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

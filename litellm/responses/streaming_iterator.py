@@ -12,7 +12,7 @@ from functools import lru_cache
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, Protocol, overload, runtime_checkable
 
-import httpx
+import httpx2 as httpx
 from openai._streaming import SSEDecoder
 from pydantic import BaseModel, ValidationError
 from typing_extensions import TypeIs

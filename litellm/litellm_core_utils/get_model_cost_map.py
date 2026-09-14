@@ -24,7 +24,7 @@ from importlib.resources import files
 from pathlib import Path
 from typing import Final, Protocol
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import ReadOnly, TypedDict
 
 from litellm import verbose_logger

@@ -13,7 +13,7 @@ from collections.abc import AsyncIterator, Iterator, Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal, NamedTuple, Optional
 from urllib.parse import urlsplit
 
-import httpx
+import httpx2 as httpx
 import openai
 from openai import AsyncAzureOpenAI, AsyncOpenAI, AzureOpenAI, OpenAI
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage

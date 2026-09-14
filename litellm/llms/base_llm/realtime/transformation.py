@@ -3,7 +3,7 @@ from collections.abc import Mapping, Sequence
 from types import TracebackType
 from typing import TYPE_CHECKING, Any, Protocol
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import Self
 
 from litellm.types.llms.openai import OpenAIRealtimeStreamSessionEvents

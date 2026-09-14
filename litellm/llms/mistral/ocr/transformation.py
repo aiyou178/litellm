@@ -4,7 +4,7 @@ Mistral OCR transformation implementation.
 
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.llms.base_llm.ocr.transformation import (

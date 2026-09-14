@@ -3,11 +3,10 @@ import time
 from collections.abc import AsyncIterator, Iterator
 from typing import TYPE_CHECKING, Any, Final
 
-from httpx._models import Headers, Response
-
 import litellm
 from litellm._logging import verbose_proxy_logger
 from litellm._uuid import uuid
+from litellm.litellm_core_utils.httpx2_compat import Headers, Response
 from litellm.litellm_core_utils.prompt_templates.common_utils import (
     get_str_from_messages,
 )

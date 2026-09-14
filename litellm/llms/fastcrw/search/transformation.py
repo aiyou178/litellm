@@ -10,7 +10,7 @@ fastCRW API Reference: https://fastcrw.com/docs/rest-api
 
 from typing import Final, TypedDict
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.base_llm.search.transformation import (

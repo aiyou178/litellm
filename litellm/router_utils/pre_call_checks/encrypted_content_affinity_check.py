@@ -40,7 +40,7 @@ import time
 from collections.abc import Iterator, Mapping
 from typing import TYPE_CHECKING, Final, Optional, Protocol, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_router_logger
 from litellm.exceptions import (

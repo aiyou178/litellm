@@ -7,7 +7,7 @@ Source: litellm/llms/chatgpt/responses/transformation.py
 import json
 from unittest.mock import MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

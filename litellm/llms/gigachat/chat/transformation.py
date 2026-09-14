@@ -13,7 +13,7 @@ from collections.abc import AsyncIterator, Iterator, Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.llms.base_llm.chat.transformation import BaseConfig, BaseLLMException

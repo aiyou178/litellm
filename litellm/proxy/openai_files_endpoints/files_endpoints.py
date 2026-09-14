@@ -10,7 +10,7 @@ import traceback
 from collections.abc import Mapping, Sequence
 from typing import Any, BinaryIO, Final, TypedDict, cast, get_args
 
-import httpx
+import httpx2 as httpx
 from fastapi import (
     APIRouter,
     Depends,

@@ -9,7 +9,7 @@ Source: litellm/llms/perplexity/responses/transformation.py
 
 import json
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 

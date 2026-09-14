@@ -4,7 +4,7 @@ from io import BytesIO
 from typing import Final
 from unittest.mock import Mock
 
-import httpx
+import httpx2 as httpx
 import orjson
 import pytest
 

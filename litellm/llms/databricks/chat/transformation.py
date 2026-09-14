@@ -6,7 +6,7 @@ import os
 from collections.abc import AsyncIterator, Coroutine, Iterator, Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal, cast, overload
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel
 
 from litellm.constants import RESPONSE_FORMAT_TOOL_NAME

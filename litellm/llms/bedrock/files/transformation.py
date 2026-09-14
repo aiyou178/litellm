@@ -14,8 +14,8 @@ from types import MappingProxyType
 from typing import Any, Final, Literal, TypeAlias, TypedDict
 from urllib.parse import quote, unquote, urlencode
 
-import httpx
-from httpx import Headers, Response
+import httpx2 as httpx
+from httpx2 import Headers, Response
 from openai.types.file_deleted import FileDeleted
 from pydantic import BaseModel, ConfigDict, Field, TypeAdapter
 from typing_extensions import ReadOnly

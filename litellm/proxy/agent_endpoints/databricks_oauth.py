@@ -28,7 +28,7 @@ import hashlib
 from dataclasses import dataclass
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.caching.in_memory_cache import InMemoryCache

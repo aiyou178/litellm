@@ -2269,7 +2269,7 @@ async def test_post_call_failure_hook_redacts_traceback_before_callbacks(monkeyp
     import traceback
     from unittest.mock import AsyncMock, patch
 
-    import httpx
+    import httpx2 as httpx
 
     provider_key = "AIza" + "S" * 35
     upstream_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini:generateContent?key={provider_key}"

@@ -712,7 +712,7 @@ def test_resolve_timeout__request_timeout_kwarg_fallback():
 
 
 def test_resolve_timeout__httpx_timeout_returns_float_read():
-    import httpx
+    import httpx2 as httpx
 
     t = httpx.Timeout(99.0, connect=5.0)
     resolved = bm._resolve_timeout(_params(timeout=t), {}, "openai")

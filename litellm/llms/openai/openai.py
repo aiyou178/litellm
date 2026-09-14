@@ -3,7 +3,7 @@ import types
 from collections.abc import AsyncIterator, Callable, Coroutine, Iterable, Iterator, Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal, Optional, cast
 
-import httpx
+import httpx2 as httpx
 
 if TYPE_CHECKING:
     import tiktoken

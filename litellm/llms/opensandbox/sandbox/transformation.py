@@ -3,7 +3,7 @@ import json
 import time
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.constants import (
     OPEN_SANDBOX_API_BASE_ENV_VAR,

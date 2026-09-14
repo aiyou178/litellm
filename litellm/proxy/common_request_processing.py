@@ -21,7 +21,7 @@ from typing import (
 )
 
 import anyio
-import httpx
+import httpx2 as httpx
 import orjson
 from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse, Response, StreamingResponse

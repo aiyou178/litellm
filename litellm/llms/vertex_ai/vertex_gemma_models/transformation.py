@@ -11,7 +11,7 @@ The actual message transformation reuses OpenAIGPTConfig since Gemma uses OpenAI
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.custom_httpx.http_handler import (

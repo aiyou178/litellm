@@ -85,7 +85,7 @@ class OpenAIRealtime(OpenAIChatCompletion):
         """
         Construct the backend websocket URL with all query parameters (including 'model').
         """
-        from httpx import URL
+        from httpx2 import URL
 
         api_base = api_base.replace("https://", "wss://")
         api_base = api_base.replace("http://", "ws://")

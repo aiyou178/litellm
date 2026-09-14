@@ -1,6 +1,6 @@
 from unittest.mock import AsyncMock, Mock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.predibase.chat.handler import PredibaseChatCompletion

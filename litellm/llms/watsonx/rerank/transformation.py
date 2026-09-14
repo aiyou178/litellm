@@ -8,7 +8,7 @@ import uuid
 from collections.abc import Mapping
 from typing import Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import LiteLLMLoggingObj
 from litellm.llms.base_llm.rerank.transformation import BaseRerankConfig

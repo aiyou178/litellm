@@ -6,7 +6,7 @@ from typing import Final, Optional
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from fastapi import HTTPException
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

@@ -9,7 +9,7 @@ from collections.abc import AsyncGenerator
 from typing import TYPE_CHECKING, Any, Final, Optional, Union
 from urllib.parse import quote
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm._uuid import uuid

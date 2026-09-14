@@ -12,7 +12,7 @@ import importlib
 import os
 from pathlib import Path
 from types import SimpleNamespace
-import httpx
+import httpx2 as httpx
 import pytest
 
 import asyncio

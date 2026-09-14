@@ -2359,7 +2359,7 @@ class TestClientsideBaseOverrideOutboundKey:
         monkeypatch.setattr(litellm, "api_key", None, raising=False)
 
     def test_caller_key_override_sends_caller_key_never_server_key(self):
-        import httpx
+        import httpx2 as httpx
         import respx
 
         with respx.mock:

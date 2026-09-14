@@ -7,7 +7,7 @@ async_success_handler (cross-thread pydantic mutation segfaults pydantic-core).
 import asyncio
 import time
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

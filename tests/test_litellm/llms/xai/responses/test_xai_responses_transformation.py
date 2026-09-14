@@ -9,7 +9,8 @@ Source: litellm/llms/xai/responses/transformation.py
 
 from unittest.mock import MagicMock, Mock
 
-import httpx
+import httpx2 as httpx
+import pytest
 
 from litellm.llms.xai.cost_calculator import cost_per_token
 from litellm.llms.xai.responses.transformation import XAIResponsesAPIConfig

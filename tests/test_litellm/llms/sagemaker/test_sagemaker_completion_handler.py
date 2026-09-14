@@ -15,7 +15,7 @@ import struct
 from typing import AsyncIterator, Iterator
 from unittest.mock import MagicMock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.sagemaker.common_utils import SagemakerError

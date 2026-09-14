@@ -2,7 +2,7 @@ from collections.abc import AsyncIterator
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.anthropic_beta_headers_manager import filter_and_transform_beta_headers

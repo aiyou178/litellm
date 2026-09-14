@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from types import MappingProxyType
 from typing import Any, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict, StrictBool, TypeAdapter, ValidationError
 
 import litellm

@@ -1,7 +1,7 @@
 import sys
 from types import ModuleType
 
-import httpx
+import httpx2 as httpx
 import pytest
 from fastapi import APIRouter, FastAPI
 from fastapi.testclient import TestClient

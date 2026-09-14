@@ -5,7 +5,7 @@ from collections.abc import Callable, Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, NoReturn, cast
 
-import httpx
+import httpx2 as httpx
 from pydantic import ValidationError
 from typing_extensions import ReadOnly, TypedDict
 

@@ -5,11 +5,11 @@ from io import BufferedRandom, BufferedReader, BytesIO
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
 
 import litellm
 from litellm.constants import DEFAULT_MAX_RECURSE_DEPTH
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.llms.vertex_ai.common_utils import get_vertex_base_url
 from litellm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini import VertexLLM

@@ -36,7 +36,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, Optional, TypeAlias, TypeVar, Union, cast
 
 import anyio
-import httpx
+import httpx2 as httpx
 import openai
 from openai import AsyncOpenAI
 from pydantic import BaseModel, TypeAdapter, ValidationError
