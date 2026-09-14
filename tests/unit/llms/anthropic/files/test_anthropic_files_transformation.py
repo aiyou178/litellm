@@ -24,6 +24,11 @@ from litellm.types.utils import LlmProviders
 class TestAnthropicFilesConfig:
     """Test AnthropicFilesConfig transformation methods."""
 
+    @pytest.fixture(autouse=True)
+    def isolate_default_anthropic_base(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.delenv("ANTHROPIC_API_BASE", raising=False)
+        monkeypatch.delenv("ANTHROPIC_BASE_URL", raising=False)
+
     def setup_method(self):
         self.config = AnthropicFilesConfig()
 

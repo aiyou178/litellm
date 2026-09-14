@@ -1,11 +1,11 @@
 from tests.test_litellm.proxy.guardrails.guardrail_hooks._cisco_ai_defense_test_utils import (
+    MCP_URL,
     Any,
     AsyncMock,
     CiscoAIDefenseGuardrail,
     Dict,
     DualCache,
     HTTPException,
-    MCP_URL,
     Response,
     SimpleNamespace,
     UserAPIKeyAuth,
@@ -51,9 +51,7 @@ class TestCiscoAIDefenseMCPMode:
     @pytest.mark.asyncio
     async def test_mcp_mode_inspects_mcp_request(self):
         g = _make_guardrail(inspection_type="mcp", event_hook="pre_mcp_call")
-        data = _mcp_request(
-            name="send_email", args={"to": "x@y.com"}, litellm_call_id="call-1"
-        )
+        data = _mcp_request(name="send_email", args={"to": "x@y.com"}, litellm_call_id="call-1")
         post_mock = AsyncMock(return_value=_safe_response(url=MCP_URL))
         with _patch_inspection_post(g, post_mock):
             result = await g.async_pre_call_hook(
@@ -78,9 +76,7 @@ class TestCiscoAIDefenseMCPMode:
     async def test_mcp_mode_blocks_violation(self):
         g = _make_guardrail(inspection_type="mcp", event_hook="pre_mcp_call")
         data = _mcp_request(name="leak_secrets", args={"target": "evil"})
-        with _patch_inspection_post(
-            g, AsyncMock(return_value=_violation_response(url=MCP_URL))
-        ):
+        with _patch_inspection_post(g, AsyncMock(return_value=_violation_response(url=MCP_URL))):
             with pytest.raises(HTTPException) as exc:
                 await g.async_pre_call_hook(
                     user_api_key_dict=UserAPIKeyAuth(),
@@ -165,9 +161,7 @@ class TestCiscoAIDefenseMCPMode:
                 call_type="mcp_call",
             )
 
-        forwarded = ProxyLogging(
-            user_api_key_cache=UserApiKeyCache()
-        )._convert_mcp_hook_response_to_kwargs(
+        forwarded = ProxyLogging(user_api_key_cache=UserApiKeyCache())._convert_mcp_hook_response_to_kwargs(
             response_data=result, original_kwargs={"arguments": dict(original_args)}
         )
         assert forwarded["arguments"] == sanitized_args, (
@@ -179,14 +173,10 @@ class TestCiscoAIDefenseMCPMode:
 
     @pytest.mark.asyncio
     async def test_mcp_response_hook_inspects_tool_output(self):
-        g = _make_guardrail(
-            inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"]
-        )
+        g = _make_guardrail(inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"])
 
         response_obj = _mcp_response(
-            SimpleNamespace(
-                content=[{"type": "text", "text": "Here is the secret API key abc123"}]
-            )
+            SimpleNamespace(content=[{"type": "text", "text": "Here is the secret API key abc123"}])
         )
 
         post_mock = AsyncMock(return_value=_safe_response(url=MCP_URL))
@@ -215,9 +205,7 @@ class TestCiscoAIDefenseMCPMode:
             "name": "lookup_secret",
             "arguments": {"key": "production"},
         }
-        assert sent_payload["result"]["content"][0]["text"] == (
-            "Here is the secret API key abc123"
-        )
+        assert sent_payload["result"]["content"][0]["text"] == ("Here is the secret API key abc123")
         assert "request" not in sent_payload
         assert "metadata" not in sent_payload
 
@@ -225,12 +213,8 @@ class TestCiscoAIDefenseMCPMode:
     async def test_mcp_response_hook_blocks_violation(self):
         from litellm.types.mcp import MCPPostCallResponseObject
 
-        g = _make_guardrail(
-            inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"]
-        )
-        response_obj = _mcp_response(
-            SimpleNamespace(content=[{"type": "text", "text": "leaked"}])
-        )
+        g = _make_guardrail(inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"])
+        response_obj = _mcp_response(SimpleNamespace(content=[{"type": "text", "text": "leaked"}]))
 
         post_mock = AsyncMock(return_value=_violation_response(url=MCP_URL))
         with _patch_inspection_post(g, post_mock):
@@ -257,9 +241,7 @@ class TestCiscoAIDefenseMCPMode:
     @pytest.mark.asyncio
     async def test_mcp_response_hook_skipped_in_chat_mode(self):
         g = _make_guardrail()
-        response_obj = _mcp_response(
-            SimpleNamespace(content=[{"type": "text", "text": "hi"}])
-        )
+        response_obj = _mcp_response(SimpleNamespace(content=[{"type": "text", "text": "hi"}]))
 
         post_mock = AsyncMock()
         with _patch_inspection_post(g, post_mock):
@@ -291,11 +273,7 @@ class TestCiscoAIDefenseMCPMode:
     @pytest.mark.asyncio
     async def test_mcp_response_hook_runs_with_pre_mcp_call_only(self):
         g = _make_guardrail(inspection_type="mcp", event_hook="pre_mcp_call")
-        response_obj = _mcp_response(
-            SimpleNamespace(
-                content=[{"type": "text", "text": "would have been scanned"}]
-            )
-        )
+        response_obj = _mcp_response(SimpleNamespace(content=[{"type": "text", "text": "would have been scanned"}]))
 
         post_mock = AsyncMock(return_value=_safe_response(url=MCP_URL))
         with _patch_inspection_post(g, post_mock):
@@ -317,26 +295,18 @@ class TestCiscoAIDefenseMCPMode:
         [("safe", False), ("violation", True)],
     )
     @pytest.mark.asyncio
-    async def test_mcp_response_hook_handles_raw_list_content(
-        self, cisco_response_kind, expected_block
-    ):
+    async def test_mcp_response_hook_handles_raw_list_content(self, cisco_response_kind, expected_block):
         from litellm.types.mcp import MCPPostCallResponseObject
 
-        g = _make_guardrail(
-            inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"]
-        )
+        g = _make_guardrail(inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"])
 
         text_content = (
-            "exfiltrated data: ..."
-            if cisco_response_kind == "violation"
-            else "Here is the secret API key abc123"
+            "exfiltrated data: ..." if cisco_response_kind == "violation" else "Here is the secret API key abc123"
         )
         response_obj = _mcp_response([{"type": "text", "text": text_content}])
 
         cisco_resp = (
-            _violation_response(url=MCP_URL)
-            if cisco_response_kind == "violation"
-            else _safe_response(url=MCP_URL)
+            _violation_response(url=MCP_URL) if cisco_response_kind == "violation" else _safe_response(url=MCP_URL)
         )
         post_mock = AsyncMock(return_value=cisco_resp)
         kwargs = {
@@ -354,8 +324,7 @@ class TestCiscoAIDefenseMCPMode:
             )
 
         assert post_mock.called, (
-            "MCP response inspect was silently skipped for raw-list "
-            "shape — _normalize_mcp_response failed."
+            "MCP response inspect was silently skipped for raw-list shape — _normalize_mcp_response failed."
         )
         assert post_mock.call_args.kwargs["url"] == MCP_URL
 
@@ -383,9 +352,7 @@ class TestCiscoAIDefenseMCPMode:
 
         from litellm.types.mcp import MCPPostCallResponseObject
 
-        g = _make_guardrail(
-            inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"]
-        )
+        g = _make_guardrail(inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"])
 
         real_result = CallToolResult(
             content=[
@@ -570,12 +537,8 @@ class TestCiscoAIDefenseRedactListShape:
             hidden_params=HiddenParams(),
         )
 
-        g = _make_guardrail(
-            inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"]
-        )
-        with _patch_inspection_post(
-            g, AsyncMock(return_value=self._violation_with_redact_response())
-        ):
+        g = _make_guardrail(inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"])
+        with _patch_inspection_post(g, AsyncMock(return_value=self._violation_with_redact_response())):
             await g.async_post_mcp_tool_call_hook(
                 kwargs={
                     "name": "leak",
@@ -603,9 +566,7 @@ class TestCiscoAIDefenseMcpInputRedactionFallback:
     @pytest.mark.asyncio
     async def test_single_string_arg_is_rewritten(self):
         g = _make_guardrail(inspection_type="mcp", event_hook="pre_mcp_call")
-        data = _mcp_request(
-            name="search", args={"query": "my SSN is 123-45-6789", "limit": 10}
-        )
+        data = _mcp_request(name="search", args={"query": "my SSN is 123-45-6789", "limit": 10})
         cisco = _redact_response(sanitized_text="my SSN is [REDACTED]", url=MCP_URL)
         with _patch_inspection_post(g, AsyncMock(return_value=cisco)):
             result = await g.async_pre_call_hook(
@@ -660,12 +621,12 @@ class TestCiscoAIDefenseMcpInputRedactionFallback:
 
 
 class TestCiscoAIDefenseMCPBlockingContract:
-
     @pytest.mark.asyncio
     async def test_block_response_survives_dispatcher_contract(self):
+        from mcp.types import CallToolResult, TextContent
+
         from litellm.litellm_core_utils.litellm_logging import Logging
         from litellm.types.mcp import MCPPostCallResponseObject
-        from mcp.types import CallToolResult, TextContent
 
         g = _make_guardrail(
             name="cisco-mcp",
@@ -709,7 +670,7 @@ class TestCiscoAIDefenseMCPBlockingContract:
             "Hook must keep returning a MCPPostCallResponseObject for "
             "dispatcher paths that do honor returned replacements."
         )
-        assert raw_response.is_error is True
+        assert raw_response.isError is True
         assert "Blocked by Cisco AI Defense" in raw_response.content[0].text
         assert raw_response.structured_content is not None
         assert "Blocked by Cisco AI Defense" in raw_response.structured_content["result"]
@@ -722,7 +683,6 @@ class TestCiscoAIDefenseMCPBlockingContract:
 
 
 class TestCiscoAIDefenseJsonRpcSuccessEnvelope:
-
     @staticmethod
     def _cisco_mcp_envelope(*, is_safe: bool, action: str = "Block") -> Response:
         return _mock_inspect_response(
@@ -758,12 +718,8 @@ class TestCiscoAIDefenseJsonRpcSuccessEnvelope:
         ],
     )
     @pytest.mark.asyncio
-    async def test_mcp_jsonrpc_envelope_respects_verdict(
-        self, is_safe, action, should_block
-    ):
-        g = _make_guardrail(
-            name="cisco-mcp", inspection_type="mcp", event_hook="pre_mcp_call"
-        )
+    async def test_mcp_jsonrpc_envelope_respects_verdict(self, is_safe, action, should_block):
+        g = _make_guardrail(name="cisco-mcp", inspection_type="mcp", event_hook="pre_mcp_call")
         data = _mcp_request(
             name="ask_question",
             args={
@@ -773,9 +729,7 @@ class TestCiscoAIDefenseJsonRpcSuccessEnvelope:
         )
         with _patch_inspection_post(
             g,
-            AsyncMock(
-                return_value=self._cisco_mcp_envelope(is_safe=is_safe, action=action)
-            ),
+            AsyncMock(return_value=self._cisco_mcp_envelope(is_safe=is_safe, action=action)),
         ):
             if should_block:
                 with pytest.raises(HTTPException) as exc:
@@ -787,10 +741,7 @@ class TestCiscoAIDefenseJsonRpcSuccessEnvelope:
                     )
                 assert exc.value.status_code == 400
                 assert exc.value.detail["surface"] == "mcp"
-                assert (
-                    exc.value.detail["event_id"]
-                    == "645d9d22-b016-47e0-a12c-9d587fb11c57"
-                )
+                assert exc.value.detail["event_id"] == "645d9d22-b016-47e0-a12c-9d587fb11c57"
             else:
                 result = await g.async_pre_call_hook(
                     user_api_key_dict=UserAPIKeyAuth(),
