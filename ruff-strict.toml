@@ -26,6 +26,9 @@ external = [
 # caught a real mismatch, confirming Any is correct here, not a shortcut.
 "litellm/litellm_core_utils/litellm_logging.py" = ["ANN401"]
 "litellm/utils.py" = ["ANN401"]
+# HTTPX2 publishes these type aliases and environment-proxy helper only through private modules.
+# This is the single library-owned translation point for that boundary.
+"litellm/litellm_core_utils/httpx2_compat.py" = ["TID251"]
 # `**kwargs` forwards verbatim to CustomGuardrail.__init__, whose param list is wide and
 # grows over time; typing it concretely (`object`) broke that forwarding call outright —
 # basedpyright turned every named param into a reportArgumentType error. Any is correct here.
