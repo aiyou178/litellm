@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Any, Final, Literal, Optional
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 import httpx
+import httpx2
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, ValidationError
@@ -1655,7 +1656,7 @@ async def _post_dcr_registration(
             json=register_data,
         )
         response.raise_for_status()
-    except httpx.HTTPStatusError as exc:
+    except (httpx.HTTPStatusError, httpx2.HTTPStatusError) as exc:
         status_code, detail = dcr_fault_detail(classify_upstream_dcr_rejection(exc.response, log_context=server_id))
         raise HTTPException(status_code=status_code, detail=detail) from exc
     return response
