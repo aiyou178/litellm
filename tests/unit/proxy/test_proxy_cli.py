@@ -764,7 +764,7 @@ class TestProxyInitializationHelpers:
         """--prometheus_metrics_port must spawn `python -m litellm.proxy.prometheus_metrics_server` on --host
         with the shared multiproc dir, wait for its /metrics response, and only then start uvicorn. It must stay off by
         default, refuse to share --port, and abort the proxy when the child dies before serving."""
-        import httpx
+        import httpx2 as httpx
         from click.testing import CliRunner
 
         from litellm.proxy.proxy_cli import run_server

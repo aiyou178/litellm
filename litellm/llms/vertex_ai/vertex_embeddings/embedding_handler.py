@@ -1,6 +1,6 @@
 from typing import Final, Literal
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObject

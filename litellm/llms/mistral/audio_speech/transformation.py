@@ -10,7 +10,7 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.base_llm.text_to_speech.transformation import (

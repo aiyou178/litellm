@@ -10,7 +10,7 @@ from collections.abc import Coroutine
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, TypeAlias, Union
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.exceptions import UnsupportedParamsError

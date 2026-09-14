@@ -1,10 +1,9 @@
 from io import BufferedReader
 from typing import TYPE_CHECKING, Any, Final, cast
 
-from httpx._types import RequestFiles
-
 import litellm
 from litellm.images.utils import ImageEditRequestUtils
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.types.images.main import ImageEditRequestParams
 from litellm.types.llms.openai import FileTypes
 from litellm.types.router import GenericLiteLLMParams

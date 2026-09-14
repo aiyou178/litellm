@@ -2,7 +2,7 @@ import os
 
 import pytest
 from fastapi import HTTPException
-from httpx import ConnectError, Request, Response
+from httpx2 import ConnectError, Request, Response
 
 
 import litellm

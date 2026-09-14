@@ -3,7 +3,7 @@ import socket
 import threading
 import time
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

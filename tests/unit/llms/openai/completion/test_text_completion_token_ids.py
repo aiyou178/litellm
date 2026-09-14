@@ -6,7 +6,7 @@ Tests the fix for https://github.com/BerriAI/litellm/issues/17118
 
 import pytest
 import respx
-from httpx import Response
+from httpx2 import Response
 
 
 import litellm

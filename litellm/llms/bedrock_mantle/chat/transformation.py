@@ -13,7 +13,7 @@ Auth: Bearer token (litellm_params.api_key, BEDROCK_MANTLE_API_KEY, or the
 from collections.abc import AsyncIterator, Iterator
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

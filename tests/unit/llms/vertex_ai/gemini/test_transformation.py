@@ -3,7 +3,7 @@ import json
 import uuid
 from unittest.mock import Mock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

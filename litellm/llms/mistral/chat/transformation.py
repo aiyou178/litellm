@@ -9,7 +9,7 @@ Docs - https://docs.mistral.ai/api/
 from collections.abc import AsyncIterator, Coroutine, Iterator
 from typing import TYPE_CHECKING, Any, Final, Literal, cast, get_type_hints, overload
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj

@@ -3,7 +3,7 @@ import inspect
 import json
 from unittest import mock
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from fastapi.testclient import TestClient

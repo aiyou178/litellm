@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.exceptions import UnsupportedParamsError
 from litellm.llms.base_llm.image_generation.transformation import (

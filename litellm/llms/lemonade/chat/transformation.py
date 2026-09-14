@@ -5,7 +5,7 @@ Translate from OpenAI's `/v1/chat/completions` to Lemonade's `/v1/chat/completio
 from typing import TYPE_CHECKING, Any, Final
 from urllib.parse import quote
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

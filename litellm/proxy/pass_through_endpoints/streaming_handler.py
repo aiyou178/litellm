@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Final, Protocol
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_proxy_logger

@@ -3,8 +3,8 @@ from collections.abc import Callable, Collection, Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final, Optional
 
-import httpx
-from httpx import Response
+import httpx2 as httpx
+from httpx2 import Response
 from pydantic import BaseModel, ValidationError
 
 from litellm.litellm_core_utils.litellm_logging import Logging
@@ -22,7 +22,7 @@ from litellm.types.router import GenericLiteLLMParams
 from litellm.types.utils import CallTypes, EmbeddingResponse, ImageResponse
 
 if TYPE_CHECKING:
-    from httpx import URL
+    from httpx2 import URL
 
     from litellm.llms.base_llm.passthrough.transformation import LoggedRelayResponse
 

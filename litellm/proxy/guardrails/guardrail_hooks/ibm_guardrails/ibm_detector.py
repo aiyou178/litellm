@@ -10,7 +10,7 @@ from collections.abc import AsyncGenerator
 from datetime import datetime
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_proxy_logger

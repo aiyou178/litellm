@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Final, Literal, Optional, cast, overload
 if TYPE_CHECKING:
     from litellm.images.utils import ImageEditRequestUtils
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 

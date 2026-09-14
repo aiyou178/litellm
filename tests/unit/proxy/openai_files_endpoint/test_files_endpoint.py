@@ -4,7 +4,7 @@ from unittest.mock import ANY, AsyncMock, MagicMock
 
 import pytest
 import respx
-import httpx
+import httpx2 as httpx
 from fastapi.testclient import TestClient
 from pytest_mock import MockerFixture
 

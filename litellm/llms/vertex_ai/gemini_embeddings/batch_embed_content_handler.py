@@ -5,7 +5,7 @@ Google AI Studio /batchEmbedContents Embeddings Endpoint
 import json
 from typing import TYPE_CHECKING, Final, Literal
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.llms.custom_httpx.http_handler import (

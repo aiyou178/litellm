@@ -561,7 +561,7 @@ class TestOpenAIFileObjectBatchGuardrailSerialization:
 
 
 def _binary_content(payload: bytes) -> HttpxBinaryResponseContent:
-    import httpx
+    import httpx2 as httpx
 
     return HttpxBinaryResponseContent(httpx.Response(200, content=payload))
 

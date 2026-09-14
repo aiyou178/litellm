@@ -1,7 +1,7 @@
 import os
 from unittest.mock import MagicMock
 
-import httpx
+import httpx2 as httpx
 import litellm
 
 from litellm.llms.base_llm.audio_transcription.transformation import (

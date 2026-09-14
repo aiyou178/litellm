@@ -5,7 +5,7 @@ from litellm.llms.base_llm.passthrough.transformation import BasePassthroughConf
 from ..common_utils import VLLMModelInfo
 
 if TYPE_CHECKING:
-    from httpx import URL
+    from httpx2 import URL
 
 
 class VLLMPassthroughConfig(VLLMModelInfo, BasePassthroughConfig):

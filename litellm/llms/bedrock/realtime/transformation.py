@@ -9,7 +9,7 @@ import json
 import uuid as uuid_lib
 from typing import Final, cast
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel
 
 from litellm._logging import verbose_logger

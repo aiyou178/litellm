@@ -2,7 +2,7 @@ import json
 import os
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.exceptions import AuthenticationError
 from litellm.llms.anthropic.chat.transformation import AnthropicConfig

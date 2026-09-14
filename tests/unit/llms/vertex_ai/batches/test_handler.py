@@ -32,7 +32,7 @@ import asyncio
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.vertex_ai.batches.handler import (  # noqa: E402

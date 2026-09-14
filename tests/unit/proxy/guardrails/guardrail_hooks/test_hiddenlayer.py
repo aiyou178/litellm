@@ -7,7 +7,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi import HTTPException
-from httpx import Request, Response
+from httpx2 import Request, Response
 import requests
 
 

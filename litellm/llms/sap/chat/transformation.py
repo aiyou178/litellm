@@ -6,7 +6,7 @@ from collections.abc import AsyncIterator, Iterator
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, Final, Union
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.types.llms.openai import AllMessageValues

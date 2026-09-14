@@ -6,7 +6,7 @@ Uses httpx for HTTP requests with Azure authentication.
 
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

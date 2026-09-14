@@ -24,7 +24,7 @@ Reference: https://docs.oracle.com/en-us/iaas/api/#/en/generative-ai-inference/l
 
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

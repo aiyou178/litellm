@@ -9,7 +9,7 @@ These are HTTP (not WebSocket) endpoints used by the WebRTC flow:
 from abc import ABC, abstractmethod
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 
 class BaseRealtimeHTTPConfig(ABC):

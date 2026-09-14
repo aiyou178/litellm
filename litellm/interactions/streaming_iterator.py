@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.constants import STREAM_SSE_DONE_STRING

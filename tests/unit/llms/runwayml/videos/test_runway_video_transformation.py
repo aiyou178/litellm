@@ -4,7 +4,7 @@ Tests for RunwayML video generation transformation.
 
 from unittest.mock import Mock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

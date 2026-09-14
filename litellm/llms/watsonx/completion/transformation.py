@@ -3,7 +3,7 @@ from collections.abc import AsyncIterator, Iterator
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.base_model_iterator import BaseModelResponseIterator
 from litellm.types.llms.openai import AllMessageValues, ChatCompletionUsageBlock

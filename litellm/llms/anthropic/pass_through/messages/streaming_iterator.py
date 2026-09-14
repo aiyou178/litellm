@@ -4,7 +4,7 @@ from collections.abc import AsyncIterator, Mapping, Sequence
 from datetime import datetime
 from typing import Any, Final, Protocol, runtime_checkable
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 from typing_extensions import TypedDict
 

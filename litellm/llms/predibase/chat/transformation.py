@@ -2,7 +2,7 @@ import os
 import time
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 import litellm
 from litellm.constants import DEFAULT_MAX_TOKENS

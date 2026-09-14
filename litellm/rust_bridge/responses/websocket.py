@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Final, Protocol
 
-import httpx
+import httpx2 as httpx
 from websockets.exceptions import ConnectionClosedOK
 
 from litellm.rust_bridge.loader import get_native_bridge

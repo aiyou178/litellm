@@ -272,7 +272,7 @@ import functools
 import random
 from datetime import datetime, timezone
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.get_model_cost_map import (
     ModelCostMapReloaded,

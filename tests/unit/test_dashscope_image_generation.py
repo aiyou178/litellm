@@ -7,7 +7,7 @@ Run in docker: pytest tests/unit/test_dashscope_image_generation.py -v
 
 from unittest.mock import MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Final, cast
 import litellm
 
 if TYPE_CHECKING:
-    import httpx
+    import httpx2 as httpx
 from litellm.types.utils import (
     Choices,
     Delta,

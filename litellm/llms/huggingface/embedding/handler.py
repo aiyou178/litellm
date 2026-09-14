@@ -2,7 +2,7 @@ import json
 import os
 from typing import Final, Literal, Protocol, get_args
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj

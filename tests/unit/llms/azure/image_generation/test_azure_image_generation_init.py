@@ -3,7 +3,7 @@ import traceback
 from typing import Callable, Optional
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 

@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final
 
 import click
-import httpx
+import httpx2 as httpx
 from click.core import ParameterSource
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict

@@ -11,7 +11,7 @@ from importlib import import_module
 from typing import Final
 from unittest.mock import AsyncMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 

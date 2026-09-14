@@ -8,7 +8,7 @@ from collections.abc import Coroutine
 from typing import TYPE_CHECKING, Any, Final, Union
 from urllib.parse import urlparse
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.llms.base_llm.text_to_speech.transformation import (

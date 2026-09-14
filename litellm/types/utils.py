@@ -12,7 +12,7 @@ from typing import (
     get_args,
 )
 
-import httpx
+import httpx2 as httpx
 from openai._models import BaseModel as OpenAIObject
 from openai.types.audio.transcription_create_params import (
     FileTypes as FileTypes,

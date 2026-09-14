@@ -1,7 +1,7 @@
 import json
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.anthropic_beta_headers_manager import (

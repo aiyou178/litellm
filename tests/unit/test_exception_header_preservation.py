@@ -8,7 +8,7 @@ This is important for debugging and observability - headers like x-request-id,
 x-ms-region, rate limit headers, etc. should be available even when errors occur.
 """
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.exceptions import (

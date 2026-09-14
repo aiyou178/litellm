@@ -2,7 +2,7 @@
 event loop: the preset does no network I/O, and a custom exporter mints the JWT
 lazily on its first export (in the BatchSpanProcessor worker thread)."""
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.integrations.otel.plumbing import providers

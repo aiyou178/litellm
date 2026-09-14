@@ -10,7 +10,7 @@ from collections.abc import AsyncIterator, Iterator
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.base_model_iterator import BaseModelResponseIterator
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

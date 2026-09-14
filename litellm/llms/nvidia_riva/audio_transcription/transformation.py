@@ -13,7 +13,7 @@ Reference: https://docs.nvidia.com/deeplearning/riva/user-guide/docs/asr/asr-ove
 
 from typing import Any, Final
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.types.llms.openai import (

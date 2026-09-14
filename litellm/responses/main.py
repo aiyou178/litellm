@@ -8,7 +8,7 @@ from functools import partial
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, NoReturn, Optional, TypeAlias, cast
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, TypeAdapter, ValidationError
 from typing_extensions import assert_never
 

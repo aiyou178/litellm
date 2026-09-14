@@ -13,7 +13,7 @@ import re
 from typing import Any, Dict
 from unittest.mock import MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 from openapi_core import OpenAPI
 
@@ -342,7 +342,7 @@ class TestEndpointCompliance:
 
 if __name__ == "__main__":
     # Quick manual test
-    import httpx
+    import httpx2 as httpx
 
     print("Loading OpenAPI spec...")
     response = httpx.get(OPENAPI_SPEC_URL)

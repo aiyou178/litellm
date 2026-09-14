@@ -8,7 +8,7 @@ OpenAI-compatible file operations and Anthropic's Files API format.
 import io
 import time
 
-import httpx
+import httpx2 as httpx
 import pytest
 from unittest.mock import Mock, patch
 

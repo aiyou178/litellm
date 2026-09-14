@@ -13,7 +13,7 @@ import os
 from datetime import datetime
 from typing import TYPE_CHECKING, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException
 from typing_extensions import NotRequired, ReadOnly, TypedDict, Unpack
 

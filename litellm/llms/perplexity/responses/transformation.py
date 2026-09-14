@@ -11,7 +11,7 @@ Ref: https://docs.perplexity.ai/api-reference/responses-post
 
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

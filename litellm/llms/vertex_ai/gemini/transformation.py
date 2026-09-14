@@ -11,7 +11,7 @@ from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal, cast
 from urllib.parse import quote
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel
 
 import litellm

@@ -7,7 +7,7 @@ from datetime import time as dt_time
 from typing import Any, Dict, Final, List, Optional
 from unittest.mock import AsyncMock, MagicMock
 
-import httpx
+import httpx2 as httpx
 import prisma
 import pytest
 

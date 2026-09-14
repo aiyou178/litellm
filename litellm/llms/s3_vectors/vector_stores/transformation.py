@@ -1,7 +1,7 @@
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.vector_store.transformation import (
     BaseQueryEmbeddingVectorStoreConfig,

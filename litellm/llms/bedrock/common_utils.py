@@ -18,8 +18,8 @@ if TYPE_CHECKING:
 
     from litellm.types.llms.bedrock import BedrockCreateBatchRequest
 
-import httpx
-from pydantic import TypeAdapter, ValidationError
+import httpx2 as httpx
+from pydantic import ConfigDict, TypeAdapter, ValidationError
 
 import litellm
 from litellm import verbose_logger

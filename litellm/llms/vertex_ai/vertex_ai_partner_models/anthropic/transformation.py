@@ -2,7 +2,7 @@
 ## Handler file for calling claude-3 on vertex ai
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.litellm_core_utils.prompt_templates.image_handling import RemoteMedia, inline_remote_image_urls

@@ -2,7 +2,7 @@ import json
 import time
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.prompt_templates.common_utils import (
     convert_content_list_to_str,

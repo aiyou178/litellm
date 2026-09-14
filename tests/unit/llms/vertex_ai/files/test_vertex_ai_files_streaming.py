@@ -30,7 +30,7 @@ import tempfile
 import time
 import tracemalloc
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

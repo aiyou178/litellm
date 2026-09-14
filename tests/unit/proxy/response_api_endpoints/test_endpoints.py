@@ -11,7 +11,7 @@ import httpx
 import pytest
 import respx
 from fastapi.testclient import TestClient
-from httpx import Response
+from httpx2 import Response
 
 import litellm
 from litellm.proxy.proxy_server import app

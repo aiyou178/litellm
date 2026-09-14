@@ -1,4 +1,4 @@
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import StandardLoggingPayloadSetup
 from litellm.llms.gemini.image_generation.transformation import GoogleImageGenConfig

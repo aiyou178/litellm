@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.openai.common_utils import OpenAIError

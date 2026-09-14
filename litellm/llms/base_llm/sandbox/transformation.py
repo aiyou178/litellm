@@ -8,7 +8,7 @@ run code -> delete container; `code_interpreter_tool` combines all three.
 
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import Field, PrivateAttr
 
 from litellm.types.llms.base import LiteLLMPydanticObjectBase

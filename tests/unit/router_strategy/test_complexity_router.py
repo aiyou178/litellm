@@ -17,7 +17,7 @@ from types import MappingProxyType
 from typing import Dict, Final, List, Literal
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from pydantic import ValidationError

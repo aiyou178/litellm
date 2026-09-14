@@ -6,7 +6,7 @@ This would be used for all the contextualized embeddings models in Voyage.
 from collections.abc import Mapping
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

@@ -13,7 +13,7 @@ from types import MappingProxyType, ModuleType, SimpleNamespace
 from typing import Final
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from fastapi import APIRouter, FastAPI, HTTPException, Request, Response, UploadFile

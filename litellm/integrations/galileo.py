@@ -8,7 +8,7 @@ from collections.abc import Mapping, Sequence
 from datetime import datetime, timezone, tzinfo
 from typing import Any, Final, Protocol, cast
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, Field
 from typing_extensions import ReadOnly, TypedDict
 

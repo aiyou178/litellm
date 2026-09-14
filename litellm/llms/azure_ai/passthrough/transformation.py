@@ -4,8 +4,8 @@ from collections.abc import Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
 
-import httpx
-from pydantic import TypeAdapter, ValidationError
+import httpx2 as httpx
+from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 
 from litellm._logging import verbose_logger
 from litellm.llms.azure_ai.common_utils import (
@@ -28,7 +28,7 @@ from litellm.types.rerank import RerankResponse
 from litellm.types.utils import CallTypes, ImageResponse, StandardPassThroughResponseObject
 
 if TYPE_CHECKING:
-    from httpx import URL, Response
+    from httpx2 import URL, Response
 
     from litellm.litellm_core_utils.litellm_logging import Logging
     from litellm.llms.base_llm.passthrough.transformation import LoggedRelayResponse

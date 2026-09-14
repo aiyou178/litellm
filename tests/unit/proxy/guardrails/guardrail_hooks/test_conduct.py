@@ -7,7 +7,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Final, Literal
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from fastapi import HTTPException

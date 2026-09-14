@@ -39,7 +39,7 @@ Usage:
 from abc import abstractmethod
 from typing import Any
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.secret_managers.base_secret_manager import BaseSecretManager

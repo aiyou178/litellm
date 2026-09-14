@@ -9,7 +9,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, Optional, cast, overload
 from urllib.parse import urlparse
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.constants import OPENAI_SYSTEM_MESSAGES_FIRST_PROVIDERS

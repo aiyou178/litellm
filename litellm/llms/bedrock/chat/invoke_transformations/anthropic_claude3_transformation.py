@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.anthropic_beta_headers_manager import filter_and_transform_beta_headers
 from litellm.constants import RESPONSE_FORMAT_TOOL_NAME

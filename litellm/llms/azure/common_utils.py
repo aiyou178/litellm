@@ -7,7 +7,7 @@ from functools import lru_cache
 from types import MappingProxyType
 from typing import Any, Final, Literal, NamedTuple, cast
 
-import httpx
+import httpx2 as httpx
 from openai import AsyncAzureOpenAI, AsyncOpenAI, AzureOpenAI, OpenAI
 from typing_extensions import ReadOnly, TypedDict
 

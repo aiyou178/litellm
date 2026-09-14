@@ -9,7 +9,7 @@ from copy import deepcopy
 from functools import partial
 from typing import TYPE_CHECKING, Any, Final, Literal, Optional, Union, cast, get_args
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm import verbose_logger

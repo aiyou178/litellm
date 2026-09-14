@@ -9,7 +9,7 @@ import json
 import time
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

@@ -21,7 +21,7 @@ from functools import partial
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Annotated, Final, Literal, Protocol, cast
 
-import httpx
+import httpx2 as httpx
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, WebSocket
 from fastapi.responses import StreamingResponse
 from starlette.websockets import WebSocketState

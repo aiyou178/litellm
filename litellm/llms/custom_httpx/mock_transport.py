@@ -11,7 +11,7 @@ import time
 import uuid
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 # ---------------------------------------------------------------------------
 # Pre-built response templates

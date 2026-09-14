@@ -8,7 +8,7 @@ from collections.abc import Coroutine
 from functools import partial
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

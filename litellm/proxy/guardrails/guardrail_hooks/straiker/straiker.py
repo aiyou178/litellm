@@ -10,7 +10,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal, NoReturn
 from urllib.parse import urlsplit
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from litellm._logging import verbose_proxy_logger

@@ -6,7 +6,7 @@ import uuid
 from collections.abc import Iterator, Mapping
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.azure_ai.common_utils import AZURE_ENTRA_LITELLM_PARAM_KEYS, get_azure_ai_agent_entra_token
 from litellm.llms.base_llm.base_model_iterator import BaseModelResponseIterator

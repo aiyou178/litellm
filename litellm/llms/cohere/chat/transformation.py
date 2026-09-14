@@ -3,7 +3,7 @@ import time
 from collections.abc import AsyncIterator, Iterator
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.litellm_core_utils.prompt_templates.factory import cohere_messages_pt_v2

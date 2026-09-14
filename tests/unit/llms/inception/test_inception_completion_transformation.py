@@ -6,7 +6,7 @@ import json
 import os
 from unittest import mock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm

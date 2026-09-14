@@ -5,7 +5,7 @@ OpenAI Evals API configuration and transformations
 from collections.abc import Mapping
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.litellm_core_utils.url_utils import encode_url_path_segment

@@ -13,7 +13,7 @@ import json
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final, Optional, Union, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm._uuid import uuid

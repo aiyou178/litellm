@@ -4,7 +4,7 @@ from collections.abc import Iterator
 from functools import partial
 from typing import TYPE_CHECKING, Any, ClassVar, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict
 
 import litellm

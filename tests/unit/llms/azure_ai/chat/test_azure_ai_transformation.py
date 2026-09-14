@@ -196,7 +196,7 @@ def test_azure_model_router_response_shows_actual_model():
 
     Regression test for: Azure Model Router should show actual model in response
     """
-    from httpx import Response
+    from httpx2 import Response
 
     from litellm.llms.base_llm.chat.transformation import LiteLLMLoggingObj
     from litellm.types.utils import ModelResponse
@@ -268,7 +268,7 @@ def test_azure_model_router_stamps_selected_model_on_hidden_params():
     re-derive by looking for "model-router" in the model string. Deployments whose alias
     does not contain that text are invisible to the string check.
     """
-    from httpx import Response
+    from httpx2 import Response
 
     from litellm.llms.azure_ai.common_utils import (
         AZURE_MODEL_ROUTER_SELECTED_MODEL_KEY,
@@ -336,7 +336,7 @@ def test_drop_tool_level_extra_fields_strips_copilot_mcp_server_name():
     Regression test: Azure AI returns 400 when tools contain copilot_mcp_server_name.
     LiteLLM should strip the field and retry automatically.
     """
-    import httpx
+    import httpx2 as httpx
 
     config = AzureAIStudioConfig()
 

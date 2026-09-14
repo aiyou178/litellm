@@ -12,7 +12,7 @@ from unittest import mock
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 from urllib.parse import parse_qs
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from fastapi import HTTPException, Request, Response

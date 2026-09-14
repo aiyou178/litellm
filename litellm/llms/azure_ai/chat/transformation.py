@@ -3,8 +3,8 @@ import enum
 import re
 from typing import TYPE_CHECKING, Final, cast
 
-import httpx
-from httpx import Response
+import httpx2 as httpx
+from httpx2 import Response
 
 import litellm
 from litellm._logging import verbose_logger

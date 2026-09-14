@@ -4,7 +4,7 @@ from types import MappingProxyType
 from typing import Any, Final
 from urllib.parse import urlparse
 
-import httpx
+import httpx2 as httpx
 
 from litellm.constants import AZURE_SPEECH_CUSTOM_LLM_PROVIDER
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
