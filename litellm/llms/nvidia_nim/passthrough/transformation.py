@@ -4,7 +4,7 @@ import re
 from collections.abc import Collection, Iterable, Mapping, Sequence
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.passthrough.transformation import (
     BasePassthroughConfig,
