@@ -4,7 +4,7 @@ import asyncio
 import os
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm._uuid import uuid

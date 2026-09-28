@@ -13,7 +13,7 @@ Docs - https://docs.cohere.com/v2/reference/embed
 from collections.abc import Sized
 from typing import Final, Protocol, cast
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm import COHERE_DEFAULT_EMBEDDING_INPUT_TYPE

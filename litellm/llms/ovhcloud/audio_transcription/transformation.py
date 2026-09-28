@@ -7,7 +7,7 @@ More information on our website: https://endpoints.ai.cloud.ovh.net
 
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.audio_utils.utils import process_audio_file
 from litellm.llms.base_llm.audio_transcription.transformation import (

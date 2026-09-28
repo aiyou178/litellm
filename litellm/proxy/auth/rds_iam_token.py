@@ -1,7 +1,7 @@
 import os
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 
 def init_rds_client(

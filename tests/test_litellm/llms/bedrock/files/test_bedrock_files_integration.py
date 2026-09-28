@@ -24,7 +24,7 @@ class TestBedrockFilesIntegration:
         )
 
         # Create a mock HttpxBinaryResponseContent response
-        import httpx
+        import httpx2 as httpx
 
         mock_response = httpx.Response(
             status_code=200,
@@ -78,7 +78,7 @@ class TestBedrockFilesIntegration:
         )
 
         # Create a mock HttpxBinaryResponseContent response
-        import httpx
+        import httpx2 as httpx
 
         mock_response = httpx.Response(
             status_code=200,

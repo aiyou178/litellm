@@ -24,7 +24,7 @@ from dataclasses import dataclass, replace
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException
 
 from litellm import DualCache

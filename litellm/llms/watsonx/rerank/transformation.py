@@ -8,7 +8,7 @@ import uuid
 from collections.abc import Mapping
 from typing import Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import LiteLLMLoggingObj
 from litellm.llms.base_llm.rerank.transformation import BaseRerankConfig
@@ -191,7 +191,7 @@ class IBMWatsonXRerankConfig(IBMWatsonXMixin, BaseRerankConfig):
 
             transformed_results.append(transformed_result)
 
-        response_id: Final = raw_response_json.get("id") or raw_response_json.get("model_id") or str(uuid.uuid4())
+        response_id: Final = raw_response_json.get("id") or str(uuid.uuid4())
 
         # Extract usage information
         _tokens: Final = RerankTokens(

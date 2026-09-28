@@ -5,7 +5,7 @@ from collections.abc import Callable, Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, NoReturn, cast
 
-import httpx
+import httpx2 as httpx
 from pydantic import ValidationError
 from typing_extensions import ReadOnly, TypedDict
 
@@ -94,6 +94,7 @@ from litellm.utils import (
 from ..common_utils import (
     AnthropicError,
     AnthropicModelInfo,
+    eager_input_streaming_flag,
     process_anthropic_headers,
     strip_advisor_blocks_from_messages,
 )
@@ -732,10 +733,20 @@ class AnthropicConfig(AnthropicModelInfo, BaseConfig):
 
             input_anthropic_schema: Final = sanitize_input_schema_for_anthropic(_input_schema)
 
-            _tool: Final = AnthropicMessagesTool(
-                name=tool["function"]["name"],
-                input_schema=input_anthropic_schema,
-                type="custom",
+            _eager_input_streaming: Final = eager_input_streaming_flag(tool)
+            _tool: Final = (
+                AnthropicMessagesTool(
+                    name=tool["function"]["name"],
+                    input_schema=input_anthropic_schema,
+                    type="custom",
+                )
+                if _eager_input_streaming is None
+                else AnthropicMessagesTool(
+                    name=tool["function"]["name"],
+                    input_schema=input_anthropic_schema,
+                    type="custom",
+                    eager_input_streaming=_eager_input_streaming,
+                )
             )
 
             _description: Final = tool["function"].get("description")

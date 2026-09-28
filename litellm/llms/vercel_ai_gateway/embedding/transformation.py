@@ -9,7 +9,7 @@ Docs: https://vercel.com/docs/ai-gateway/openai-compat/embeddings
 
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.embedding.transformation import BaseEmbeddingConfig
 from litellm.secret_managers.main import get_secret_str

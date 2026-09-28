@@ -4,7 +4,7 @@ from copy import deepcopy
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from httpx import Request, Response
+from httpx2 import Request, Response
 
 from litellm import DualCache
 from litellm.proxy._types import ProxyException, UserAPIKeyAuth

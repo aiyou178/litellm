@@ -11,7 +11,7 @@ import asyncio
 import gc
 import weakref
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.caching.evicted_client_closer import EvictedClientCloser

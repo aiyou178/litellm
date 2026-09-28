@@ -8,7 +8,7 @@ from types import MappingProxyType
 import pytest
 from unittest.mock import AsyncMock, patch
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.vertex_ai.files.handler import VertexAIFilesHandler
 from litellm.types.llms.openai import FileContentRequest, HttpxBinaryResponseContent

@@ -9,7 +9,7 @@ Example: bedrock/openai/arn:aws:bedrock:us-east-1:123456789012:imported-model/ab
 
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.bedrock.base_aws_llm import BaseAWSLLM
 from litellm.llms.bedrock.common_utils import BedrockError

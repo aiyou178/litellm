@@ -11,11 +11,11 @@ from functools import partial
 from types import TracebackType
 from typing import Any, Final, cast
 
-import httpx
-from httpx._types import CookieTypes, QueryParamTypes, RequestContent, RequestFiles
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.litellm_core_utils.get_llm_provider_logic import get_llm_provider
+from litellm.litellm_core_utils.httpx2_compat import CookieTypes, QueryParamTypes, RequestContent, RequestFiles
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.base_llm.passthrough.transformation import BasePassthroughConfig, PassthroughStreamCollector
 from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler

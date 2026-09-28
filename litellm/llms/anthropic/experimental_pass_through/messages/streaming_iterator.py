@@ -4,7 +4,7 @@ from collections.abc import AsyncIterator, Mapping, Sequence
 from datetime import datetime
 from typing import Any, Final, Protocol, runtime_checkable
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 from typing_extensions import TypedDict
 
@@ -678,7 +678,7 @@ class BaseAnthropicMessagesStreamingIterator:
         """
         from litellm.proxy.pass_through_endpoints.streaming_handler import PassThroughStreamingHandler
 
-        PassThroughStreamingHandler.schedule_stream_failure_logging(
+        await PassThroughStreamingHandler.schedule_stream_failure_logging(
             litellm_logging_obj=self.litellm_logging_obj,
             endpoint_type=EndpointType.ANTHROPIC,
             request_body=self.request_body,

@@ -13,7 +13,7 @@ from collections.abc import AsyncIterator, Iterator, Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal, NamedTuple, Optional
 from urllib.parse import urlsplit
 
-import httpx
+import httpx2 as httpx
 import openai
 from openai import AsyncAzureOpenAI, AsyncOpenAI, AzureOpenAI, OpenAI
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
@@ -32,6 +32,7 @@ from litellm.llms.custom_httpx.http_handler import (
     _DEFAULT_TTL_FOR_HTTPX_CLIENTS,
     AsyncHTTPHandler,
     get_ssl_configuration,
+    http2_enabled,
 )
 
 
@@ -325,6 +326,7 @@ class BaseOpenAILLM:
             transport=transport,
             mounts=AsyncHTTPHandler._create_httpx_proxy_mounts(transport, verify=ssl_config, cert=None),
             follow_redirects=True,
+            http2=http2_enabled(),
         )
 
     @staticmethod
@@ -343,6 +345,7 @@ class BaseOpenAILLM:
         return httpx.Client(
             verify=ssl_config,
             follow_redirects=True,
+            http2=http2_enabled(),
         )
 
 

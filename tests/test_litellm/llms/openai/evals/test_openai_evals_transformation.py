@@ -2,7 +2,7 @@
 Unit tests for OpenAI Evals API transformation
 """
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.openai.evals.transformation import OpenAIEvalsConfig

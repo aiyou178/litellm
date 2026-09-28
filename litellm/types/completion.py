@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict
 from typing_extensions import Required, TypedDict
 
 if TYPE_CHECKING:
-    import httpx
+    import httpx2 as httpx
     from aiohttp import ClientSession
 
     from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj

@@ -5,7 +5,7 @@ from typing import Final, TypedDict, cast
 from unittest.mock import MagicMock, patch
 from urllib.parse import quote
 
-import httpx
+import httpx2 as httpx
 import pytest
 from openai.types.responses import (
     EasyInputMessage,

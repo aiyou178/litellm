@@ -4,7 +4,7 @@ from collections.abc import Callable, Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 
 from litellm._logging import verbose_logger
@@ -18,6 +18,8 @@ from litellm.llms.base_llm.passthrough.transformation import (
     BasePassthroughConfig,
     RelayShape,
     logged_relay_shape,
+    model_group_from,
+    relayed_body,
     strip_leading_model_segment,
 )
 from litellm.types.llms.openai import AllMessageValues
@@ -25,7 +27,7 @@ from litellm.types.rerank import RerankResponse
 from litellm.types.utils import CallTypes, ImageResponse, StandardPassThroughResponseObject
 
 if TYPE_CHECKING:
-    from httpx import URL, Response
+    from httpx2 import URL, Response
 
     from litellm.litellm_core_utils.litellm_logging import Logging
     from litellm.llms.base_llm.ocr.transformation import BaseOCRConfig, OCRResponse
@@ -33,19 +35,6 @@ if TYPE_CHECKING:
 
 
 EMPTY_QUERY: Final[Mapping[str, object]] = MappingProxyType({})
-
-
-class PassthroughMetadata(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-
-    model_group: str = ""
-
-
-def model_group_from(litellm_params: Mapping[str, object]) -> str:
-    try:
-        return PassthroughMetadata.model_validate(litellm_params.get("litellm_metadata")).model_group
-    except ValidationError:
-        return ""
 
 
 def api_version_from(litellm_params: Mapping[str, object]) -> str | None:
@@ -94,14 +83,6 @@ def relay_query_params(
     if api_version is None:
         return request_query_params
     return MappingProxyType({**(request_query_params or EMPTY_QUERY), "api-version": api_version})
-
-
-def relayed_body(httpx_response: Response) -> str | dict:
-    try:
-        body: Final[object] = httpx_response.json()
-    except ValueError:
-        return httpx_response.text
-    return body if isinstance(body, dict) else httpx_response.text
 
 
 FOUNDRY_RELAY_SHAPES: Final = (

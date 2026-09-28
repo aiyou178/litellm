@@ -11,7 +11,7 @@ worker thread, off any event loop — and caches it for the process lifetime.
 
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 

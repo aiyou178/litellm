@@ -4,7 +4,7 @@ Translate from OpenAI's `/v1/chat/completions` to Amazon Nova's `/v1/chat/comple
 
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj

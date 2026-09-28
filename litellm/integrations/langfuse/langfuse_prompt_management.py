@@ -99,7 +99,7 @@ def langfuse_client_init(
         parameters["sdk_integration"] = "litellm"
 
     if Version(langfuse.version.__version__) >= Version("2.7.3"):
-        import httpx
+        import httpx2 as httpx
 
         import litellm
 

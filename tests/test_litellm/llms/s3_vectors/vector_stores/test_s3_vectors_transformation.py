@@ -1,7 +1,7 @@
 from collections.abc import Mapping
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.base_llm.vector_store.transformation import (
@@ -232,6 +232,22 @@ class TestS3VectorsVectorStoreConfig:
         ):
             config.transform_search_vector_store_request(
                 **_search_kwargs(vector_store_id="invalid-format", embedding_executor=executor)
+            )
+
+        assert executor.calls == []
+
+    @pytest.mark.parametrize("vector_store_id", ["test-bucket:", ":test-index"])
+    def test_transform_search_request_rejects_an_empty_bucket_or_index_in_the_id(self, vector_store_id):
+        config = S3VectorsVectorStoreConfig()
+        executor = _RecordingExecutor()
+
+        with pytest.raises(ValueError, match="vector_store_id must be in format 'bucket_name:index_name'"):
+            config.transform_search_vector_store_request(
+                **_search_kwargs(
+                    vector_store_id=vector_store_id,
+                    litellm_params={"vector_bucket_name": "test-bucket"},
+                    embedding_executor=executor,
+                )
             )
 
         assert executor.calls == []

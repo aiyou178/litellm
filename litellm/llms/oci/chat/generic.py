@@ -10,7 +10,7 @@ import datetime
 import hashlib
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import ValidationError
 
 from litellm.llms.oci.common_utils import (

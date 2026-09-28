@@ -9,7 +9,7 @@ import re
 from datetime import datetime, timezone
 from typing import Final, Literal, TypedDict
 
-import httpx
+import httpx2 as httpx
 from dateutil import parser
 
 _ISO_YMD: Final = re.compile(r"^\s*\d{4}[-/]\d{1,2}[-/]\d{1,2}\s*$")

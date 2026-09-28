@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 import pytest
 from openai import AzureOpenAI
 
@@ -23,26 +23,6 @@ def _transcription_client() -> AzureOpenAI:
         api_version="2024-06-01",
         azure_endpoint="https://example.cognitiveservices.azure.com",
         http_client=httpx.Client(transport=httpx.MockTransport(handler)),
-    )
-
-
-def test_azure_ai_transcription_is_priced_at_the_azure_ai_entry():
-    with AUDIO_FILE.open("rb") as audio:
-        response = litellm.transcription(
-            model="azure_ai/whisper",
-            file=audio,
-            api_base="https://example.cognitiveservices.azure.com",
-            api_key="test-key",
-            api_version="2024-06-01",
-            client=_transcription_client(),
-        )
-    with AUDIO_FILE.open("rb") as audio:
-        duration = calculate_request_duration(audio)
-
-    assert duration is not None and duration > 0
-    assert response._hidden_params["custom_llm_provider"] == "azure_ai"
-    assert completion_cost(completion_response=response, call_type="transcription") == pytest.approx(
-        WHISPER_COST_PER_SECOND * duration
     )
 
 

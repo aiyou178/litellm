@@ -8,7 +8,7 @@ or beta access to the Skills API.
 
 from unittest.mock import MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.constants import ANTHROPIC_SKILLS_API_BETA_VERSION
@@ -25,6 +25,12 @@ from litellm.types.router import GenericLiteLLMParams
 
 FAKE_API_KEY = "sk-ant-test-key-1234"
 FAKE_API_BASE = "https://api.anthropic.com"
+
+
+@pytest.fixture(autouse=True)
+def isolate_anthropic_credentials(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.delenv("ANTHROPIC_AUTH_TOKEN", raising=False)
 
 
 def _make_mock_response(

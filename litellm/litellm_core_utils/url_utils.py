@@ -25,7 +25,7 @@ from ipaddress import ip_address, ip_network
 from typing import Any, Final, Protocol
 from urllib.parse import quote, urlparse, urlunparse
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import ReadOnly, TypedDict
 
 import litellm

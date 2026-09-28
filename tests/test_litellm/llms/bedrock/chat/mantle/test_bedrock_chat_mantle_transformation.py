@@ -1,7 +1,7 @@
 import json
 import uuid
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler

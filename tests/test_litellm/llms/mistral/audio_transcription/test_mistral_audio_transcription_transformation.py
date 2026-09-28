@@ -2,7 +2,7 @@ import os
 from typing import Dict
 from unittest.mock import MagicMock
 
-import httpx
+import httpx2 as httpx
 import litellm
 import pytest
 

@@ -6,7 +6,7 @@ import base64
 import struct
 from unittest.mock import MagicMock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 from litellm.llms.perplexity.embedding.transformation import (

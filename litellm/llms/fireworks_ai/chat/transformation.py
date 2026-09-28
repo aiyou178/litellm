@@ -2,7 +2,7 @@ import json
 from collections.abc import AsyncIterator, Iterator, Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal, cast
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger
@@ -47,6 +47,17 @@ from ..common_utils import (
 
 if TYPE_CHECKING:
     import tiktoken
+
+
+def _map_reasoning_effort(value: object) -> object:
+    effort: Final[object] = cast(Mapping[str, object], value).get("effort") if isinstance(value, Mapping) else value
+    if effort is True:
+        return "medium"
+    if effort is False:
+        return "none"
+    if effort == "auto":
+        return None
+    return effort
 
 
 def _extract_fireworks_hidden_params(payload: dict) -> dict:
@@ -327,12 +338,9 @@ class FireworksAIConfig(FireworksAIMixin, OpenAIGPTConfig):
             elif param == "max_completion_tokens":
                 optional_params["max_tokens"] = value
             elif param == "reasoning_effort":
-                if value is True:
-                    optional_params["reasoning_effort"] = "medium"
-                elif value is False:
-                    optional_params["reasoning_effort"] = "none"
-                elif value != "auto":
-                    optional_params["reasoning_effort"] = value
+                effort = _map_reasoning_effort(value)
+                if effort is not None:
+                    optional_params["reasoning_effort"] = effort
             elif param in supported_openai_params:
                 if value is not None:
                     optional_params[param] = value

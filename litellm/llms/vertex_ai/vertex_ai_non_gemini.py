@@ -4,7 +4,7 @@ import time
 from collections.abc import Callable
 from typing import Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.litellm_core_utils.core_helpers import map_finish_reason

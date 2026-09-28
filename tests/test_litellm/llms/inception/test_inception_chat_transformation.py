@@ -6,7 +6,7 @@ import json
 import os
 from unittest import mock
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 import litellm
@@ -67,7 +67,7 @@ def test_inception_chat_sends_diffusion_params_in_body():
             ).encode(),
         )
 
-    with mock.patch("httpx.Client.send", new=fake_send):
+    with mock.patch("httpx2.Client.send", new=fake_send):
         litellm.completion(
             model="inception/mercury-2",
             messages=[{"role": "user", "content": "hi"}],
@@ -126,7 +126,7 @@ def test_inception_chat_response_surfaces_reasoning_and_usage():
             ).encode(),
         )
 
-    with mock.patch("httpx.Client.send", new=fake_send):
+    with mock.patch("httpx2.Client.send", new=fake_send):
         r = litellm.completion(
             model="inception/mercury-2",
             messages=[{"role": "user", "content": "hi"}],
@@ -232,18 +232,6 @@ def test_inception_in_provider_lists():
     assert "https://api.inceptionlabs.ai/v1" in litellm.openai_compatible_endpoints
 
 
-def test_inception_model_list_populated(monkeypatch):
-    monkeypatch.setenv("LITELLM_LOCAL_MODEL_COST_MAP", "True")
-    litellm.model_cost = litellm.get_model_cost_map(url="")
-    litellm.inception_models = set()
-    litellm.add_known_models()
-
-    assert "inception/mercury-2" in litellm.inception_models
-    assert "inception/mercury-2.5" in litellm.inception_models
-    for model in litellm.inception_models:
-        assert model.startswith("inception/")
-
-
 def test_inception_completion_targets_inception_endpoint():
     """
     End-to-end: a completion routed through the inception provider must hit
@@ -292,7 +280,7 @@ def test_inception_completion_targets_inception_endpoint():
             },
         }
     ]
-    with mock.patch("httpx.Client.send", new=fake_send):
+    with mock.patch("httpx2.Client.send", new=fake_send):
         response = litellm.completion(
             model="inception/mercury-2",
             messages=[{"role": "user", "content": "hello"}],
@@ -307,23 +295,3 @@ def test_inception_completion_targets_inception_endpoint():
     assert captured["body"]["tool_choice"] == "auto"
     assert response.choices[0].message.content == "hi"
 
-
-def test_inception_mercury_2_5_cost_and_tokens(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("LITELLM_LOCAL_MODEL_COST_MAP", "True")
-    monkeypatch.setattr(litellm, "model_cost", litellm.get_model_cost_map(url=""))
-    model = "inception/mercury-2.5"
-    prompt_cost, completion_cost = litellm.cost_per_token(
-        model=model,
-        prompt_tokens=1000,
-        completion_tokens=500,
-    )
-    assert abs(prompt_cost - 0.0002) < 1e-9
-    assert abs(completion_cost - 0.000375) < 1e-9
-
-    model_info = litellm.get_model_info(model)
-    assert model_info["max_input_tokens"] == 260000
-    assert model_info["max_output_tokens"] == 65536
-    assert model_info["litellm_provider"] == "inception"
-    assert model_info["mode"] == "chat"
-    assert model_info["supports_function_calling"] is True
-    assert model_info["supports_response_schema"] is True

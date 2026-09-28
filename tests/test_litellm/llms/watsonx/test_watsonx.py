@@ -360,7 +360,7 @@ async def test_watsonx_gpt_oss_uses_async_http_handler():
 async def test_watsonx_text_gpt_oss_async_completion_fetches_hf_template_off_the_event_loop(
     monkeypatch, tokenizer_config_cached
 ):
-    import httpx
+    import httpx2 as httpx
 
     from litellm._uuid import uuid
     from litellm.litellm_core_utils.prompt_templates import huggingface_template_handler

@@ -4,7 +4,7 @@ import sys
 from typing import Final
 from unittest.mock import MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 from fastapi import HTTPException, Request
 from prisma import errors as prisma_errors
@@ -156,7 +156,7 @@ def test_is_prisma_data_error_only_true_for_dataerror():
     ``DataError`` (the DB refused the data, e.g. a NUL byte) may be bisected
     into a per-row drop. A connectivity failure or any non-prisma exception
     must not be treated as a data rejection, so the whole batch surfaces."""
-    import httpx
+    import httpx2 as httpx
 
     data_error = DataError(data={"user_facing_error": {"message": "invalid byte sequence for encoding UTF8: 0x00"}})
     assert PrismaDBExceptionHandler.is_prisma_data_error(data_error) is True
@@ -663,6 +663,28 @@ def test_is_deadlock_error_matches_postgres_deadlock(error):
 def test_is_deadlock_error_excludes_non_deadlocks(error):
     """Non-deadlock prisma errors, connectivity failures, and non-prisma exceptions are not treated as deadlocks."""
     assert PrismaDBExceptionHandler.is_deadlock_error(error) is False
+
+
+@pytest.mark.parametrize(
+    ("error", "sqlstate"),
+    [
+        (
+            RawQueryError(
+                data={"user_facing_error": {"error_code": "P2010", "meta": {"code": "22021", "message": "m"}}}
+            ),
+            "22021",
+        ),
+        (RawQueryError(data={"user_facing_error": {"error_code": "P2010", "meta": {"message": "m"}}}), None),
+        (RawQueryError(data={"user_facing_error": {"error_code": "P2010", "meta": {"code": 42, "message": "m"}}}), None),
+        (prisma_errors.DataError(data={"user_facing_error": {"meta": None}}), None),
+        (PrismaError("db error"), None),
+        (httpx.ReadTimeout("no reply"), None),
+    ],
+)
+def test_postgres_sqlstate_reads_the_code_prisma_attached_to_the_failed_statement(error: Exception, sqlstate: str | None):
+    """Only a prisma data error carrying Postgres's own error code yields a SQLSTATE; a
+    codeless or malformed payload, an engine-level error, and a transport error yield None."""
+    assert PrismaDBExceptionHandler.postgres_sqlstate(error) == sqlstate
 
 
 READ_ONLY_CONNECTOR_ERROR: Final = (

@@ -2,7 +2,7 @@ import asyncio
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException, status
 
 import litellm
@@ -159,6 +159,7 @@ class ProxyModelNotFoundError(HTTPException):
 REQUIRED_BODY_PARAMS_BY_ROUTE: Final[Mapping[str, tuple[str, ...]]] = {
     "acompletion": ("messages",),
     "aembedding": ("input",),
+    "aresponses": ("input",),
     "acreate_batch": ("input_file_id", "endpoint", "completion_window"),
 }
 

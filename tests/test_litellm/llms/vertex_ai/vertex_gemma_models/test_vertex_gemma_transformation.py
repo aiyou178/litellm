@@ -686,7 +686,7 @@ class TestVertexGemmaCompletion:
         the caller's transport was silently dropped, sending the request to the
         real Vertex endpoint.
         """
-        import httpx
+        import httpx2 as httpx
 
         from litellm.llms.custom_httpx.http_handler import HTTPHandler
         from litellm.llms.vertex_ai.vertex_gemma_models.transformation import (
@@ -757,7 +757,7 @@ class TestVertexGemmaCompletion:
 
     def test_sync_completion_ignores_async_client_for_backwards_compatibility(self):
         import asyncio
-        import httpx
+        import httpx2 as httpx
 
         from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
         from litellm.llms.vertex_ai.vertex_gemma_models.transformation import (
@@ -827,7 +827,7 @@ class TestVertexGemmaCompletion:
     @pytest.mark.asyncio
     async def test_async_completion_honors_raw_httpx_client_transport(self):
         """Async counterpart: a raw httpx.AsyncClient transport must be honored."""
-        import httpx
+        import httpx2 as httpx
 
         from litellm.llms.vertex_ai.vertex_gemma_models.transformation import (
             VertexGemmaConfig,
@@ -888,7 +888,7 @@ class TestVertexGemmaCompletion:
 
     @pytest.mark.asyncio
     async def test_async_completion_ignores_sync_client_for_backwards_compatibility(self):
-        import httpx
+        import httpx2 as httpx
 
         from litellm.llms.custom_httpx.http_handler import HTTPHandler
         from litellm.llms.vertex_ai.vertex_gemma_models.transformation import (

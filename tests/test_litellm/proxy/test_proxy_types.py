@@ -7,7 +7,7 @@ from unittest import mock
 from unittest.mock import AsyncMock, MagicMock, mock_open, patch
 
 import click
-import httpx
+import httpx2 as httpx
 import pytest
 import yaml
 from fastapi import FastAPI
@@ -276,3 +276,13 @@ def test_a_server_only_marker_is_not_taken_from_the_caller(field, forged, defaul
     auth = UserAPIKeyAuth(api_key="sk-1234", **{field: forged})
 
     assert getattr(auth, field) == default
+
+
+@pytest.mark.parametrize("weight", [True, "1", -1, 0, float("inf")])
+def test_key_and_team_weights_reject_invalid_numeric_values(weight: bool | str | int | float) -> None:
+    from pydantic import ValidationError
+    from litellm.proxy._types import GenerateKeyRequest, NewTeamRequest
+
+    for request_type in (GenerateKeyRequest, NewTeamRequest):
+        with pytest.raises(ValidationError):
+            request_type(router_settings={"weights": {"group": {"id": weight}}})

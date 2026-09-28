@@ -8,7 +8,7 @@ import types
 from datetime import datetime, timezone
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel
 
 import litellm
@@ -39,6 +39,8 @@ def is_serializable(value):
 
 
 class LangsmithLogger(CustomBatchLogger):
+    preserve_events_added_during_flush = True
+
     def __init__(
         self,
         langsmith_api_key: str | None = None,

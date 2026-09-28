@@ -7,7 +7,7 @@ This module handles the HTTP communication for the Google Interactions API.
 from collections.abc import AsyncIterator, Coroutine, Iterator, Mapping
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.constants import request_timeout
