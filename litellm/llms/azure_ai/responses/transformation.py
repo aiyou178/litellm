@@ -1,6 +1,6 @@
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.azure.responses.transformation import AzureOpenAIResponsesAPIConfig
 from litellm.llms.azure_ai.common_utils import (

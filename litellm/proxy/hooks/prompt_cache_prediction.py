@@ -6,7 +6,7 @@ from collections.abc import Callable, Mapping
 from datetime import datetime
 from typing import TYPE_CHECKING, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
 
 from litellm.caching.dual_cache import DualCache

@@ -12,7 +12,7 @@ from types import MappingProxyType
 from typing import IO, Final, Protocol, TypeAlias
 from urllib.parse import quote
 
-import httpx
+import httpx2 as httpx
 import soundfile
 from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 from typing_extensions import ReadOnly, TypedDict
