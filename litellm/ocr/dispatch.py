@@ -1,7 +1,7 @@
 from collections.abc import Awaitable, Callable, Coroutine, Mapping
 from typing import Final, cast  # noqa: TID251  # native binding selects a sync result or an async awaitable
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.ocr.transformation import OCRResponse
 from litellm.ocr import main

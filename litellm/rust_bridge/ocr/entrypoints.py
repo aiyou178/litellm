@@ -4,7 +4,7 @@ from collections.abc import Awaitable, Mapping
 from dataclasses import dataclass
 from typing import Final, Protocol, cast  # noqa: TID251  # validates dynamically loaded native callables
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.ocr.transformation import OCRResponse
 from litellm.rust_bridge.bindings import NativeBinding

@@ -7,7 +7,7 @@ from types import MappingProxyType
 from typing import Final, cast
 from uuid import uuid4
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from pydantic import JsonValue, TypeAdapter
@@ -133,7 +133,10 @@ def _upstream(request: httpx.Request) -> httpx.Response:
     assert isinstance(model, str)
     stream: Final = body.get("stream") is True
     content: Final = b"".join(_sse(model=model)) if stream else json.dumps(_message(True, model)).encode()
-    return httpx.Response(200, content=content, request=request,
+    return httpx.Response(
+        200,
+        content=content,
+        request=request,
         headers=MappingProxyType({"content-type": "text/event-stream" if stream else "application/json"}),
     )
 
@@ -182,6 +185,7 @@ async def _call(
         stream: Final = cast(AsyncIterator[object], response)  # cast-ok: iterator checked; all items satisfy object
         assert tuple([chunk async for chunk in stream])
 
+
 class _Capture(CustomLogger):
     def __init__(self, call_id: str) -> None:
         self.call_id: Final = call_id
@@ -200,8 +204,12 @@ class _Capture(CustomLogger):
 
 class _Rig:
     def __init__(self, monkeypatch: pytest.MonkeyPatch, *, retries: int = 0, count: TokenCounter = _count) -> None:
-        self.router: Final = Router(model_list=_MODELS, num_retries=retries,
-            retry_policy=RetryPolicy(RateLimitErrorRetries=retries), disable_cooldowns=True)
+        self.router: Final = Router(
+            model_list=_MODELS,
+            num_retries=retries,
+            retry_policy=RetryPolicy(RateLimitErrorRetries=retries),
+            disable_cooldowns=True,
+        )
 
         def router() -> Router:
             return self.router
@@ -218,9 +226,16 @@ class _Rig:
         monkeypatch.setattr(litellm, "_async_success_callback", [self.capture])
 
     def logging(self, stream: bool = False) -> Logging:
-        return Logging(model="anthropic/claude-sonnet-5", messages=_MESSAGES.validate_json(_MESSAGES_JSON),
-            stream=stream, call_type=CallTypes.anthropic_messages.value, start_time=datetime.now(),
-            litellm_call_id=self.call_id, function_id=self.call_id, kwargs={"litellm_session_id":"baseline-session"})
+        return Logging(
+            model="anthropic/claude-sonnet-5",
+            messages=_MESSAGES.validate_json(_MESSAGES_JSON),
+            stream=stream,
+            call_type=CallTypes.anthropic_messages.value,
+            start_time=datetime.now(),
+            litellm_call_id=self.call_id,
+            function_id=self.call_id,
+            kwargs={"litellm_session_id": "baseline-session"},
+        )
 
 
 def _observation(payload: Mapping[str, object]) -> CapturedBaselineObservation:
@@ -232,7 +247,9 @@ def _observation(payload: Mapping[str, object]) -> CapturedBaselineObservation:
 
 @pytest.mark.parametrize("stream,baseline", ((False, False), (True, False), (False, True), (True, True)))
 async def test_native_logging_captures_usage_without_publishing_hypothetical_savings(
-    monkeypatch: pytest.MonkeyPatch, stream: bool, baseline: bool,
+    monkeypatch: pytest.MonkeyPatch,
+    stream: bool,
+    baseline: bool,
 ) -> None:
     rig: Final = _Rig(monkeypatch)
     messages: Final = _MESSAGES_JSON.replace("question", "question USE_OPUS") if baseline else _MESSAGES_JSON
@@ -283,11 +300,14 @@ async def test_caller_cannot_forge_an_observation_scope(monkeypatch: pytest.Monk
     assert payload["autorouter_savings"] is None
 
 
-@pytest.mark.parametrize("model,key,endpoint", (
-    ("claude-sonnet-5", "test-first", None),
-    ("claude-opus-5", "test-second", None),
-    ("claude-opus-5", "test-first", "https://example.test"),
-))
+@pytest.mark.parametrize(
+    "model,key,endpoint",
+    (
+        ("claude-sonnet-5", "test-first", None),
+        ("claude-opus-5", "test-second", None),
+        ("claude-opus-5", "test-first", "https://example.test"),
+    ),
+)
 async def test_count_memo_is_scoped_to_provider_recipient(model: str, key: str, endpoint: str | None) -> None:
     counts: Final = iter((5000, 6000))
 
@@ -304,7 +324,8 @@ async def test_count_memo_is_scoped_to_provider_recipient(model: str, key: str, 
 
 @pytest.mark.parametrize("stream", (False, True))
 async def test_provider_counting_does_not_hold_the_inference_response(
-    monkeypatch: pytest.MonkeyPatch, stream: bool,
+    monkeypatch: pytest.MonkeyPatch,
+    stream: bool,
 ) -> None:
     counting: Final = asyncio.Event()
     release: Final = asyncio.Event()
