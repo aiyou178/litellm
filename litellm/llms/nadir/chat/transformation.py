@@ -1,7 +1,7 @@
 import math
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.core_helpers import set_response_cost_in_hidden_params
 from litellm.llms.openai.chat.gpt_transformation import OpenAIGPTConfig

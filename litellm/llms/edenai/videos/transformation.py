@@ -9,9 +9,9 @@ Docs: https://www.edenai.co/docs/v3/llms/video-generation
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Final
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
 
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.openai.videos.transformation import OpenAIVideoConfig
 from litellm.types.router import GenericLiteLLMParams

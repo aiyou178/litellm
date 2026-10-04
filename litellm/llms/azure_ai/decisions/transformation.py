@@ -1,7 +1,7 @@
 import re
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.decisions.transformation import BaseDecisionsConfig
 

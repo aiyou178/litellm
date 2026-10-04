@@ -30,8 +30,8 @@ from litellm.llms.custom_httpx.async_client_cleanup import (
     close_litellm_async_clients,
 )
 from litellm.proxy.db import tool_registry_writer as tool_registry_writer_module
-from tests.unit.litellm_core_utils.fake_secret_vault import FakeSecretVault
 from tests.test_litellm.httpx2_respx import HTTPX2Mocker
+from tests.unit.litellm_core_utils.fake_secret_vault import FakeSecretVault
 
 
 @pytest.fixture
@@ -96,9 +96,7 @@ def isolated_aws_credentials_dir(tmp_path_factory):
 @pytest.fixture(scope="function", autouse=True)
 def isolate_host_aws_config(monkeypatch, isolated_aws_credentials_dir):
     """Prevent botocore from reading host AWS profiles during unit tests."""
-    monkeypatch.setenv(
-        "AWS_SHARED_CREDENTIALS_FILE", isolated_aws_credentials_dir["credentials"]
-    )
+    monkeypatch.setenv("AWS_SHARED_CREDENTIALS_FILE", isolated_aws_credentials_dir["credentials"])
     monkeypatch.setenv("AWS_CONFIG_FILE", isolated_aws_credentials_dir["config"])
     monkeypatch.setenv("AWS_EC2_METADATA_DISABLED", "true")
     monkeypatch.delenv("AWS_PROFILE", raising=False)
@@ -216,43 +214,29 @@ def isolate_litellm_state():
     but adds overhead. Consider removing reload entirely if tests can work without it.
     """
     # Get worker ID if running with pytest-xdist
-    worker_id = os.environ.get("PYTEST_XDIST_WORKER", "master")
+    os.environ.get("PYTEST_XDIST_WORKER", "master")
 
     # Store original callback state (all callback lists)
     original_state = {}
     if hasattr(litellm, "callbacks"):
-        original_state["callbacks"] = (
-            litellm.callbacks.copy() if litellm.callbacks else []
-        )
+        original_state["callbacks"] = litellm.callbacks.copy() if litellm.callbacks else []
     if hasattr(litellm, "success_callback"):
-        original_state["success_callback"] = (
-            litellm.success_callback.copy() if litellm.success_callback else []
-        )
+        original_state["success_callback"] = litellm.success_callback.copy() if litellm.success_callback else []
     if hasattr(litellm, "failure_callback"):
-        original_state["failure_callback"] = (
-            litellm.failure_callback.copy() if litellm.failure_callback else []
-        )
+        original_state["failure_callback"] = litellm.failure_callback.copy() if litellm.failure_callback else []
     if hasattr(litellm, "input_callback"):
-        original_state["input_callback"] = (
-            litellm.input_callback.copy() if litellm.input_callback else []
-        )
+        original_state["input_callback"] = litellm.input_callback.copy() if litellm.input_callback else []
     if hasattr(litellm, "_async_success_callback"):
         original_state["_async_success_callback"] = (
-            litellm._async_success_callback.copy()
-            if litellm._async_success_callback
-            else []
+            litellm._async_success_callback.copy() if litellm._async_success_callback else []
         )
     if hasattr(litellm, "_async_failure_callback"):
         original_state["_async_failure_callback"] = (
-            litellm._async_failure_callback.copy()
-            if litellm._async_failure_callback
-            else []
+            litellm._async_failure_callback.copy() if litellm._async_failure_callback else []
         )
     if hasattr(litellm, "_async_input_callback"):
         original_state["_async_input_callback"] = (
-            litellm._async_input_callback.copy()
-            if litellm._async_input_callback
-            else []
+            litellm._async_input_callback.copy() if litellm._async_input_callback else []
         )
 
     # Store routing globals — leaked model_fallbacks causes tests to route
@@ -441,20 +425,18 @@ def setup_and_teardown():
                 import litellm.proxy.proxy_server
 
                 importlib.reload(litellm.proxy.proxy_server)
-        except Exception as e:
-            print(f"Error reloading litellm.proxy.proxy_server: {e}")
+        except Exception:
+            pass
 
         # Flush cache after reload (prevents stale client instances)
         if hasattr(litellm, "in_memory_llm_clients_cache"):
             litellm.in_memory_llm_clients_cache.flush_cache()
 
-    print(f"[conftest] Module setup complete (worker: {worker_id or 'master'})")
-
     yield
 
     # Teardown - no need to manually manage event loops with pytest-asyncio auto mode
     try:
-        print(f"[conftest] Module teardown complete (worker: {worker_id or 'master'})")
+        pass
     except ValueError:
         # Hostile-stream tests may intentionally close or replace pytest capture.
         pass
@@ -476,25 +458,15 @@ def pytest_collection_modifyitems(config, items):
     - Sort custom_logger tests first (they tend to interfere with other tests)
     """
     # Separate no_parallel tests
-    no_parallel_tests = [
-        item
-        for item in items
-        if any(mark.name == "no_parallel" for mark in item.iter_markers())
-    ]
+    no_parallel_tests = [item for item in items if any(mark.name == "no_parallel" for mark in item.iter_markers())]
 
     # Separate custom_logger tests
     custom_logger_tests = [
-        item
-        for item in items
-        if "custom_logger" in item.parent.name and item not in no_parallel_tests
+        item for item in items if "custom_logger" in item.parent.name and item not in no_parallel_tests
     ]
 
     # Everything else
-    other_tests = [
-        item
-        for item in items
-        if item not in no_parallel_tests and item not in custom_logger_tests
-    ]
+    other_tests = [item for item in items if item not in no_parallel_tests and item not in custom_logger_tests]
 
     # Sort each group
     custom_logger_tests.sort(key=lambda x: x.name)
@@ -510,14 +482,12 @@ def pytest_configure(config):
     Configure pytest with custom settings.
     """
     # Add marker for flaky tests (for documentation purposes)
-    config.addinivalue_line(
-        "markers", "flaky: mark test as potentially flaky (should use --reruns)"
-    )
+    config.addinivalue_line("markers", "flaky: mark test as potentially flaky (should use --reruns)")
 
     # Detect if running in CI
     is_ci = os.environ.get("CI") == "true" or os.environ.get("LITELLM_CI") == "true"
     if is_ci:
-        print("[conftest] Running in CI mode - enabling stricter test isolation")
+        pass
 
 
 # Optional: Add a fixture for tests that need even stricter isolation

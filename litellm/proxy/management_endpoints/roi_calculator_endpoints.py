@@ -5,7 +5,7 @@ from functools import lru_cache
 from types import MappingProxyType
 from typing import Annotated, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from apscheduler.schedulers.asyncio import (  # pyright: ignore[reportMissingTypeStubs]  # no upstream stubs
     AsyncIOScheduler,
 )

@@ -2,7 +2,7 @@ import re
 from collections.abc import Mapping
 from typing import Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_proxy_logger
 from litellm.litellm_core_utils.prompt_templates.common_utils import (

@@ -8,7 +8,7 @@ from concurrent.futures import wait
 from types import MappingProxyType
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from botocore.auth import SigV4Auth

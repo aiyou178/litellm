@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Annotated, Final, Literal, Protocol, TypeAlias
 
-import httpx
+import httpx2 as httpx
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, ValidationError
 

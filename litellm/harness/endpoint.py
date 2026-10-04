@@ -20,7 +20,7 @@ from dataclasses import dataclass
 from types import MappingProxyType, ModuleType
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 import openai
 
 import litellm

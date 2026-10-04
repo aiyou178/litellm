@@ -2,7 +2,7 @@ import warnings
 from collections.abc import Mapping
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter
 
 from litellm.decisions.call import (

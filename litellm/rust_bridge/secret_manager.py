@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from importlib import import_module
 from typing import Final, Protocol, runtime_checkable
 
-import httpx
+import httpx2 as httpx
 from pydantic import JsonValue
 
 from litellm.rust_bridge.bindings import NativeBinding

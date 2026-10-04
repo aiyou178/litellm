@@ -8,7 +8,7 @@ Docs: https://www.edenai.co/docs/api-reference/audio/audio-transcriptions
 from collections.abc import Mapping
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.audio_utils.utils import process_audio_file
 from litellm.litellm_core_utils.core_helpers import set_response_cost_in_hidden_params
