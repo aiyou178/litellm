@@ -9,7 +9,7 @@ import time
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict, TypeAdapter
 
 from litellm.litellm_core_utils.core_helpers import map_finish_reason

@@ -5,7 +5,7 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final, Protocol, runtime_checkable
 
-import httpx
+import httpx2 as httpx
 from httpx._types import RequestFiles
 
 from litellm.images.utils import ImageEditRequestUtils

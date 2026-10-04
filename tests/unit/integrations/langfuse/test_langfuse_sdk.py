@@ -15,7 +15,7 @@ from time import monotonic, sleep
 from types import MappingProxyType
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 import opentelemetry.trace as otel_trace
 import pytest
 from langfuse import LangfuseOtelSpanAttributes as A

@@ -6,7 +6,7 @@ from datetime import date, datetime, timedelta, timezone
 from types import MappingProxyType
 from typing import Final, Literal, TypeAlias
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict, ValidationError
 
 from litellm.constants import (
