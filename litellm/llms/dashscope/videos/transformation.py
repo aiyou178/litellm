@@ -11,11 +11,12 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Annotated, Final
 
 import httpx2 as httpx
-from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, TypeAdapter, ValidationError
 
 import litellm
 from litellm.exceptions import UnsupportedParamsError
+from litellm.images.utils import ImageEditRequestUtils
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.litellm_core_utils.url_utils import encode_url_path_segment, join_api_base
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.base_llm.videos.async_task_utils import (

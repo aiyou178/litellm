@@ -1330,7 +1330,7 @@ def _gemma_cached_access_token():
 
 
 def test_sync_gemma_stream(_gemma_cached_access_token):
-    import httpx
+    import httpx2 as httpx
 
     from litellm.litellm_core_utils.streaming_handler import CustomStreamWrapper
 
@@ -1381,7 +1381,7 @@ def test_gemma_stream_is_bounded_by_the_request_timeout_not_the_stream_timeout(_
 
 @pytest.mark.asyncio
 async def test_async_gemma_responses_stream(_gemma_cached_access_token):
-    import httpx
+    import httpx2 as httpx
 
     captured = {}
 

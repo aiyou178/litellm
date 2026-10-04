@@ -12,7 +12,7 @@ from types import MappingProxyType, SimpleNamespace
 from typing import Final
 from unittest.mock import Mock
 
-import httpx
+import httpx2 as httpx
 import pytest
 import requests_mock as requests_mock_lib
 import respx

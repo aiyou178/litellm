@@ -8,7 +8,9 @@ from typing import Final, Generic, Literal, TypeAlias, TypeVar
 
 import httpx2 as httpx
 from httpx2 import Headers, Response, Timeout
+from httpx2._client import UseClientDefault
 from httpx2._types import (
+    AuthTypes,
     CertTypes,
     CookieTypes,
     FileContent,
@@ -95,6 +97,7 @@ def boundary_types(kind: _BoundaryKind) -> tuple[type, ...]:
 
 
 __all__ = [
+    "AuthTypes",
     "CertTypes",
     "CookieTypes",
     "EnvironmentProxyMounts",
@@ -106,6 +109,7 @@ __all__ = [
     "RequestFiles",
     "Response",
     "Timeout",
+    "UseClientDefault",
     "accepts_legacy_httpx_client",
     "boundary_types",
     "environment_proxy_mounts",

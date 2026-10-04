@@ -11217,11 +11217,11 @@ async def test_pass_through_request_logging_failure(mock_request, mock_user_api_
 
     with (
         patch(
-            "httpx.AsyncClient.send",
+            "httpx2.AsyncClient.send",
             return_value=mock_response,
         ),
         patch(
-            "httpx.AsyncClient.request",
+            "httpx2.AsyncClient.request",
             return_value=mock_response,
         ),
     ):
@@ -11261,11 +11261,11 @@ async def test_pass_through_request_logging_failure_with_stream(mock_request, mo
 
     with (
         patch(
-            "httpx.AsyncClient.send",
+            "httpx2.AsyncClient.send",
             return_value=mock_response,
         ),
         patch(
-            "httpx.AsyncClient.request",
+            "httpx2.AsyncClient.request",
             return_value=mock_response,
         ),
     ):

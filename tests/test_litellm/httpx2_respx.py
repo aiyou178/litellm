@@ -191,7 +191,10 @@ class HTTPX2Mocker(Mocker):
             handler: Final[Callable[[httpx.Request], httpx.Response | Awaitable[httpx.Response]]] = (
                 cls.async_handler if inspect.iscoroutinefunction(instance.request) else cls.handler
             )
-            return TryTransport([httpx.MockTransport(handler), spec(instance, *args)])
+            pass_through_transport: Final[httpx.BaseTransport] = spec(instance, *args)
+            if isinstance(pass_through_transport, (httpx.ASGITransport, httpx.WSGITransport)):
+                return pass_through_transport
+            return TryTransport([httpx.MockTransport(handler), pass_through_transport])
 
         def transport_for_url(
             instance: object, *args: object, **kwargs: object
@@ -201,7 +204,10 @@ class HTTPX2Mocker(Mocker):
                 cls.async_handler if is_async else cls.handler
             )
             pass_through_transport: Final[HTTPX2Transport] = spec(instance, *args, **kwargs)
-            if isinstance(pass_through_transport, (httpx2.ASGITransport, httpx2.WSGITransport)):
+            if isinstance(
+                pass_through_transport,
+                (httpx2.ASGITransport, httpx2.WSGITransport, httpx2.MockTransport),
+            ):
                 return pass_through_transport
 
             def sync_handler(request: httpx2.Request) -> httpx2.Response:

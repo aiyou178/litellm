@@ -4,7 +4,6 @@ from collections.abc import Awaitable, Callable
 from typing import Any, Final, Literal, Optional, Union
 from unittest.mock import MagicMock, patch
 
-import httpx
 import httpx2 as httpx
 import openai
 import pytest
@@ -2491,8 +2490,6 @@ def test_anthropic_openai_exception(monkeypatch):
 
 @pytest.mark.usefixtures("fake_provider_credentials", "fake_perplexity_credentials")
 def test_completion_perplexity_exception_on_openai_client(monkeypatch):
-    import openai
-
     print("perplexity test\n\n")
     litellm.set_verbose = False
 
@@ -2500,15 +2497,13 @@ def test_completion_perplexity_exception_on_openai_client(monkeypatch):
     monkeypatch.delenv("PERPLEXITYAI_API_KEY")
     monkeypatch.delenv("OPENAI_API_KEY")
 
-    with pytest.raises(openai.AuthenticationError) as exc_info:
+    with pytest.raises(litellm.AuthenticationError) as exc_info:
         completion(
             model="perplexity/mistral-7b-instruct",
             messages=[{"role": "user", "content": "hello"}],
         )
-    assert (
-        "The api_key client option must be set either by passing api_key to the client or by setting the PERPLEXITY_API_KEY environment variable"
-        in str(exc_info.value)
-    )
+    assert "Missing credentials" in str(exc_info.value)
+    assert "PERPLEXITY_API_KEY" in str(exc_info.value)
 
 
 @pytest.mark.asyncio
@@ -2571,7 +2566,7 @@ def test_bad_request_error_with_response_without_request():
     (e.g., in tests or when manually creating error responses), and we need to
     ensure it doesn't raise RuntimeError when the exception is created.
     """
-    from httpx import Response
+    from httpx2 import Response
 
     from litellm.litellm_core_utils.exception_mapping_utils import (
         extract_and_raise_litellm_exception,
@@ -2607,7 +2602,7 @@ def test_bad_request_error_with_response_without_request():
 
 
 def test_context_window_exceeded_error_from_litellm_proxy():
-    from httpx import Response
+    from httpx2 import Response
 
     from litellm.litellm_core_utils.exception_mapping_utils import (
         extract_and_raise_litellm_exception,
@@ -2864,7 +2859,7 @@ async def test_exception_with_headers(
 )
 @pytest.mark.usefixtures("fake_provider_credentials")
 @pytest.mark.asyncio
-async def test_exception_with_headers_httpx(sync_mode, provider, model, call_type, streaming):
+async def test_exception_with_headers_httpx(sync_mode, provider, model, call_type, streaming, monkeypatch):
     """
     User feedback: litellm says "No deployments available for selected model, Try again in 60 seconds"
     but Azure says to retry in at most 9s
@@ -2893,7 +2888,7 @@ async def test_exception_with_headers_httpx(sync_mode, provider, model, call_typ
 
     def _return_exception(*args, **kwargs):
 
-        from httpx import Headers, HTTPStatusError, Request, Response
+        from httpx2 import Headers, HTTPStatusError, Request, Response
 
         # Create the Request object
         request = Request("POST", "http://0.0.0.0:9000/chat/completions")
@@ -2927,7 +2922,7 @@ async def test_exception_with_headers_httpx(sync_mode, provider, model, call_typ
     ):
         new_retry_after_mock_client = MagicMock(return_value=-1)
 
-        litellm.utils._get_retry_after_from_exception_header = new_retry_after_mock_client
+        monkeypatch.setattr(litellm.utils, "_get_retry_after_from_exception_header", new_retry_after_mock_client)
 
         async def call_and_drain():
             if sync_mode:
@@ -2959,7 +2954,7 @@ def test_openai_gateway_timeout_error():
 
     def _return_exception(*args, **kwargs):
 
-        from httpx import Headers, Request, Response
+        from httpx2 import Headers, Request, Response
 
         kwargs = {
             "request": Request("POST", "https://www.google.com"),

@@ -11,7 +11,7 @@ from types import SimpleNamespace
 from typing import Final, cast
 from unittest.mock import AsyncMock, MagicMock, call, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 from prisma.errors import DataError as PrismaDataError
 from prisma.errors import RawQueryError

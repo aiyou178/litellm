@@ -8,7 +8,7 @@ from types import ModuleType
 from typing import Final, Literal, Protocol
 from unittest.mock import MagicMock, Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from openai import AsyncOpenAI, AzureOpenAI, OpenAI
@@ -94,9 +94,9 @@ def test_get_stream_options_passes_caller_stream_options_through_on_any_host(api
     }
 
 
-@pytest.fixture(params=("httpx", "sdk"))
+@pytest.fixture(params=("httpx2", "sdk"))
 def http_backend(request: pytest.FixtureRequest) -> ModuleType:
-    return importlib.import_module("httpx" if request.param == "httpx" else SDKResponse.__module__)
+    return importlib.import_module("httpx2" if request.param == "httpx2" else SDKResponse.__module__)
 
 
 @pytest.fixture(params=("openai", "perplexity", "cerebras", "nvidia_nim"))

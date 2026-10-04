@@ -2069,7 +2069,7 @@ class FakeAnthropicUpstream:
         async def _send(_client: httpx.AsyncClient, request: httpx.Request, **kwargs: Any) -> httpx.Response:
             return await self.send(request, **kwargs)
 
-        return patch("httpx.AsyncClient.send", new=_send)
+        return patch("httpx2.AsyncClient.send", new=_send)
 
 
 FABLE_TIER = {

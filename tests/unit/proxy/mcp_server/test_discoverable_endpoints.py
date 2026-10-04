@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Final, Literal
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import httpx
+import httpx2
 import pytest
 from fastapi import HTTPException, Request, Response
 from typing_extensions import ReadOnly, TypedDict
@@ -5899,7 +5900,9 @@ async def _bridge_register_response(
         ),
         patch(
             "litellm.proxy.utils.get_prisma_client_or_throw",
-            **({"return_value": MagicMock()} if database_connected else {"side_effect": HTTPException(status_code=500)}),
+            **(
+                {"return_value": MagicMock()} if database_connected else {"side_effect": HTTPException(status_code=500)}
+            ),
         ),
     ):
         response = await register_client_with_server(
@@ -15441,10 +15444,16 @@ def test_root_metadata_is_the_gateways_own_and_lists_the_jwt_bearer_grant_when_i
     request.base_url = "https://llm.example.com/"
     request.headers = {}
     with (
-        patch.object(discoverable_endpoints, "jwt_bearer_available", return_value=available),  # test-quality-ok: deployment gate seam
-        patch.object(discoverable_endpoints, "token_exchange_available", return_value=True),  # test-quality-ok: deployment gate seam
+        patch.object(
+            discoverable_endpoints, "jwt_bearer_available", return_value=available
+        ),  # test-quality-ok: deployment gate seam
+        patch.object(
+            discoverable_endpoints, "token_exchange_available", return_value=True
+        ),  # test-quality-ok: deployment gate seam
     ):
-        document = discoverable_endpoints._build_oauth_authorization_server_response(request=request, mcp_server_name=None)
+        document = discoverable_endpoints._build_oauth_authorization_server_response(
+            request=request, mcp_server_name=None
+        )
     assert document["issuer"] == "https://llm.example.com"
     assert document["token_endpoint"] == "https://llm.example.com/token"
     assert (JWT_BEARER_GRANT_TYPE in document["grant_types_supported"]) is available
@@ -15472,11 +15481,19 @@ def test_root_metadata_owned_by_a_resolved_oauth2_server_never_lists_the_gateway
     request.headers = {}
     try:
         with (
-            patch.object(discoverable_endpoints, "jwt_bearer_available", return_value=True),  # test-quality-ok: deployment gate seam
-            patch.object(discoverable_endpoints, "token_exchange_available", return_value=True),  # test-quality-ok: deployment gate seam
-            patch.object(global_mcp_server_manager, "get_mcp_server_by_name", return_value=server),  # test-quality-ok: resolver seam
+            patch.object(
+                discoverable_endpoints, "jwt_bearer_available", return_value=True
+            ),  # test-quality-ok: deployment gate seam
+            patch.object(
+                discoverable_endpoints, "token_exchange_available", return_value=True
+            ),  # test-quality-ok: deployment gate seam
+            patch.object(
+                global_mcp_server_manager, "get_mcp_server_by_name", return_value=server
+            ),  # test-quality-ok: resolver seam
         ):
-            document = discoverable_endpoints._build_oauth_authorization_server_response(request=request, mcp_server_name=None)
+            document = discoverable_endpoints._build_oauth_authorization_server_response(
+                request=request, mcp_server_name=None
+            )
     finally:
         global_mcp_server_manager.registry.clear()
     assert document["token_endpoint"] == "https://llm.example.com/test_oauth/token"

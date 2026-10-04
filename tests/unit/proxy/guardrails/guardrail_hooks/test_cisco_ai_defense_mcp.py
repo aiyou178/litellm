@@ -348,7 +348,14 @@ class TestCiscoAIDefenseMCPMode:
     @pytest.mark.parametrize("use_wrapper", [True, False])
     @pytest.mark.asyncio
     async def test_mcp_response_hook_through_real_logging_wrapper(self, use_wrapper):
-        from mcp.types import AudioContent, CallToolResult, EmbeddedResource, ImageContent, TextContent, TextResourceContents
+        from mcp.types import (
+            AudioContent,
+            CallToolResult,
+            EmbeddedResource,
+            ImageContent,
+            TextContent,
+            TextResourceContents,
+        )
 
         from litellm.types.mcp import MCPPostCallResponseObject
 
@@ -359,9 +366,10 @@ class TestCiscoAIDefenseMCPMode:
                 TextContent(type="text", text="leak 9045629876"),
                 ImageContent(type="image", data="aGVsbG8=", mimeType="image/png"),
                 AudioContent(type="audio", data="aGVsbG8=", mimeType="audio/wav"),
-                EmbeddedResource(type="resource", resource=TextResourceContents(
-                    uri="memo://status", mimeType="text/plain", text="resource text"
-                )),
+                EmbeddedResource(
+                    type="resource",
+                    resource=TextResourceContents(uri="memo://status", mimeType="text/plain", text="resource text"),
+                ),
             ],
             structuredContent={"patient": {"ssn": "123-45-6789"}},
             isError=False,
@@ -410,11 +418,12 @@ class TestCiscoAIDefenseMCPMode:
         assert content_items[1:] == [
             {"type": "image", "data": "aGVsbG8=", "mimeType": "image/png"},
             {"type": "audio", "data": "aGVsbG8=", "mimeType": "audio/wav"},
-            {"type": "resource", "resource": {"uri": "memo://status", "mimeType": "text/plain", "text": "resource text"}},
+            {
+                "type": "resource",
+                "resource": {"uri": "memo://status", "mimeType": "text/plain", "text": "resource text"},
+            },
         ]
-        assert sent_payload["result"]["structuredContent"] == {
-            "patient": {"ssn": "123-45-6789"}
-        }
+        assert sent_payload["result"]["structuredContent"] == {"patient": {"ssn": "123-45-6789"}}
         assert sent_payload["result"]["isError"] is False
         assert sent_payload["id"] == "real-wire-call"
         assert sent_payload["method"] == "tools/call"
@@ -670,7 +679,7 @@ class TestCiscoAIDefenseMCPBlockingContract:
             "Hook must keep returning a MCPPostCallResponseObject for "
             "dispatcher paths that do honor returned replacements."
         )
-        assert raw_response.isError is True
+        assert raw_response.is_error is True
         assert "Blocked by Cisco AI Defense" in raw_response.content[0].text
         assert raw_response.structured_content is not None
         assert "Blocked by Cisco AI Defense" in raw_response.structured_content["result"]
@@ -786,11 +795,10 @@ async def test_cisco_native_hook_through_logging_preserves_sanitized_result(acti
     from mcp.types import CallToolResult, TextContent
     from litellm.litellm_core_utils.litellm_logging import Logging
 
-    guardrail = _make_guardrail(
-        inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"]
-    )
+    guardrail = _make_guardrail(inspection_type="mcp", event_hook=["pre_mcp_call", "during_mcp_call"])
     verdict = (
-        _violation_response(url=MCP_URL) if action == "block"
+        _violation_response(url=MCP_URL)
+        if action == "block"
         else _redact_response(sanitized_text="[REDACTED]", url=MCP_URL)
     )
     result = CallToolResult(
@@ -798,15 +806,22 @@ async def test_cisco_native_hook_through_logging_preserves_sanitized_result(acti
         structured_content={"result": "SECRET-1234"},
     )
     logging_obj = Logging(
-        model="MCP: probe/search", messages=[], stream=False, call_type="call_mcp_tool",
-        start_time=datetime.now(), litellm_call_id="cisco-hook", function_id="cisco-hook",
+        model="MCP: probe/search",
+        messages=[],
+        stream=False,
+        call_type="call_mcp_tool",
+        start_time=datetime.now(),
+        litellm_call_id="cisco-hook",
+        function_id="cisco-hook",
         dynamic_success_callbacks=[guardrail],
     )
     logging_obj.model_call_details.update({"name": "search", "arguments": {}, "original_response": result})
     with _patch_inspection_post(guardrail, AsyncMock(return_value=verdict)):
         returned = await logging_obj.async_post_mcp_tool_call_hook(
-            kwargs=logging_obj.model_call_details, response_obj=result,
-            start_time=datetime.now(), end_time=datetime.now(),
+            kwargs=logging_obj.model_call_details,
+            response_obj=result,
+            start_time=datetime.now(),
+            end_time=datetime.now(),
         )
     assert returned is result
     assert "SECRET-1234" not in returned.model_dump_json()

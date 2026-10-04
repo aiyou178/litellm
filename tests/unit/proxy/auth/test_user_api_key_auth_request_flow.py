@@ -8732,7 +8732,7 @@ async def test_burst_against_a_stalled_db_fails_fast_with_503_and_turns_readines
     park in the pod with readiness green until it OOMed. Now every one of them fails
     within the lookup deadline as a 503, and the next readiness probe takes the pod out
     of rotation."""
-    import httpx
+    import httpx2 as httpx
     from fastapi import Depends, FastAPI
 
     import litellm.proxy.health_endpoints._health_endpoints as health_endpoints
@@ -13424,7 +13424,7 @@ async def test_lens_oauth2_validates_identity_without_inference_user_field(
                 "OAUTH_CLIENT_SECRET": "fixture-client-secret",
             },
         ),
-        patch("httpx.AsyncClient.send", side_effect=token_info) as network,
+        patch("httpx2.AsyncClient.send", side_effect=token_info) as network,
     ):
         if active:
             identity: Final = await user_api_key_auth(request=request, api_key=f"Bearer {token}")

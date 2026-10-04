@@ -142,9 +142,7 @@ def test_embedding_openai_omitted_encoding_format_maps_provider_errors(
     )
 
     with pytest.raises(litellm.RateLimitError) as exc_info:
-        litellm.embedding(
-            model="openai/text-embedding-3-small", input=["hello"], api_key="sk-test", max_retries=0
-        )
+        litellm.embedding(model="openai/text-embedding-3-small", input=["hello"], api_key="sk-test", max_retries=0)
 
     assert int(exc_info.value.litellm_response_headers["retry-after"]) == 42
 
@@ -200,6 +198,7 @@ def test_embedding_response_preserves_rate_limit_headers(
 
 
 def _openai_sdk_response_keys(route: respx.Route) -> frozenset[str]:
+    route.return_value.read()
     return frozenset(dict(CreateEmbeddingResponse.model_validate(route.return_value.json())))
 
 

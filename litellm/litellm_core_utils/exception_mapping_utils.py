@@ -358,6 +358,12 @@ def _map_openai_exception(
         exception_provider = "OpenAI" + "Exception"
     else:
         exception_provider = custom_llm_provider[0].upper() + custom_llm_provider[1:] + "Exception"
+    error_body: Final[object | None] = getattr(original_exception, "body", None)
+    error_body_mapping: Final[Mapping[str, object] | None] = (
+        cast(Mapping[str, object], error_body) if isinstance(error_body, Mapping) else None
+    )
+    error_body_type: Final[object | None] = error_body_mapping.get("type") if error_body_mapping else None
+    error_body_code: Final[object | None] = error_body_mapping.get("code") if error_body_mapping else None
 
     if ExceptionCheckers.is_error_str_rate_limit(
         error_str, status_code=getattr(original_exception, "status_code", None)
@@ -377,7 +383,9 @@ def _map_openai_exception(
             response=response,
             litellm_debug_info=extra_information,
         )
-    elif "invalid_request_error" in error_str and "model_not_found" in error_str:
+    elif ("invalid_request_error" in error_str and "model_not_found" in error_str) or (
+        error_body_type == "invalid_request_error" and error_body_code == "model_not_found"
+    ):
         raise NotFoundError(
             message=f"{exception_provider} - {message}",
             llm_provider=custom_llm_provider,
@@ -397,6 +405,7 @@ def _map_openai_exception(
         ("invalid_request_error" in error_str and "content_policy_violation" in error_str)
         or ("Invalid prompt" in error_str and "violating our usage policy" in error_str)
         or ("request was rejected as a result of the safety system" in error_str.lower())
+        or ("request was rejected as a result of our safety system" in error_str.lower())
     ):
         raise ContentPolicyViolationError(
             message=f"ContentPolicyViolationError: {exception_provider} - {message}",
@@ -426,7 +435,9 @@ def _map_openai_exception(
             litellm_debug_info=extra_information,
             body=getattr(original_exception, "body", None),
         )
-    elif "invalid_request_error" in error_str and "Incorrect API key provided" not in error_str:
+    elif (
+        "invalid_request_error" in error_str or error_body_type == "invalid_request_error"
+    ) and "Incorrect API key provided" not in error_str:
         invalid_request_status: Final = getattr(original_exception, "status_code", None)
         if invalid_request_status == 401:
             raise AuthenticationError(
@@ -477,6 +488,7 @@ def _map_openai_exception(
     elif (
         "The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable"
         in error_str
+        or "Missing credentials. Please pass an" in error_str
     ):
         raise AuthenticationError(
             message=f"AuthenticationError: {exception_provider} - {message}",

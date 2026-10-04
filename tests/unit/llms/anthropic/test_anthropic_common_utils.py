@@ -3717,7 +3717,7 @@ class TestWifProviderAllowlist:
 
 
 def _models_page_response(page: dict, status_code: int = 200):
-    import httpx
+    import httpx2 as httpx
 
     return httpx.Response(status_code, json=page, request=httpx.Request("GET", "https://api.anthropic.com/v1/models"))
 

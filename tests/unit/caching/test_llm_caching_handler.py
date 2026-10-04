@@ -8,11 +8,12 @@ causes ``RuntimeError: Cannot send a request, as the client has been closed.``
 See: https://github.com/BerriAI/litellm/pull/22247
 """
 
-import asyncio, gc, httpx, importlib, litellm, os, threading, time, weakref
+import asyncio, gc, importlib, litellm, os, threading, time, weakref
 import warnings
 from typing import Final
 
 import aiohttp
+import httpx2 as httpx
 import pytest
 from openai import AsyncOpenAI
 

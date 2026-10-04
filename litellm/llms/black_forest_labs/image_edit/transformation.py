@@ -13,12 +13,12 @@ from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final
 
 import httpx2 as httpx
-from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from pydantic import ConfigDict, TypeAdapter, with_config
 from typing_extensions import NotRequired, ReadOnly, TypedDict
 
 import litellm
 from litellm.constants import DEFAULT_MAX_RECURSE_DEPTH
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.litellm_core_utils.url_utils import async_safe_get, join_api_base, safe_get
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.secret_managers.main import get_secret_str

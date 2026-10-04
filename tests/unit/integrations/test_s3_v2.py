@@ -949,8 +949,9 @@ def test_sync_upload_retries_403_with_fresh_signature(rotating_profile: str, mon
         patch(  # test-quality-ok: sync upload builds its HTTPHandler per call, there is no injection seam for it
             "litellm.integrations.s3_v2.get_httpx_client", return_value=handler
         ),
-        patch("time.sleep") as mock_sleep,
+        patch("litellm.integrations.s3_v2.time") as time_module,
     ):
+        mock_sleep = time_module.sleep
         logger.upload_data_to_s3(test_element)
 
     assert len(requests) == 2
@@ -5529,9 +5530,7 @@ async def test_repeated_failure_notifications_upload_once(
     )
 
     if concurrent:
-        await asyncio.gather(
-            *(logging_obj.async_failure_handler(error, "synthetic traceback") for _ in range(3))
-        )
+        await asyncio.gather(*(logging_obj.async_failure_handler(error, "synthetic traceback") for _ in range(3)))
     else:
         for _ in range(3):
             await logging_obj.async_failure_handler(error, "synthetic traceback")
@@ -5549,12 +5548,15 @@ def _vcr_outcome_gate(request, vcr):
     yield
     record_vcr_outcome(request, vcr)
 
+
 @pytest_asyncio.fixture(loop_scope="function")
 async def drain_logging_worker(isolate_litellm_state: None) -> AsyncIterator[None]:
     yield
     await asyncio.wait_for(GLOBAL_LOGGING_WORKER.flush(), timeout=LOGGING_WORKER_DRAIN_TIMEOUT_SECONDS)
 
+
 LOGGING_WORKER_DRAIN_TIMEOUT_SECONDS: Final = LOGGING_WORKER_MAX_TIME_PER_COROUTINE + 5.0
+
 
 @pytest.fixture(scope="function", autouse=True)
 def isolate_litellm_state():
@@ -5593,6 +5595,7 @@ def isolate_litellm_state():
         if attr in _DEFAULTS:
             setattr(litellm, attr, _DEFAULTS[attr])
 
+
 _LIST_ATTRS = (
     "callbacks",
     "success_callback",
@@ -5624,6 +5627,7 @@ _DEFAULTS: Final = {
     if hasattr(litellm, attr)
 }
 
+
 @pytest.fixture(scope="module")
 def setup_and_teardown():
     """
@@ -5646,9 +5650,11 @@ def setup_and_teardown():
             litellm.in_memory_llm_clients_cache.flush_cache()
     yield
 
+
 @pytest.fixture
 def amazing_s3_retries(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(litellm, "num_retries", 3)
+
 
 class _FakeS3Paginator:
     def __init__(self, objects):
@@ -5659,6 +5665,7 @@ class _FakeS3Paginator:
         if not keys:
             return [{}]
         return [{"Contents": [{"Key": key} for key in keys]}]
+
 
 class _FakeS3Client:
     def __init__(self):
@@ -5686,7 +5693,9 @@ class _FakeS3Client:
         keys = sorted(self.objects[Bucket])
         return {"Contents": [{"Key": key, "LastModified": 0} for key in keys]}
 
+
 _FAKE_S3_CLIENT = _FakeS3Client()
+
 
 @pytest.fixture
 def fake_s3_client(monkeypatch):
@@ -5702,6 +5711,7 @@ def fake_s3_client(monkeypatch):
     yield _FAKE_S3_CLIENT
     litellm.success_callback = []
     litellm.callbacks = []
+
 
 @pytest.mark.usefixtures(
     "cancel_s3_periodic_flush_tasks",
@@ -5760,6 +5770,7 @@ async def test_basic_s3_logging(sync_mode, streaming):
     for key in all_s3_keys:
         s3.delete_object(Bucket="load-testing-oct", Key=key)
 
+
 @pytest.mark.usefixtures(
     "cancel_s3_periodic_flush_tasks",
     "fake_s3_client",
@@ -5814,6 +5825,7 @@ async def test_basic_s3_v2_logging(streaming):
     assert any(response_id in key for key in uploaded_keys), (
         f"Expected response_id={response_id} in one of the uploaded S3 keys: {uploaded_keys}"
     )
+
 
 @pytest.mark.usefixtures(
     "cancel_s3_periodic_flush_tasks",
@@ -5894,6 +5906,7 @@ async def test_basic_s3_v2_logging_failure():
     assert data is not None
     assert '"model": "gpt-5-mini"' in data
 
+
 def list_all_s3_objects(bucket_name):
     s3 = boto3.client("s3")
 
@@ -5908,6 +5921,7 @@ def list_all_s3_objects(bucket_name):
             all_s3_keys.extend([obj["Key"] for obj in page["Contents"]])
 
     return total_objects, all_s3_keys
+
 
 class TestS3Logger(S3Logger):
     def __init__(self, *args, **kwargs):

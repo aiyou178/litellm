@@ -1459,7 +1459,7 @@ async def exchange_token_with_server(
             data=token_data,
         )
         response.raise_for_status()
-    except httpx.HTTPStatusError as exc:
+    except (httpx.HTTPStatusError, httpx2.HTTPStatusError) as exc:
         fault: Final = classify_upstream_token_rejection(
             exc.response,
             credential_source="gateway_stored" if cimd_client_id else _token_credential_source(resolved_server),

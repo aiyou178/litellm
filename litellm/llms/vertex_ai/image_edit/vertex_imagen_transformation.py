@@ -7,12 +7,12 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final, cast
 
 import httpx2 as httpx
-from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from pydantic import ConfigDict, TypeAdapter
 from typing_extensions import ReadOnly, TypedDict
 
 import litellm
 from litellm.constants import DEFAULT_MAX_RECURSE_DEPTH
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.litellm_core_utils.url_utils import join_api_base
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.llms.vertex_ai.common_utils import get_vertex_base_url, map_vertex_image_size

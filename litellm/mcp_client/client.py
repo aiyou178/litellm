@@ -18,8 +18,6 @@ from typing import TYPE_CHECKING, Final, Literal, TypeAlias, TypeVar, cast, over
 
 import anyio
 import httpx2
-from httpx2._client import UseClientDefault
-from httpx2._types import AuthTypes
 from mcp import ClientSession, MCPError, ReadResourceResult, Resource, StdioServerParameters
 from mcp.client._input_required import run_input_required_driver
 from mcp.client.session import ClientRequestContext, ElicitationFnT, LoggingFnT, SamplingFnT
@@ -100,6 +98,7 @@ from litellm.constants import (
     MCP_TOOL_LISTING_MAX_PAGES,
     MCP_TOOL_LISTING_TIMEOUT,
 )
+from litellm.litellm_core_utils.httpx2_compat import AuthTypes, UseClientDefault
 from litellm.llms.custom_httpx.http_handler import get_ssl_configuration
 from litellm.mcp_client.tools import list_tools_with_pagination
 from litellm.proxy.mcp_server.mcp_context import get_active_mcp_request_ctx
@@ -719,7 +718,7 @@ class MCPClient:
             InitializeRequest(
                 params=InitializeRequestParams(
                     protocol_version=self.protocol_version,
-                    client_info=Implementation(name="litellm", version=version("litellm")),
+                    client_info=Implementation(name="litellm", version=version("aiyou-litellm")),
                     capabilities=ClientCapabilities(
                         sampling=SamplingCapability() if self._sampling_callback is not None else None,
                         elicitation=ElicitationCapability(

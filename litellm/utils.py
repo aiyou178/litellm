@@ -42,7 +42,6 @@ from types import MappingProxyType
 import dotenv
 import httpx2 as httpx
 import openai
-import tiktoken
 from httpx2 import Proxy
 from openai.lib import _parsing, _pydantic  # pyright: ignore[reportPrivateUsage]  # OpenAI parser module is private
 from openai.types.chat.completion_create_params import ResponseFormat

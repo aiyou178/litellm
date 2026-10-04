@@ -3,10 +3,10 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
 
 import httpx2 as httpx
-from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from pydantic import ConfigDict, TypeAdapter
 
 from litellm.images.utils import image_to_data_url
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.llms.fal_ai.image_generation.gpt_image_2_transformation import (
     map_gpt_image_quality,

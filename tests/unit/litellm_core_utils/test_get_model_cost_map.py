@@ -286,6 +286,21 @@ def _unset_local_cost_map_env(monkeypatch):
     monkeypatch.delenv("LITELLM_LOCAL_MODEL_COST_MAP", raising=False)
 
 
+@pytest.fixture(autouse=True)
+def _current_cost_map_symbols():
+    module = importlib.import_module("litellm.litellm_core_utils.get_model_cost_map")
+    for name in (
+        "GetModelCostMap",
+        "git_blob_id",
+        "get_model_cost_map_provenance",
+        "refetch_model_cost_map",
+        "ModelCostMapReloaded",
+        "ModelCostMapReloadUnavailable",
+    ):
+        globals()[name] = getattr(module, name)
+    yield
+
+
 def _mock_client(outcomes, client_cls=httpx.AsyncClient):
     """httpx client over a MockTransport serving one outcome per request; an exception instance is raised."""
     calls = {"count": 0}
@@ -806,6 +821,7 @@ def _vcr_outcome_gate(request, vcr):
     yield
     record_vcr_outcome(request, vcr)
 
+
 @pytest.fixture(scope="session")
 def event_loop():
     try:
@@ -814,6 +830,7 @@ def event_loop():
         loop = asyncio.new_event_loop()
     yield loop
     loop.close()
+
 
 @pytest.fixture(scope="function")
 def setup_and_teardown(event_loop):
@@ -848,6 +865,7 @@ def setup_and_teardown(event_loop):
     if pending:
         event_loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
 
+
 _SCALAR_DEFAULTS = {
     "num_retries": getattr(litellm, "num_retries", None),
     "set_verbose": getattr(litellm, "set_verbose", False),
@@ -861,6 +879,7 @@ _SCALAR_DEFAULTS = {
     "api_key": getattr(litellm, "api_key", None),
     "cohere_key": getattr(litellm, "cohere_key", None),
 }
+
 
 @pytest.mark.usefixtures("_vcr_outcome_gate", "setup_and_teardown")
 class TestCheckIsValidDict:
@@ -885,6 +904,7 @@ class TestCheckIsValidDict:
     def test_should_accept_non_empty_dict(self):
         """Non-empty dict should pass."""
         assert GetModelCostMap._check_is_valid_dict({"model": {}}) is True
+
 
 @pytest.mark.usefixtures("_vcr_outcome_gate", "setup_and_teardown")
 class TestCheckModelCountNotReduced:
@@ -940,6 +960,7 @@ class TestCheckModelCountNotReduced:
             is True
         )
 
+
 @pytest.mark.usefixtures("_vcr_outcome_gate", "setup_and_teardown")
 class TestValidateModelCostMap:
     """Unit tests for validate_model_cost_map (combines both checks)."""
@@ -975,6 +996,7 @@ class TestValidateModelCostMap:
             GetModelCostMap.validate_model_cost_map(fetched_map=fetched, backup_model_count=100, min_model_count=10)
             is True
         )
+
 
 def _fetch_with_single_outcome(monkeypatch, outcome):
     from litellm.litellm_core_utils import get_model_cost_map as module
@@ -1044,12 +1066,13 @@ class TestGetModelCostMapFallback:
     def test_should_use_local_map_when_env_var_set(self):
         """LITELLM_LOCAL_MODEL_COST_MAP=True should skip remote fetch entirely."""
         with patch.dict(os.environ, {"LITELLM_LOCAL_MODEL_COST_MAP": "True"}):
-            with patch("httpx.get") as mock_get:
+            with patch("httpx2.get") as mock_get:
                 result = get_model_cost_map("https://fake-url.com/model_prices.json")
                 mock_get.assert_not_called()
 
         assert isinstance(result, dict)
         assert len(result) > 0
+
 
 @pytest.mark.usefixtures("_vcr_outcome_gate", "setup_and_teardown")
 class TestBackupModelCostMapExists:
@@ -1065,6 +1088,7 @@ class TestBackupModelCostMapExists:
         """The backup must contain a reasonable number of models."""
         backup = GetModelCostMap.load_local_model_cost_map()
         assert len(backup) > 100, f"Backup has only {len(backup)} models, expected > 100"
+
 
 @pytest.mark.usefixtures("_vcr_outcome_gate", "setup_and_teardown")
 class TestBadHostedModelCostMap:
@@ -1086,7 +1110,7 @@ class TestBadHostedModelCostMap:
         mock_response.raise_for_status = MagicMock()
         mock_response.json.side_effect = json.JSONDecodeError("bad json", "", 0)
 
-        with patch("httpx.get", return_value=mock_response):
+        with patch("httpx2.get", return_value=mock_response):
             fallback_map = get_model_cost_map("https://fake-url.com/bad.json")
 
         original = litellm.model_cost
@@ -1112,7 +1136,7 @@ class TestBadHostedModelCostMap:
         mock_http.raise_for_status = MagicMock()
         mock_http.json.side_effect = json.JSONDecodeError("bad json", "", 0)
 
-        with patch("httpx.get", return_value=mock_http):
+        with patch("httpx2.get", return_value=mock_http):
             fallback_map = get_model_cost_map("https://fake-url.com/bad.json")
 
         original = litellm.model_cost
@@ -1130,11 +1154,13 @@ class TestBadHostedModelCostMap:
         finally:
             litellm.model_cost = original
 
+
 @pytest.fixture()
 def _vcr_outcome_gate_local_testing(request, vcr):
     install_live_call_probe(request, vcr)
     yield
     record_vcr_outcome(request, vcr)
+
 
 @pytest.fixture(scope="function")
 def isolate_litellm_state():
@@ -1188,6 +1214,7 @@ def isolate_litellm_state():
             setattr(litellm, attr, original_value)
     _invalidate_model_cost_lowercase_map()
 
+
 _SCALAR_DEFAULTS_local_testing = {
     "num_retries": getattr(litellm, "num_retries", None),
     "num_retries_per_request": getattr(litellm, "num_retries_per_request", None),
@@ -1207,6 +1234,7 @@ _SCALAR_DEFAULTS_local_testing = {
     "api_base": getattr(litellm, "api_base", None),
     "api_key": getattr(litellm, "api_key", None),
 }
+
 
 @pytest.fixture(scope="module")
 def setup_and_teardown_local_testing():
@@ -1230,6 +1258,7 @@ def setup_and_teardown_local_testing():
             litellm.in_memory_llm_clients_cache.flush_cache()
     yield
 
+
 @pytest.mark.usefixtures(
     "_vcr_outcome_gate_local_testing",
     "isolate_litellm_state",
@@ -1240,6 +1269,7 @@ def test_get_model_cost_map():
         print(litellm.get_model_cost_map(url="fake-url"))
     except Exception as e:
         pytest.fail(f"An exception occurred: {e}")
+
 
 @pytest.mark.usefixtures(
     "_vcr_outcome_gate_local_testing",

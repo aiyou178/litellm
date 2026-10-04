@@ -12297,6 +12297,7 @@ class TestAnthropicMessagesStreamErrorFrame:
 
     async def test_a_torn_frame_still_raises_the_error_in_the_anthropic_sdk(self) -> None:
         wire: Final = await self._wire_bytes((self._CONTENT_DELTA_FRAME, self._TORN_DATA_LINE))
+        import httpx
 
         def serve(request: httpx.Request) -> httpx.Response:
             return httpx.Response(200, headers={"content-type": "text/event-stream"}, content=wire)
@@ -12334,6 +12335,7 @@ class TestAnthropicMessagesStreamErrorFrame:
             self._sse_generator_failing_with(self._upstream_failure(502)), "text/event-stream", {}
         )
         assert isinstance(response, JSONResponse)
+        import httpx
 
         def serve(request: httpx.Request) -> httpx.Response:
             return httpx.Response(response.status_code, headers=dict(response.headers), content=response.body)

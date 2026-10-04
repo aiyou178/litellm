@@ -66,6 +66,7 @@ def mock_sdk_token_exchange_transport(monkeypatch: pytest.MonkeyPatch) -> None:
             response: Final = respx.mock.handler(
                 httpx.Request(request.method, str(request.url), headers=dict(request.headers), content=request.content)
             )
+            response.read()
             return httpx2.Response(response.status_code, headers=dict(response.headers), content=response.content)
 
         monkeypatch.setattr(

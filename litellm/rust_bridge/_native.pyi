@@ -2,7 +2,7 @@ from asyncio import Future
 from collections.abc import Mapping, Sequence
 from typing import Never, final
 
-import httpx
+import httpx2 as httpx
 from pydantic import JsonValue
 
 from litellm.rust_bridge.execution import Execution

@@ -4,7 +4,7 @@ import json
 import logging
 import re
 
-import httpx
+import httpx2 as httpx
 import pytest
 from pydantic import BaseModel
 
@@ -657,7 +657,7 @@ def _assert_remote_images_inlined(content):
 
 
 def test_transform_request_inlines_remote_image_urls(local_cost_map, monkeypatch):
-    import litellm.litellm_core_utils.prompt_templates.image_handling as image_handling
+    from litellm.litellm_core_utils.prompt_templates import image_handling
 
     monkeypatch.setattr(image_handling, "convert_url_to_base64", lambda url: f"data:image/png;base64,{url}")
     body = AmazonBedrockRuntimeChatCompletionsConfig().transform_request(
@@ -672,7 +672,7 @@ def test_transform_request_inlines_remote_image_urls(local_cost_map, monkeypatch
 
 
 async def test_async_transform_request_inlines_remote_image_urls(local_cost_map, monkeypatch):
-    import litellm.litellm_core_utils.prompt_templates.image_handling as image_handling
+    from litellm.litellm_core_utils.prompt_templates import image_handling
 
     async def fake_convert(url, timeout=None):
         return f"data:image/png;base64,{url}"
