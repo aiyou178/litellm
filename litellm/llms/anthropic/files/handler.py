@@ -4,7 +4,7 @@ import time
 from collections.abc import Coroutine
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger
@@ -185,7 +185,11 @@ class AnthropicFilesHandler:
                 if not line.strip():
                     continue
 
-                anthropic_result = json.loads(line)
+                anthropic_result: object = json.loads(line)
+                if not isinstance(anthropic_result, dict):
+                    raise TypeError(
+                        f"Anthropic batch result line is not a JSON object: {type(anthropic_result).__name__}"
+                    )
                 custom_id = anthropic_result.get("custom_id", "")
                 result = anthropic_result.get("result", {})
                 result_type = result.get("type", "")

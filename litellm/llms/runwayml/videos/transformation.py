@@ -3,12 +3,12 @@ from datetime import datetime
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
 from typing_extensions import ReadOnly, TypedDict
 
 import litellm
 from litellm.constants import RUNWAYML_DEFAULT_API_VERSION
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.litellm_core_utils.url_utils import encode_url_path_segment
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.base_llm.videos.transformation import BaseVideoConfig
@@ -616,6 +616,7 @@ class RunwayMLVideoConfig(BaseVideoConfig):
         raw_response: httpx.Response,
         logging_obj: LiteLLMLoggingObj,
         custom_llm_provider: str | None = None,
+        client: HTTPHandler | None = None,
     ) -> VideoObject:
         """
         Transform the RunwayML video status retrieve response.

@@ -1,16 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import BaseConfig
 from litellm.types.llms.openai import AllEmbeddingInputValues, AllMessageValues
 from litellm.types.utils import EmbeddingResponse, ModelResponse
 
 if TYPE_CHECKING:
-    import tiktoken
-
     from litellm.litellm_core_utils.litellm_logging import Logging as _LiteLLMLoggingObj
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
     LiteLLMLoggingObj = _LiteLLMLoggingObj
 else:
@@ -80,7 +79,7 @@ class BaseEmbeddingConfig(BaseConfig, ABC):
         messages: list[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ModelResponse:

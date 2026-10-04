@@ -13,7 +13,7 @@ Reference: https://open.manus.im/docs/openai-compatibility#file-management
 import time
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 from openai.types.file_deleted import FileDeleted
 
 import litellm

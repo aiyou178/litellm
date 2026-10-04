@@ -2,7 +2,7 @@ import types
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 from litellm.types.llms.openai import (
     ResponseInputParam,
@@ -129,6 +129,22 @@ class BaseResponsesAPIConfig(ABC):
         headers: dict,
     ) -> dict:
         pass
+
+    async def async_transform_responses_api_request(
+        self,
+        model: str,
+        input: str | ResponseInputParam,
+        response_api_optional_request_params: dict,
+        litellm_params: GenericLiteLLMParams,
+        headers: dict,
+    ) -> dict:
+        return self.transform_responses_api_request(
+            model=model,
+            input=input,
+            response_api_optional_request_params=response_api_optional_request_params,
+            litellm_params=litellm_params,
+            headers=headers,
+        )
 
     @abstractmethod
     def transform_response_api_response(

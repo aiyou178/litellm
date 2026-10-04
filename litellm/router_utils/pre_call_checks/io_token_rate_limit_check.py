@@ -15,7 +15,7 @@ import contextvars
 from collections.abc import Mapping, MutableMapping
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm import token_counter

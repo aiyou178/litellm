@@ -10,7 +10,7 @@ import logging
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException
 
 
@@ -23,7 +23,7 @@ from litellm.types.proxy.guardrails.guardrail_hooks.bedrock_guardrails import (
     BedrockGuardrailResponse,
 )
 from litellm.types.utils import Choices, Message, ModelResponse
-from tests.test_litellm.llms.bedrock.event_loop_probe import EventLoopProbe
+from tests.unit.llms.bedrock.event_loop_probe import EventLoopProbe
 
 CONTENT_FILTER_CHECKS = {"contentFilter": {"categories": [{"category": "VIOLENCE"}]}}
 

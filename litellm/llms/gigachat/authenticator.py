@@ -11,7 +11,7 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.caching.caching import InMemoryCache
@@ -243,7 +243,7 @@ def _parse_token_response(response: httpx.Response) -> tuple[str, int]:
         )
 
     # expires_at is in milliseconds
-    expires_at: int  # rebind-ok: conditionally assigned from str or int
+    expires_at: int
     if isinstance(expires_at_raw, str):
         expires_at = int(expires_at_raw)  # rebind-ok: conditionally assigned from str or int
     else:

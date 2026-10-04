@@ -1,10 +1,10 @@
 from io import BufferedReader
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
 
 from litellm.images.utils import ImageEditRequestUtils
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.secret_managers.main import get_secret_str
 from litellm.types.images.main import ImageEditOptionalRequestParams

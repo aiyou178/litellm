@@ -1,6 +1,6 @@
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.llms.base_llm.base_utils import BaseLLMModelInfo

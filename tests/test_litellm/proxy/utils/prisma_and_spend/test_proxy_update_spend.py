@@ -86,7 +86,7 @@ async def test_update_end_user_spend_retries_on_connect_error(
     sent) retries with jittered backoff; once retries are exhausted the
     original exception bubbles up via ``_raise_failed_update_spend_exception``.
     """
-    import httpx
+    import httpx2 as httpx
     import litellm.proxy.utils as utils_mod
 
     sleeps: list[float] = []
@@ -118,7 +118,7 @@ async def test_update_end_user_spend_does_not_retry_post_send_ambiguous_errors(
 ) -> None:
     """Post-send errors are ambiguous and retrying can double-apply increments
     (see DB_RETRY_SAFE_ERROR_TYPES); they must raise on the first attempt."""
-    import httpx
+    import httpx2 as httpx
 
     err = getattr(httpx, ambiguous_error_name)("ambiguous")
     mock_prisma_client.db.tx = MagicMock(side_effect=err)
@@ -350,7 +350,7 @@ async def test_update_spend_logs_failure_raises_after_retries(
     """When all retries exhaust the underlying DB error, the helper raises
     via ``_raise_failed_update_spend_exception``.
     """
-    import httpx
+    import httpx2 as httpx
     import litellm.proxy.utils as utils_mod
 
     async def _fake_sleep(_: float) -> None:
@@ -883,3 +883,37 @@ def test_disable_spend_updates_error_when_general_settings_unavailable(
     monkeypatch.delattr(proxy_server_mod, "general_settings", raising=False)
     with pytest.raises(ImportError):
         ProxyUpdateSpend.disable_spend_updates()
+
+
+@pytest.mark.asyncio
+async def test_update_spend_logs_parks_failed_batch_in_redis_with_wire_safe_datetimes(
+    mock_prisma_client: Any, make_spend_log_row: Any, proxy_logging_with_redis: MagicMock, fake_redis: Any
+) -> None:
+    """Regression: a batch the DB rejected used to go back to process memory only. With Redis
+    wired in it must be parked there, and datetimes must come back as ISO strings the DB write
+    accepts, since the row is replayed by a process that never saw the original objects.
+    """
+    from datetime import datetime, timezone
+
+    from prisma.errors import TableNotFoundError
+
+    started = datetime(2026, 9, 19, 20, 0, 5, 123000, tzinfo=timezone.utc)
+    err = TableNotFoundError(
+        {"user_facing_error": {"error_code": "P2021", "message": "The table does not exist", "meta": {}}}
+    )
+    mock_prisma_client.db.litellm_spendlogs.create_many = AsyncMock(side_effect=err)
+    mock_prisma_client.spend_log_transactions = []
+
+    with pytest.raises(TableNotFoundError):
+        await ProxyUpdateSpend.update_spend_logs(
+            n_retry_times=2,
+            prisma_client=mock_prisma_client,
+            db_writer_client=None,
+            proxy_logging_obj=proxy_logging_with_redis,
+            logs_to_process=[make_spend_log_row(request_id="a", startTime=started)],
+        )
+
+    buffer = proxy_logging_with_redis.db_spend_update_writer.redis_update_buffer
+    parked = await buffer.get_spend_logs_from_redis_buffer(limit=10)
+    assert mock_prisma_client.spend_log_transactions == []
+    assert [(row["request_id"], row["startTime"]) for row in parked] == [("a", started.isoformat())]

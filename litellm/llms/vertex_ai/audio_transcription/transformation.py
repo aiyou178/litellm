@@ -1,7 +1,7 @@
 import base64
 from typing import Final
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 import litellm
 from litellm.exceptions import UnsupportedParamsError
@@ -40,6 +40,10 @@ def validate_vertex_transcription_location(location: str | None, default_locatio
         return validate_vertex_location(location or default_location)
     except ValueError as e:
         raise VertexAIError(status_code=400, message=str(e)) from e
+
+
+def speech_to_text_host(location: str) -> str:
+    return "speech.googleapis.com" if location == "global" else f"{location}-speech.googleapis.com"
 
 
 def validate_vertex_transcription_project_id(project_id: str) -> str:
@@ -122,8 +126,7 @@ class VertexAIAudioTranscriptionConfig(BaseAudioTranscriptionConfig, VertexBase)
         project_id: Final = validate_vertex_transcription_project_id(
             self.safe_get_vertex_ai_project(litellm_params) or self._resolve_project_id_from_credentials(litellm_params)
         )
-        host: Final = "speech.googleapis.com" if location == "global" else f"{location}-speech.googleapis.com"
-        base_url: Final = (api_base or f"https://{host}").rstrip("/")
+        base_url: Final = (api_base or f"https://{speech_to_text_host(location)}").rstrip("/")
         return f"{base_url}/v2/projects/{project_id}/locations/{location}/recognizers/_:recognize"
 
     def _resolve_project_id_from_credentials(self, litellm_params: dict) -> str:

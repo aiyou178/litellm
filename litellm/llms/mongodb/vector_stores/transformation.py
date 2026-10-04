@@ -5,7 +5,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Final, Literal, NoReturn
 from urllib.parse import quote, urlsplit
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 
 from litellm.exceptions import AuthenticationError, BadRequestError, ServiceUnavailableError, Timeout
@@ -197,7 +197,7 @@ class MongoDBVectorStoreConfig(BaseQueryEmbeddingVectorStoreConfig):
             **headers,
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-        }  # mutable-ok: writable HTTP headers
+        }
 
     def get_complete_url(self, api_base: str | None, litellm_params: Mapping[str, object]) -> str:
         if not api_base:

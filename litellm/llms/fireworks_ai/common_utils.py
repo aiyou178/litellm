@@ -2,7 +2,7 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import Final
 
-from httpx import Headers
+from httpx2 import Headers
 
 from litellm.constants import SESSION_ID_GENERATED_METADATA_KEY
 from litellm.secret_managers.main import get_secret_str
@@ -59,6 +59,7 @@ def resolve_fireworks_api_key(api_key: str | None) -> str | None:
 
 
 AZURE_FOUNDRY_FIREWORKS_MODEL_ID_PREFIX: Final = "FW-"
+FIREROUTER: Final = "firerouter"
 
 
 def resolve_fireworks_resource_name(model: str) -> str:
@@ -67,7 +68,7 @@ def resolve_fireworks_resource_name(model: str) -> str:
         return stripped
     if stripped.startswith(("routers/", "models/")):
         return f"accounts/fireworks/{stripped}"
-    if stripped.endswith("-fast"):
+    if stripped.endswith("-fast") or stripped == FIREROUTER or stripped.startswith(f"{FIREROUTER}/"):
         return f"accounts/fireworks/routers/{stripped}"
     return f"accounts/fireworks/models/{stripped}"
 

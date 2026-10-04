@@ -9,7 +9,7 @@ Docs: https://openrouter.ai/docs
 
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.embedding.transformation import BaseEmbeddingConfig
 from litellm.types.llms.openai import AllEmbeddingInputValues
@@ -170,7 +170,9 @@ class OpenrouterEmbeddingConfig(BaseEmbeddingConfig):
                 optional_params[param] = value
         return optional_params
 
-    def get_error_class(self, error_message: str, status_code: int, headers: Any) -> Any:
+    def get_error_class(
+        self, error_message: str, status_code: int, headers: dict[str, str] | httpx.Headers
+    ) -> OpenRouterException:
         """
         Get the error class for OpenRouter errors.
         """

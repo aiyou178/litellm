@@ -6,7 +6,7 @@ Uses httpx for HTTP requests with Azure authentication.
 
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger
@@ -33,7 +33,7 @@ class AzureAIAnthropicCountTokensHandler(AzureAIAnthropicCountTokensConfig):
         litellm_params: dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None = None,
         tools: list[dict[str, Any]] | None = None,
-        system: Any | None = None,
+        system: object = None,
     ) -> dict[str, Any]:
         """
         Handle a CountTokens request using httpx with Azure authentication.

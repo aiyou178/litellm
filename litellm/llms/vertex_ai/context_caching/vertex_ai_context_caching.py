@@ -1,6 +1,6 @@
 from typing import Final, Literal
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

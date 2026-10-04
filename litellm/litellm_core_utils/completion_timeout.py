@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.constants import COMPLETION_HTTP_FALLBACK_SECONDS
 

@@ -27,7 +27,7 @@ import os
 from importlib.resources import files
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import verbose_logger
 
@@ -334,7 +334,7 @@ def update_headers_with_filtered_beta(
         Updated headers dict
     """
     existing_beta: Final = headers.get("anthropic-beta")
-    if not existing_beta:
+    if existing_beta is None:
         return headers
 
     # Parse existing beta headers

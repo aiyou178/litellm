@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.llms.custom_httpx.http_handler import get_async_httpx_client
@@ -84,7 +84,7 @@ class GoogleAIStudioTokenCounter:
         api_key: str | None = None,
         api_base: str | None = None,
         timeout: float | httpx.Timeout | None = None,
-        **kwargs,
+        **kwargs: object,
     ) -> dict[str, Any]:
         """
         Count tokens using Google Gen AI Studio countTokens endpoint.

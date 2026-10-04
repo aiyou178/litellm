@@ -4,7 +4,7 @@ Transformation logic for Hosted VLLM rerank
 
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.audio_transcription.transformation import (
     AudioTranscriptionRequestData,

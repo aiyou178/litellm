@@ -34,7 +34,7 @@ from collections.abc import Coroutine, Mapping
 from functools import partial
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.interactions.agents.http_handler import agents_http_handler

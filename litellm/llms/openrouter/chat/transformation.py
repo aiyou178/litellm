@@ -10,7 +10,7 @@ from collections.abc import AsyncIterator, Iterator
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.llms.base_llm.base_model_iterator import BaseModelResponseIterator
@@ -23,9 +23,8 @@ from ...openai.chat.gpt_transformation import OpenAIGPTConfig
 from ..common_utils import OpenRouterException
 
 if TYPE_CHECKING:
-    import tiktoken
-
     from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
 
 class CacheControlSupportedModels(str, Enum):
@@ -182,7 +181,7 @@ class OpenrouterConfig(OpenAIGPTConfig):
         messages: list[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ModelResponse:

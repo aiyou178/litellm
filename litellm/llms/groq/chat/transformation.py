@@ -5,7 +5,7 @@ Translate from OpenAI's `/v1/chat/completions` to Groq's `/v1/chat/completions`
 from collections.abc import AsyncIterator, Coroutine, Iterator
 from typing import TYPE_CHECKING, Any, Final, Literal, cast, overload
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
 import litellm
@@ -27,7 +27,7 @@ from litellm.types.utils import ModelResponse, ModelResponseStream, ServerToolUs
 from ...openai_like.chat.transformation import OpenAILikeChatConfig
 
 if TYPE_CHECKING:
-    import tiktoken
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
 GROQ_COMPOUND_MODELS: Final = frozenset({"compound", "compound-mini"})
 
@@ -286,7 +286,7 @@ class GroqChatConfig(OpenAILikeChatConfig):
         messages: list[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ModelResponse:

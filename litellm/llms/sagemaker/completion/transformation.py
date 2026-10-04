@@ -8,10 +8,9 @@ import json
 import time
 from typing import TYPE_CHECKING, Any, Final
 
-from httpx._models import Headers, Response
-
 import litellm
 from litellm.litellm_core_utils.asyncify import asyncify
+from litellm.litellm_core_utils.httpx2_compat import Headers, Response
 from litellm.litellm_core_utils.prompt_templates.factory import (
     custom_prompt,
     prompt_factory,
@@ -24,9 +23,8 @@ from litellm.utils import token_counter
 from ..common_utils import SagemakerError
 
 if TYPE_CHECKING:
-    import tiktoken
-
     from litellm.litellm_core_utils.litellm_logging import Logging as _LiteLLMLoggingObj
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
     LiteLLMLoggingObj = _LiteLLMLoggingObj
 else:
@@ -198,7 +196,7 @@ class SagemakerConfig(BaseConfig):
         messages: list[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ModelResponse:

@@ -5,7 +5,7 @@ import time
 from collections.abc import Mapping
 from typing import Final, TypeAlias
 
-import httpx
+import httpx2 as httpx
 from pydantic import JsonValue, TypeAdapter, ValidationError
 
 from litellm._logging import verbose_logger

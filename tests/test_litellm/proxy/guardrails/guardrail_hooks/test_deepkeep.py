@@ -1,7 +1,7 @@
 import os
 import pytest
 from unittest.mock import patch, MagicMock, AsyncMock
-from httpx import Response, Request
+from httpx2 import Response, Request
 
 
 import litellm
@@ -312,7 +312,7 @@ class TestDeepKeepGuardrail:
             event_hook="pre_call",
         )
 
-        import httpx
+        import httpx2 as httpx
 
         with patch.object(
             guardrail.async_handler,
@@ -339,7 +339,7 @@ class TestDeepKeepGuardrail:
             event_hook="pre_call",
         )
 
-        import httpx
+        import httpx2 as httpx
 
         with patch.object(
             guardrail.async_handler,

@@ -3,8 +3,8 @@ import enum
 import re
 from typing import TYPE_CHECKING, Final, cast
 
-import httpx
-from httpx import Response
+import httpx2 as httpx
+from httpx2 import Response
 
 import litellm
 from litellm._logging import verbose_logger
@@ -30,7 +30,7 @@ from litellm.types.utils import ModelResponse, ProviderField
 from litellm.utils import _add_path_to_api_base, supports_tool_choice
 
 if TYPE_CHECKING:
-    import tiktoken
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
 
 class AzureFoundryErrorStrings(str, enum.Enum):
@@ -305,7 +305,7 @@ class AzureAIStudioConfig(OpenAIConfig):
         messages: list[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ModelResponse:

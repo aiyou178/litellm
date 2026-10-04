@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import BaseConfig
 from litellm.types.llms.openai import (
@@ -12,9 +12,8 @@ from litellm.types.llms.openai import (
 from litellm.types.utils import FileTypes, ModelResponse, TranscriptionResponse
 
 if TYPE_CHECKING:
-    import tiktoken
-
     from litellm.litellm_core_utils.litellm_logging import Logging as _LiteLLMLoggingObj
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
     LiteLLMLoggingObj = _LiteLLMLoggingObj
 else:
@@ -49,6 +48,15 @@ class BaseAudioTranscriptionConfig(BaseConfig, ABC):
         and the user asked for response_format srt/vtt, the http handler
         synthesizes the subtitle document from the word timestamps the
         provider's TranscriptionResponse carries in `words`.
+        """
+        return False
+
+    @property
+    def has_native_transcription_endpoint(self) -> bool:
+        """
+        Opt-in for OpenAI-compatible providers whose transcription lives on a
+        non-OpenAI route: when True the request skips the OpenAI SDK transport
+        and goes through this config via the shared http handler.
         """
         return False
 
@@ -112,7 +120,7 @@ class BaseAudioTranscriptionConfig(BaseConfig, ABC):
         messages: list[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ModelResponse:

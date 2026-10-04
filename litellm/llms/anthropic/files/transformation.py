@@ -16,7 +16,7 @@ import calendar
 import time
 from typing import Final, cast
 
-import httpx
+import httpx2 as httpx
 from openai.types.file_deleted import FileDeleted
 
 from litellm.litellm_core_utils.prompt_templates.common_utils import extract_file_data

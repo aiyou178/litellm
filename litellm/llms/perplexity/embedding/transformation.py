@@ -15,7 +15,7 @@ import base64
 import struct
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
@@ -130,7 +130,7 @@ class PerplexityEmbeddingConfig(BaseEmbeddingConfig):
         if isinstance(embedding_value, str):
             raw_bytes: Final = base64.b64decode(embedding_value)
             count: Final = len(raw_bytes)
-            int8_values: Final = struct.unpack(f"{count}b", raw_bytes)
+            int8_values: Final[tuple[int, ...]] = struct.unpack(f"{count}b", raw_bytes)
             return [float(v) / 127.0 for v in int8_values]
         return embedding_value
 

@@ -2,7 +2,7 @@ import os
 import pytest
 import uuid
 from unittest.mock import patch, MagicMock
-from httpx import Response, Request
+from httpx2 import Response, Request
 from fastapi import HTTPException
 
 

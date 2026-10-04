@@ -9,7 +9,7 @@ import time
 from collections.abc import Coroutine, Sequence
 from typing import TYPE_CHECKING, Any, Final, TypedDict, Union
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import ReadOnly
 
 import litellm
@@ -78,7 +78,7 @@ class RunwayMLTextToSpeechConfig(BaseTextToSpeechConfig):
         aspeech: bool,
         api_base: str | None,
         api_key: str | None,
-        **kwargs: Any,
+        **kwargs: object,
     ) -> Union[
         "HttpxBinaryResponseContent",
         Coroutine[object, object, "HttpxBinaryResponseContent"],

@@ -5,7 +5,7 @@ Base Search transformation configuration.
 from typing import TYPE_CHECKING, Any, Final, Literal
 from urllib.parse import urlsplit
 
-import httpx
+import httpx2 as httpx
 from pydantic import PrivateAttr
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
@@ -94,6 +94,18 @@ class BaseSearchConfig:
         Override in provider-specific implementations.
         """
         return "Unknown Search Provider"
+
+    def supports_rich_search_input(self) -> bool:
+        """
+        Whether this provider's search API accepts a natural-language
+        objective plus multiple keyword queries in one request.
+
+        Integrations that collect the richer shape (e.g. websearch
+        interception) forward ``query`` as a list plus an ``objective``
+        optional param to providers that return True; every other provider
+        keeps receiving the single query string.
+        """
+        return False
 
     def get_http_method(self) -> Literal["GET", "POST"]:
         """

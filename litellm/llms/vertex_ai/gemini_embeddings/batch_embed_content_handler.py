@@ -3,9 +3,9 @@ Google AI Studio /batchEmbedContents Embeddings Endpoint
 """
 
 import json
-from typing import TYPE_CHECKING, Any, Final, Literal
+from typing import TYPE_CHECKING, Final, Literal
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm.llms.custom_httpx.http_handler import (
@@ -210,7 +210,7 @@ class GoogleBatchEmbeddings(VertexLLM):
             )
 
         ### TRANSFORMATION (sync path) ###
-        request_data: Any
+        request_data: VertexAIBatchEmbeddingsRequestBody | dict[str, object]
         if use_embed_content:
             resolved_files = {}
             if api_key:

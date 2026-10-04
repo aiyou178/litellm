@@ -3,7 +3,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Final
 from urllib.parse import unquote
 
-import httpx
+import httpx2 as httpx
 from openai.types.responses import EasyInputMessageParam, ResponseInputContentParam, ResponseInputItemParam
 
 from litellm.llms.fireworks_ai.common_utils import (

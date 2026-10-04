@@ -3,9 +3,9 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
 
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.types.images.main import ImageEditOptionalRequestParams
 from litellm.types.responses.main import *
 from litellm.types.router import GenericLiteLLMParams

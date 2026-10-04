@@ -4,7 +4,7 @@ import types
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.types.containers.main import ContainerCreateOptionalRequestParams
 from litellm.types.router import GenericLiteLLMParams

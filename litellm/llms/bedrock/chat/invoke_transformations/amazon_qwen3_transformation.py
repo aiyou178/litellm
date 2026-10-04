@@ -8,7 +8,7 @@ Qwen3 + Invoke API Tutorial: https://docs.aws.amazon.com/bedrock/latest/userguid
 
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import BaseConfig
 from litellm.llms.bedrock.chat.invoke_transformations.base_invoke_transformation import (
@@ -19,7 +19,7 @@ from litellm.types.llms.openai import AllMessageValues
 from litellm.types.utils import ModelResponse, Usage
 
 if TYPE_CHECKING:
-    import tiktoken
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
 
 class AmazonQwen3Config(AmazonInvokeConfig, BaseConfig):
@@ -170,7 +170,7 @@ class AmazonQwen3Config(AmazonInvokeConfig, BaseConfig):
         messages: list[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ModelResponse:

@@ -44,11 +44,11 @@ import base64
 from io import BufferedReader, BytesIO
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
 
 import litellm
 from litellm.images.utils import ImageEditRequestUtils
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.llms.openrouter.common_utils import OpenRouterException
@@ -90,20 +90,21 @@ class OpenRouterImageEditConfig(BaseImageEditConfig):
         drop_params: bool,
     ) -> dict:
         supported_params: Final = self.get_supported_openai_params(model)
-        mapped_params: Final[dict[str, Any]] = {}
+        mapped_params: Final[dict[str, object]] = {}
+        image_config: Final[dict[str, str]] = {}
 
         for key, value in image_edit_optional_params.items():
             if key in supported_params:
                 if key == "size":
                     if "image_config" not in mapped_params:
-                        mapped_params["image_config"] = {}
-                    mapped_params["image_config"]["aspect_ratio"] = self._map_size_to_aspect_ratio(cast(str, value))
+                        mapped_params["image_config"] = image_config
+                    image_config["aspect_ratio"] = self._map_size_to_aspect_ratio(cast(str, value))
                 elif key == "quality":
                     image_size = self._map_quality_to_image_size(cast(str, value))
                     if image_size:
                         if "image_config" not in mapped_params:
-                            mapped_params["image_config"] = {}
-                        mapped_params["image_config"]["image_size"] = image_size
+                            mapped_params["image_config"] = image_config
+                        image_config["image_size"] = image_size
                 else:
                     mapped_params[key] = value
 

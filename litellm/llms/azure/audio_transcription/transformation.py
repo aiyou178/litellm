@@ -8,7 +8,7 @@ recognition for short audio.
 from typing import Any, Final
 from urllib.parse import urlencode, urlparse
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.audio_utils.utils import process_audio_file
 from litellm.llms.base_llm.audio_transcription.transformation import (
