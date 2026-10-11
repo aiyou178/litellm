@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.llms.custom_httpx.http_handler import _get_httpx_client

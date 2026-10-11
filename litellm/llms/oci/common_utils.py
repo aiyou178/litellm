@@ -8,7 +8,7 @@ from email.utils import formatdate
 from typing import Final, Protocol
 from urllib.parse import urlparse
 
-import httpx
+import httpx2 as httpx
 from pydantic import JsonValue
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

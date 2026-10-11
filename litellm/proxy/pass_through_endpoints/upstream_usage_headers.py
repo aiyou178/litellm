@@ -10,7 +10,7 @@ import math
 from dataclasses import dataclass
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_proxy_logger
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj

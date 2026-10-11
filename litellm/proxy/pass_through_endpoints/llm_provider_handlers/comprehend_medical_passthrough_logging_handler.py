@@ -4,7 +4,7 @@ from datetime import datetime
 from types import MappingProxyType
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_proxy_logger
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
@@ -67,7 +67,7 @@ class ComprehendMedicalPassthroughLoggingHandler:
             )
             model_name: Final = f"comprehendmedical/{operation}"
 
-            updated_kwargs: Final = {  # mutable-ok: the logging pipeline requires a plain kwargs dict
+            updated_kwargs: Final = {
                 **kwargs,
                 "model": model_name,
                 "custom_llm_provider": "comprehendmedical",

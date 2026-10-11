@@ -7,9 +7,8 @@ from types import MappingProxyType
 from typing import Final
 from urllib.parse import urlparse
 
-from httpx._types import FileTypes, RequestFiles
-
 from litellm.images.utils import ImageEditRequestUtils
+from litellm.litellm_core_utils.httpx2_compat import FileTypes, RequestFiles
 from litellm.litellm_core_utils.url_utils import SSRFError, validate_url
 from litellm.llms.openai.videos.transformation import OpenAIVideoConfig
 from litellm.secret_managers.main import get_secret_str
@@ -135,7 +134,7 @@ class HostedVLLMVideoConfig(OpenAIVideoConfig):
     """
 
     def get_supported_openai_params(self, model: str) -> list:  # mutable-ok: BaseVideoConfig contract
-        return [  # mutable-ok: BaseVideoConfig returns list
+        return [
             *super().get_supported_openai_params(model),
             *_VLLM_OMNI_VIDEO_PARAMS,
         ]
@@ -146,9 +145,7 @@ class HostedVLLMVideoConfig(OpenAIVideoConfig):
         model: str,
         drop_params: bool,
     ) -> dict:  # mutable-ok: BaseVideoConfig contract; extra_body merge mutates this dict
-        return {  # mutable-ok: VideoGenerationRequestUtils.update/pop extra_body onto this mapping
-            key: value for key, value in video_create_optional_params.items() if value is not None
-        }
+        return {key: value for key, value in video_create_optional_params.items() if value is not None}
 
     def validate_environment(
         self,
@@ -163,7 +160,7 @@ class HostedVLLMVideoConfig(OpenAIVideoConfig):
             or get_secret_str("HOSTED_VLLM_API_KEY")
             or "fake-api-key"
         )
-        return {**headers, "Authorization": f"Bearer {resolved_key}"}  # mutable-ok: httpx headers are a dict
+        return {**headers, "Authorization": f"Bearer {resolved_key}"}
 
     def get_complete_url(
         self,
@@ -191,10 +188,10 @@ class HostedVLLMVideoConfig(OpenAIVideoConfig):
         litellm_params: GenericLiteLLMParams,
         headers: dict,  # mutable-ok: BaseVideoConfig contract
     ) -> tuple[dict, RequestFiles, str]:  # mutable-ok: BaseVideoConfig contract
-        data: Final = {  # mutable-ok: BaseVideoConfig contract returns a data dict
+        data: Final = {
             "model": model,
             "prompt": prompt,
-            **{  # mutable-ok: spread remaining Omni form fields into that data dict
+            **{
                 key: _form_value(key, value)
                 for key, value in video_create_optional_request_params.items()
                 if key not in _EXCLUDED_FORM_KEYS and value is not None

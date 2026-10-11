@@ -8,7 +8,7 @@ from collections.abc import Mapping, Sequence
 from types import MappingProxyType
 from typing import Final, TypedDict
 
-import httpx
+import httpx2 as httpx
 from pydantic import BaseModel, ConfigDict
 from typing_extensions import ReadOnly
 
@@ -89,6 +89,11 @@ class ParallelAISearchConfig(BaseSearchConfig):
     @staticmethod
     def ui_friendly_name() -> str:
         return "Parallel AI"
+
+    def supports_rich_search_input(self) -> bool:
+        # The v1 search API takes `objective` + multiple `search_queries`
+        # natively; sending both is the documented best practice.
+        return True
 
     def validate_environment(
         self,

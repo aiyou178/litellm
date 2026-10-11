@@ -7,7 +7,7 @@ Reference: https://docs.fireworks.ai/inference-api-reference/rerank
 from collections.abc import Mapping
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm._uuid import uuid
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
@@ -250,8 +250,7 @@ class FireworksAIRerankConfig(FireworksAIMixin, BaseRerankConfig):
 
             rerank_results.append(rerank_result)
 
-        # Use model name as id if no id is provided
-        response_id: Final = raw_response_json.get("id") or raw_response_json.get("model") or str(uuid.uuid4())
+        response_id: Final = raw_response_json.get("id") or str(uuid.uuid4())
 
         return RerankResponse(
             id=response_id,

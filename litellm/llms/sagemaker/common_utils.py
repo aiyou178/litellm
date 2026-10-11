@@ -3,7 +3,7 @@ import json
 from collections.abc import AsyncIterator, Iterator
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm import verbose_logger

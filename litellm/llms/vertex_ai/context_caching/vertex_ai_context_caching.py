@@ -1,6 +1,6 @@
 from typing import Final, Literal
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger
@@ -322,6 +322,7 @@ class ContextCachingEndpoints(VertexBase):
         if not is_prompt_caching_valid_prompt(
             model=model,
             messages=cached_messages,
+            tools=optional_params.get("tools"),
             custom_llm_provider=custom_llm_provider,
         ):
             verbose_logger.debug(
@@ -481,6 +482,7 @@ class ContextCachingEndpoints(VertexBase):
         if not is_prompt_caching_valid_prompt(
             model=model,
             messages=cached_messages,
+            tools=optional_params.get("tools"),
             custom_llm_provider=custom_llm_provider,
         ):
             verbose_logger.debug(

@@ -2,7 +2,7 @@ from collections.abc import Mapping
 from typing import Final
 from urllib.parse import parse_qs
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.constants import PASS_THROUGH_HEADER_PREFIX
@@ -17,6 +17,7 @@ _PASS_THROUGH_PROTECTED_HEADERS: Final[frozenset] = frozenset(
         "api-key",
         "x-api-key",
         "x-goog-api-key",
+        "ocp-apim-subscription-key",
         "host",
         "content-length",
         "accept-encoding",

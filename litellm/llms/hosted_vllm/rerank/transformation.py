@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 from pydantic import ValidationError
 
 from litellm._uuid import uuid

@@ -5,7 +5,7 @@ Common utilities for the DashScope LLM provider.
 from typing import TYPE_CHECKING, Final
 from urllib.parse import urlparse
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.secret_managers.main import get_secret_str
@@ -103,7 +103,7 @@ def missing_dashscope_family_key_message(custom_llm_provider: str) -> str:
         )
     if custom_llm_provider == "qwen_ai_platform":
         return (
-            "Missing API key for Qwen AI Platform. Set QWEN_AI_PLATFORM_API_KEY or "
+            "Missing API key for Qianwen AI Platform. Set QWEN_AI_PLATFORM_API_KEY or "
             "DASHSCOPE_API_KEY environment variable or pass api_key parameter."
         )
     return "Missing API key for DashScope. Set DASHSCOPE_API_KEY environment variable or pass api_key parameter."

@@ -3,8 +3,8 @@ from collections.abc import Callable, Collection, Mapping, Sequence
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final, Optional
 
-import httpx
-from httpx import Response
+import httpx2 as httpx
+from httpx2 import Response
 from pydantic import BaseModel, ValidationError
 
 from litellm.litellm_core_utils.litellm_logging import Logging
@@ -22,7 +22,7 @@ from litellm.types.router import GenericLiteLLMParams
 from litellm.types.utils import CallTypes, EmbeddingResponse, ImageResponse
 
 if TYPE_CHECKING:
-    from httpx import URL
+    from httpx2 import URL
 
     from litellm.llms.base_llm.passthrough.transformation import LoggedRelayResponse
 
@@ -59,13 +59,21 @@ def logged_responses_stream(all_chunks: Sequence[str], logging_obj: Logging) -> 
     terminal_event: Final = OpenAIResponsesAPIConfig.parse_terminal_event_from_stream_chunks(all_chunks=all_chunks)
     if terminal_event is None:
         return None
-    logging_obj.call_type = (
-        RESPONSES_RELAY_SHAPE.call_type.value
-    )  # rebind-ok: routes cost calculation to the relayed shape's pricing path
+    logging_obj.call_type = RESPONSES_RELAY_SHAPE.call_type.value
     return terminal_event
 
 
 AZURE_DEPLOYMENT_SEGMENT: Final = re.compile(r"(?<![^/])openai/deployments/([^/]+)")
+AZURE_BODY_MODEL_INFERENCE_ENDPOINTS: Final = frozenset(
+    {"responses", "chat/completions", "completions", "embeddings", "images/generations", "audio/speech"}
+)
+
+
+def is_azure_body_model_inference_endpoint(endpoint: str) -> bool:
+    if AZURE_DEPLOYMENT_SEGMENT.search(endpoint) is not None:
+        return False
+    path: Final = endpoint.strip("/")
+    return any(path == name or path.endswith(f"/{name}") for name in AZURE_BODY_MODEL_INFERENCE_ENDPOINTS)
 
 
 def azure_router_model_in_endpoint(endpoint: str, router_models: Collection[str]) -> str | None:
@@ -143,7 +151,7 @@ class AzurePassthroughConfig(BasePassthroughConfig):
     ) -> dict:
         return BaseAzureLLM._base_validate_azure_environment(
             headers=headers,
-            litellm_params=GenericLiteLLMParams(**{**litellm_params, "api_key": api_key}),
+            litellm_params=GenericLiteLLMParams.model_validate({**litellm_params, "api_key": api_key}),
         )
 
     @staticmethod

@@ -6,9 +6,9 @@
 # +-------------------------------------------------------------+
 import os
 import uuid
-from typing import TYPE_CHECKING, Any, Final, Literal, Optional
+from typing import TYPE_CHECKING, Final, Literal, Optional
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException
 
 from litellm._logging import verbose_proxy_logger
@@ -63,7 +63,7 @@ class OnyxGuardrail(CustomGuardrail):
 
     async def _validate_with_guard_server(
         self,
-        payload: Any,
+        payload: object,
         input_type: Literal["request", "response"],
         conversation_id: str,
     ) -> dict:

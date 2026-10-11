@@ -2,7 +2,7 @@ import base64
 from collections.abc import Mapping, Sequence
 from typing import Final
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 import litellm
 from litellm.exceptions import UnsupportedParamsError

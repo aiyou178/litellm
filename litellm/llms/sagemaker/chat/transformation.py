@@ -7,12 +7,13 @@ LiteLLM Docs: https://docs.litellm.ai/docs/providers/aws_sagemaker#sagemaker-mes
 Huggingface Docs: https://huggingface.co/docs/text-generation-inference/en/messages_api
 """
 
+from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
-from httpx._models import Headers
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.aws_partition import get_aws_dns_suffix
+from litellm.litellm_core_utils.httpx2_compat import Headers
 from litellm.litellm_core_utils.logging_utils import track_llm_api_timing
 from litellm.litellm_core_utils.streaming_handler import CustomStreamWrapper
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
@@ -149,6 +150,8 @@ class SagemakerChatConfig(OpenAIGPTConfig, BaseAWSLLM):
         client: HTTPHandler | AsyncHTTPHandler | None = None,
         json_mode: bool | None = None,
         signed_json_body: bytes | None = None,
+        *,
+        litellm_params: Mapping[str, object],
     ) -> CustomStreamWrapper:
         if client is None or isinstance(client, AsyncHTTPHandler):
             client = _get_httpx_client(params={})
@@ -191,6 +194,8 @@ class SagemakerChatConfig(OpenAIGPTConfig, BaseAWSLLM):
         client: HTTPHandler | AsyncHTTPHandler | None = None,
         json_mode: bool | None = None,
         signed_json_body: bytes | None = None,
+        *,
+        litellm_params: Mapping[str, object],
     ) -> CustomStreamWrapper:
         if client is None or isinstance(client, HTTPHandler):
             try:

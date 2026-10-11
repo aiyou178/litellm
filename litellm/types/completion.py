@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Coroutine, Iterable
+from collections.abc import Callable, Coroutine, Iterable, Mapping
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Literal, Union
 
@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict
 from typing_extensions import Required, TypedDict
 
 if TYPE_CHECKING:
-    import httpx
+    import httpx2 as httpx
     from aiohttp import ClientSession
 
     from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
@@ -229,6 +229,7 @@ class _CompletionDispatchContext:
     optional_params: dict
     organization: str | None
     provider_config: BaseConfig | None
+    request_params: Mapping[str, object]
     shared_session: ClientSession | None
     stream: bool | None
     temperature: float | None

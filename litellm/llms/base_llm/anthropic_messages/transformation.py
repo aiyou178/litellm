@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING, Any
 
-import httpx
+import httpx2 as httpx
 
 from litellm.types.llms.anthropic_messages.anthropic_response import (
     AnthropicMessagesResponse,
@@ -127,6 +127,9 @@ class BaseAnthropicMessagesConfig(ABC):
         return True so those requests flow through untouched.
         """
         return True
+
+    def uses_get_llm_provider_api_base(self) -> bool:
+        return False
 
     def get_async_streaming_response_iterator(
         self,

@@ -9,7 +9,7 @@ Docs - https://jina.ai/reranker
 from collections.abc import Mapping, Sequence
 from typing import Final
 
-from httpx import URL, Response
+from httpx2 import URL, Response
 
 from litellm._uuid import uuid
 from litellm.llms.base_llm.chat.transformation import LiteLLMLoggingObj

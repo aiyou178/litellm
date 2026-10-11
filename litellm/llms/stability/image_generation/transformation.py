@@ -8,7 +8,7 @@ API Reference: https://platform.stability.ai/docs/api-reference
 
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.image_generation.transformation import (
     BaseImageGenerationConfig,
@@ -26,9 +26,8 @@ from litellm.types.llms.stability import (
 from litellm.types.utils import ImageObject, ImageResponse
 
 if TYPE_CHECKING:
-    import tiktoken
-
     from litellm.litellm_core_utils.litellm_logging import Logging as _LiteLLMLoggingObj
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
     LiteLLMLoggingObj = _LiteLLMLoggingObj
 else:
@@ -207,7 +206,7 @@ class StabilityImageGenerationConfig(BaseImageGenerationConfig):
         request_data: dict,
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ImageResponse:

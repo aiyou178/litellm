@@ -10,7 +10,7 @@ from __future__ import annotations
 import types
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm import LlmProviders
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
@@ -112,7 +112,7 @@ class GigaChatEmbeddingConfig(BaseEmbeddingConfig):
             "input": ["text1", "text2", ...]
         }
         """
-        normalized_input: Final = [input] if isinstance(input, str) else input  # mutable-ok: preserve list API
+        normalized_input: Final = [input] if isinstance(input, str) else input
         return {
             "model": model.removeprefix("gigachat/"),
             "input": normalized_input,

@@ -2,8 +2,8 @@ import types
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
-import httpx
-from httpx import Headers
+import httpx2 as httpx
+from httpx2 import Headers
 
 from litellm.types.llms.openai import (
     AllMessageValues,

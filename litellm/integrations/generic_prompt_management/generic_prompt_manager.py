@@ -7,7 +7,7 @@ import json
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.integrations.custom_prompt_management import CustomPromptManagement
 from litellm.integrations.prompt_management_base import (
@@ -58,7 +58,7 @@ class GenericPromptManager(CustomPromptManagement):
         api_key: str | None = None,
         timeout: int = 30,
         prompt_id: str | None = None,
-        additional_provider_specific_query_params: dict[str, Any] | None = None,
+        additional_provider_specific_query_params: Mapping[str, object] | None = None,
         **kwargs,
     ):
         """

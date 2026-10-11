@@ -4,7 +4,7 @@ import json
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.passthrough.transformation import BasePassthroughConfig
 from litellm.llms.gigachat.authenticator import get_access_token
@@ -15,7 +15,7 @@ from litellm.types.llms.openai import AllMessageValues
 from litellm.types.utils import EmbeddingResponse
 
 if TYPE_CHECKING:
-    from httpx import URL, Response
+    from httpx2 import URL, Response
 
     from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
     from litellm.types.utils import CostResponseTypes
@@ -93,16 +93,14 @@ class GigaChatPassthroughConfig(BasePassthroughConfig):
             raw_messages: Final = request_data.get("messages")
             litellm_model_response: Final = provider_chat_config.transform_response(
                 model=model,
-                messages=list(raw_messages)
-                if isinstance(raw_messages, list)
-                else [],  # mutable-ok: transform_response wants a list
+                messages=list(raw_messages) if isinstance(raw_messages, list) else [],
                 raw_response=httpx_response,
                 model_response=ModelResponse(),
                 logging_obj=logging_obj,
-                optional_params={},  # mutable-ok: empty dict kwarg for transform_response
-                litellm_params={},  # mutable-ok: empty dict kwarg for transform_response
+                optional_params={},
+                litellm_params={},
                 api_key="",
-                request_data=dict(request_data),  # mutable-ok: transform_response wants a dict
+                request_data=dict(request_data),
                 encoding=encoding,
             )
 
@@ -123,10 +121,10 @@ class GigaChatPassthroughConfig(BasePassthroughConfig):
                     raw_response=httpx_response,
                     model_response=EmbeddingResponse(),
                     logging_obj=logging_obj,
-                    optional_params={},  # mutable-ok: empty dict kwarg for transform_embedding_response
+                    optional_params={},
                     api_key="",
-                    request_data=dict(request_data),  # mutable-ok: transform_embedding_response wants a dict
-                    litellm_params={},  # mutable-ok: empty dict kwarg for transform_embedding_response
+                    request_data=dict(request_data),
+                    litellm_params={},
                 )
             )
 

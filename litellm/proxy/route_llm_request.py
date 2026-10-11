@@ -2,7 +2,7 @@ import asyncio
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final, Literal
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException, status
 
 import litellm
@@ -90,6 +90,8 @@ ROUTE_ENDPOINT_MAPPING: Final = {
     "acompact_responses": "/responses/compact",
     "aocr": "/ocr",
     "asearch": "/search",
+    "adecisions": "/decisions",
+    "asystemone": "/systemone",
     "avideo_generation": "/videos",
     "avideo_list": "/videos",
     "avideo_status": "/videos/{video_id}",
@@ -142,6 +144,7 @@ ROUTE_ENDPOINT_MAPPING: Final = {
     "acancel_run": "/evals/{eval_id}/runs/{run_id}/cancel",
     "adelete_run": "/evals/{eval_id}/runs/{run_id}",
     "acreate_batch": "/batches",
+    "aretrieve_batch": "/batches",
 }
 
 
@@ -159,6 +162,7 @@ class ProxyModelNotFoundError(HTTPException):
 REQUIRED_BODY_PARAMS_BY_ROUTE: Final[Mapping[str, tuple[str, ...]]] = {
     "acompletion": ("messages",),
     "aembedding": ("input",),
+    "aresponses": ("input",),
     "acreate_batch": ("input_file_id", "endpoint", "completion_window"),
 }
 
@@ -190,7 +194,7 @@ class MockTestingParamsDisabledError(HTTPException):
     def __init__(self, params: tuple[str, ...]):
         super().__init__(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail={  # mutable-ok: HTTPException.detail has no immutable form; same shape as the sibling errors here
+            detail={
                 "error": (
                     f"Mock testing request params are disabled on this proxy: {', '.join(params)}. "
                     f"An admin can enable them by setting `general_settings.{MOCK_TESTING_CONFIG_KEY}: true` "
@@ -371,6 +375,8 @@ RouteType = Literal[
     "avector_store_file_delete",
     "aocr",
     "asearch",
+    "adecisions",
+    "asystemone",
     "avideo_generation",
     "avideo_list",
     "avideo_status",

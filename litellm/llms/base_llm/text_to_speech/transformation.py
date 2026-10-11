@@ -2,7 +2,7 @@ import types
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, TypedDict
 
-import httpx
+import httpx2 as httpx
 
 if TYPE_CHECKING:
     from litellm.litellm_core_utils.litellm_logging import Logging as _LiteLLMLoggingObj

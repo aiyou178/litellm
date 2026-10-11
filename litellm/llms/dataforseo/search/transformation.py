@@ -6,7 +6,7 @@ DataForSEO API Reference: https://docs.dataforseo.com/v3/serp/google/organic/liv
 
 from typing import Final, Literal
 
-import httpx
+import httpx2 as httpx
 
 from litellm.constants import DEFAULT_DATAFORSEO_LOCATION_CODE
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj

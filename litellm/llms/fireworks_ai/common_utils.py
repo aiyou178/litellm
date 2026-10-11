@@ -2,7 +2,7 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import Final
 
-from httpx import Headers
+from httpx2 import Headers
 
 from litellm.constants import SESSION_ID_GENERATED_METADATA_KEY
 from litellm.secret_managers.main import get_secret_str
@@ -59,6 +59,8 @@ def resolve_fireworks_api_key(api_key: str | None) -> str | None:
 
 
 AZURE_FOUNDRY_FIREWORKS_MODEL_ID_PREFIX: Final = "FW-"
+FIREROUTER: Final = "firerouter"
+ROUTER_SHORT_NAMES: Final = frozenset({FIREROUTER, "auto", "auto-instant"})
 
 
 def resolve_fireworks_resource_name(model: str) -> str:
@@ -67,7 +69,7 @@ def resolve_fireworks_resource_name(model: str) -> str:
         return stripped
     if stripped.startswith(("routers/", "models/")):
         return f"accounts/fireworks/{stripped}"
-    if stripped.endswith("-fast"):
+    if stripped.endswith("-fast") or stripped in ROUTER_SHORT_NAMES or stripped.startswith(f"{FIREROUTER}/"):
         return f"accounts/fireworks/routers/{stripped}"
     return f"accounts/fireworks/models/{stripped}"
 
@@ -109,4 +111,4 @@ class FireworksAIMixin:
 
     def _add_session_affinity_header(self, headers: dict, litellm_params: dict) -> dict:
         pinned: Final = with_fireworks_session_affinity(headers, litellm_params)
-        return dict(pinned)  # mutable-ok: the HTTP handler updates the returned headers in place
+        return dict(pinned)

@@ -10,7 +10,7 @@ Talks to e2b's REST API directly over httpx (no e2b SDK dependency):
 import json
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.llms.base_llm.sandbox.transformation import (
     SANDBOX_MAX_OUTPUT_BYTES,

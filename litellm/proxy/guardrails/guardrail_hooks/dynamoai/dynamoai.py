@@ -10,7 +10,7 @@ from collections.abc import AsyncGenerator, AsyncIterable
 from datetime import datetime
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_proxy_logger
@@ -130,6 +130,7 @@ class DynamoAIGuardrails(CustomGuardrail):
                 url=self.api_url,
                 json=dict(payload),
                 headers=headers,
+                timeout=self.timeout,
             )
             response.raise_for_status()
             response_json: Final = response.json()

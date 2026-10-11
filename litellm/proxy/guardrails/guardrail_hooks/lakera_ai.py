@@ -13,7 +13,7 @@ import json
 import sys
 from typing import Final, Literal
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException
 
 import litellm
@@ -250,6 +250,7 @@ class lakeraAI_Moderation(CustomGuardrail):
                     "Authorization": "Bearer " + self.lakera_api_key,
                     "Content-Type": "application/json",
                 },
+                timeout=self.timeout,
             )
         except httpx.HTTPStatusError as e:
             raise Exception(e.response.text)

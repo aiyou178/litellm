@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Final
 
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 import litellm
 from litellm.llms.base_llm.chat.transformation import (
@@ -14,7 +14,7 @@ from litellm.types.utils import ModelResponse
 from ..common_utils import PetalsError
 
 if TYPE_CHECKING:
-    import tiktoken
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
 
 class PetalsConfig(BaseConfig):
@@ -112,7 +112,7 @@ class PetalsConfig(BaseConfig):
         messages: list[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
         json_mode: bool | None = None,
     ) -> ModelResponse:

@@ -11,7 +11,7 @@ APISerpent API Reference: https://apiserpent.com/docs
 from typing import Final, Literal, cast
 from urllib.parse import urlencode
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.apiserpent.search.defaults import (

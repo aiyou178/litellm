@@ -7,7 +7,7 @@ Uses httpx for HTTP requests to OpenAI's /v1/responses/input_tokens endpoint.
 import json
 from typing import Any, Final
 
-import httpx
+import httpx2 as httpx
 
 import litellm
 from litellm._logging import verbose_logger

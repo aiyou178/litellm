@@ -10,7 +10,7 @@ import json
 from typing import Final, Literal
 from urllib.parse import urlencode
 
-import httpx
+import httpx2 as httpx
 from pydantic import TypeAdapter, ValidationError
 
 from litellm._logging import verbose_logger
@@ -251,7 +251,7 @@ class TinyfishSearchConfig(BaseSearchConfig):
         return self._wrap_error(
             error_message=error.response.text,
             status_code=error.response.status_code,
-            headers=dict(error.response.headers),  # mutable-ok: existing error wrapper requires dict headers
+            headers=dict(error.response.headers),
         )
 
     def _wrap_error(

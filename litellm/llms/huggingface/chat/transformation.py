@@ -2,7 +2,7 @@ import logging
 import os
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.types.llms.openai import AllMessageValues, ChatCompletionRequest
 
