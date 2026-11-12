@@ -7,10 +7,10 @@ from types import MappingProxyType
 from typing import Final
 from urllib.parse import urlparse
 
-from litellm.litellm_core_utils.httpx2_compat import FileTypes, RequestFiles
 from pydantic import TypeAdapter
 
 from litellm.images.utils import ImageEditRequestUtils
+from litellm.litellm_core_utils.httpx2_compat import FileTypes, RequestFiles
 from litellm.litellm_core_utils.url_utils import SSRFError, join_api_base, validate_url
 from litellm.llms.openai.videos.transformation import OpenAIVideoConfig
 from litellm.secret_managers.main import get_secret_str

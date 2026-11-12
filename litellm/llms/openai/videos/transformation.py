@@ -7,6 +7,7 @@ from urllib.parse import quote
 
 import httpx2 as httpx
 
+from litellm.litellm_core_utils.httpx2_compat import FileContent, FileTypes, RequestFiles
 from litellm.litellm_core_utils.url_utils import encode_url_path_segment, join_api_base
 from litellm.llms.base_llm.videos.transformation import BaseVideoConfig
 from litellm.llms.openai.image_edit.transformation import ImageEditRequestUtils

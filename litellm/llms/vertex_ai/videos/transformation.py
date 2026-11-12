@@ -17,6 +17,7 @@ from typing_extensions import ReadOnly
 import litellm
 from litellm.constants import DEFAULT_GOOGLE_VIDEO_DURATION_SECONDS
 from litellm.images.utils import ImageEditRequestUtils
+from litellm.litellm_core_utils.httpx2_compat import FileContent, RequestFiles
 from litellm.litellm_core_utils.url_utils import join_api_base
 from litellm.llms.base_llm.videos.transformation import BaseVideoConfig
 from litellm.llms.vertex_ai.common_utils import (

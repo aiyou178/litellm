@@ -3,12 +3,12 @@ import time
 from collections.abc import AsyncIterator, Iterator, Mapping
 from typing import TYPE_CHECKING, Any, Final, cast
 
-from litellm.litellm_core_utils.httpx2_compat import Headers, Response
 from pydantic import BaseModel
 
 import litellm
 from litellm._uuid import uuid
 from litellm.litellm_core_utils.core_helpers import map_finish_reason
+from litellm.litellm_core_utils.httpx2_compat import Headers, Response
 from litellm.litellm_core_utils.prompt_templates.common_utils import (
     convert_content_list_to_str,
     extract_images_from_message,

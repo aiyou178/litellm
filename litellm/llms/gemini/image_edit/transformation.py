@@ -7,6 +7,7 @@ import httpx2 as httpx
 
 from litellm.images.utils import ImageEditRequestUtils
 from litellm.litellm_core_utils.core_helpers import decoded_json_object
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.litellm_core_utils.url_utils import join_api_base
 from litellm.llms.base_llm.image_edit.transformation import BaseImageEditConfig
 from litellm.llms.gemini.common_utils import (

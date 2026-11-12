@@ -2,9 +2,8 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import Final
 
-from litellm.litellm_core_utils.httpx2_compat import RequestFiles
-
 from litellm.images.utils import image_to_data_url
+from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.litellm_core_utils.url_utils import join_api_base
 from litellm.secret_managers.main import get_secret_str
 from litellm.types.images.main import ImageEditOptionalRequestParams

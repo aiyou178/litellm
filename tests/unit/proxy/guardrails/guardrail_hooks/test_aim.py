@@ -773,8 +773,6 @@ async def test_aim_streaming_forwards_verified_chunks(length: int, monkeypatch: 
 
 @pytest.mark.asyncio
 async def test_aim_streaming_block_stops_after_verified_chunks(monkeypatch: pytest.MonkeyPatch) -> None:
-    from litellm.proxy.proxy_server import StreamingCallbackError
-
     guardrail = AimGuardrail(api_key="hs-aim-key", guardrail_name="aim", event_hook="post_call")
 
     async def completion_stream():

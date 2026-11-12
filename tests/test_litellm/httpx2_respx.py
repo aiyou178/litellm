@@ -7,6 +7,8 @@ from typing import Final, TypeAlias
 
 import httpx
 import httpx2
+import respx
+from respx import MockRouter
 from respx import mocks as respx_mocks
 from respx.mocks import Mocker
 from respx.models import PassThrough, Route, SideEffectError
@@ -65,7 +67,7 @@ def _to_legacy_request(request: httpx2.Request) -> httpx.Request:
     return httpx.Request(
         request.method,
         str(request.url),
-        headers=request.headers,
+        headers=list(request.headers.raw),
         content=request.content,
         extensions=request.extensions,
     )
@@ -75,7 +77,7 @@ def _to_httpx2_request(request: httpx.Request) -> httpx2.Request:
     return httpx2.Request(
         request.method,
         str(request.url),
-        headers=request.headers,
+        headers=list(request.headers.raw),
         content=request.content,
         extensions=request.extensions,
     )
@@ -87,7 +89,7 @@ def _to_legacy_response(
 ) -> httpx.Response:
     return httpx.Response(
         response.status_code,
-        headers=response.headers,
+        headers=list(response.headers.raw),
         stream=_HTTPXStream(response.stream),
         request=request,
         extensions=dict(response.extensions),
@@ -97,7 +99,7 @@ def _to_legacy_response(
 def _to_httpx2_response(response: httpx.Response, request: httpx2.Request) -> httpx2.Response:
     return httpx2.Response(
         response.status_code,
-        headers=response.headers,
+        headers=list(response.headers.raw),
         stream=_HTTPX2Stream(response.stream),
         request=request,
         extensions=dict(response.extensions),
@@ -107,7 +109,7 @@ def _to_httpx2_response(response: httpx.Response, request: httpx2.Request) -> ht
 async def _to_httpx2_response_async(response: httpx.Response, request: httpx2.Request) -> httpx2.Response:
     return httpx2.Response(
         response.status_code,
-        headers=response.headers,
+        headers=list(response.headers.raw),
         stream=_HTTPX2Stream(response.stream),
         request=request,
         extensions=dict(response.extensions),
@@ -244,3 +246,27 @@ class HTTPX2Mocker(Mocker):
 
 
 respx_mocks.DEFAULT_MOCKER = HTTPX2Mocker.name
+
+_legacy_respx_mock = respx.mock
+
+
+class _HTTPX2RespxMockRouter:
+    def __init__(self, router: MockRouter) -> None:
+        self.router = router
+
+    def __getattr__(self, name: str):
+        return getattr(self.router, name)
+
+    def __call__(self, *args, **kwargs):
+        if kwargs.get("using") == "httpx":
+            kwargs["using"] = HTTPX2Mocker.name
+        return self.router(*args, **kwargs)
+
+    def __enter__(self):
+        return self.router.__enter__()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        return self.router.__exit__(exc_type, exc_value, traceback)
+
+
+respx.mock = _HTTPX2RespxMockRouter(_legacy_respx_mock)

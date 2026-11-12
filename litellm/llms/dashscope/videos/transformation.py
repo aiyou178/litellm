@@ -15,7 +15,6 @@ from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, TypeAda
 
 import litellm
 from litellm.exceptions import UnsupportedParamsError
-from litellm.images.utils import ImageEditRequestUtils
 from litellm.litellm_core_utils.httpx2_compat import RequestFiles
 from litellm.litellm_core_utils.url_utils import encode_url_path_segment, join_api_base
 from litellm.llms.base_llm.chat.transformation import BaseLLMException

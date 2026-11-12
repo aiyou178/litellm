@@ -92,6 +92,7 @@ from litellm.litellm_core_utils.fallback_generalizations import (
     match_fill_missing_generalizations,
 )
 from litellm.litellm_core_utils.get_model_cost_map import AliasedCostEntry, GetModelCostMap
+from litellm.litellm_core_utils.httpx2_compat import environment_proxy_urls
 from litellm.litellm_core_utils.model_param_helper import peek_reasoning_summary_aliases
 from litellm.litellm_core_utils.model_retirement import is_hidden_as_retired
 from litellm.litellm_core_utils.offline_mode import is_offline_mode
