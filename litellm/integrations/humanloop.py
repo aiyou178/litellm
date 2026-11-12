@@ -6,12 +6,12 @@ https://humanloop.com/
 
 from typing import Final, cast
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import TypedDict
 
 import litellm
 from litellm.caching import DualCache
-from litellm.llms.custom_httpx.http_handler import _get_httpx_client
+from litellm.llms.custom_httpx.http_handler import get_httpx_client
 from litellm.secret_managers.main import get_secret_str
 from litellm.types.llms.openai import AllMessageValues
 from litellm.types.prompts.init_prompts import PromptSpec
@@ -61,7 +61,7 @@ class HumanLoopPromptManager(DualCache):
         return compiled_prompts
 
     def _get_prompt_from_id_api(self, humanloop_prompt_id: str, humanloop_api_key: str) -> PromptManagementClient:
-        client: Final = _get_httpx_client()
+        client: Final = get_httpx_client()
 
         base_url: Final = f"https://api.humanloop.com/v5/prompts/{humanloop_prompt_id}"
 

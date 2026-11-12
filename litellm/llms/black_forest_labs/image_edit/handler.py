@@ -11,7 +11,7 @@ import time
 from collections.abc import Coroutine, Mapping
 from typing import Final, Protocol
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import ReadOnly, TypedDict
 
 import litellm
@@ -20,8 +20,8 @@ from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLogging
 from litellm.llms.custom_httpx.http_handler import (
     AsyncHTTPHandler,
     HTTPHandler,
-    _get_httpx_client,
     get_async_httpx_client,
+    get_httpx_client,
 )
 from litellm.types.router import GenericLiteLLMParams
 from litellm.types.utils import FileTypes, ImageResponse
@@ -138,7 +138,7 @@ class BlackForestLabsImageEdit:
 
         # Sync version
         if client is None or not isinstance(client, HTTPHandler):
-            sync_client = _get_httpx_client()
+            sync_client = get_httpx_client()
         else:
             sync_client = client
 

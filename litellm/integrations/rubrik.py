@@ -12,7 +12,7 @@ from datetime import datetime
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Final, Literal, Optional, Protocol, TypedDict, overload
 
-import httpx
+import httpx2 as httpx
 from typing_extensions import Never, ReadOnly, Required
 
 from litellm._logging import verbose_logger
@@ -44,7 +44,7 @@ if TYPE_CHECKING:
     from litellm.litellm_core_utils.litellm_logging import (
         Logging as LiteLLMLoggingObj,
     )
-    from litellm.proxy._types import UserAPIKeyAuth
+    from litellm.types.proxy.auth.user_api_key_auth import UserAPIKeyAuth
 
 _WEBHOOK_PATH_RESPONSE_MODERATION: Final = "/v1/after_completion/openai/v1"
 _WEBHOOK_PATH_PROMPT_MODERATION: Final = "/v1/before_prompt/openai/v1"
@@ -1120,6 +1120,7 @@ class RubrikLogger(CustomGuardrail, CustomBatchLogger):
             endpoint,
             json=dict(payload),
             headers=dict(self._headers),
+            timeout=self.timeout,
         )
         http_response.raise_for_status()
         result: Final[_ModerationResponse | None] = http_response.json()

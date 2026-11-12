@@ -7,9 +7,10 @@ OpenAPI spec:          https://you.com/specs/openapi_search_v1.yaml
 
 from typing import Final, TypedDict
 
-import httpx
+import httpx2 as httpx
 
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
+from litellm.litellm_core_utils.url_utils import join_api_base
 from litellm.llms.base_llm.search.transformation import (
     BaseSearchConfig,
     SearchResponse,
@@ -109,7 +110,7 @@ class YouComSearchConfig(BaseSearchConfig):
         api_base = api_base.rstrip("/")
 
         if not api_base.endswith("/v1/search") and not api_base.endswith("/v1/agents/search"):
-            api_base = f"{api_base}/v1/search"
+            api_base = join_api_base(api_base, "v1/search")
 
         return api_base
 

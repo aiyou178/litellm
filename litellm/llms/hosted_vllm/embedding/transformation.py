@@ -9,8 +9,9 @@ Docs: https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html
 
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
+from litellm.litellm_core_utils.url_utils import ensure_api_route
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.base_llm.embedding.transformation import BaseEmbeddingConfig
 from litellm.secret_managers.main import get_secret_str
@@ -81,14 +82,7 @@ class HostedVLLMEmbeddingConfig(BaseEmbeddingConfig):
             if api_base is None:
                 raise ValueError("api_base is required for hosted_vllm embeddings")
 
-        # Remove trailing slashes
-        api_base = api_base.rstrip("/")
-
-        # Ensure the URL ends with /embeddings
-        if not api_base.endswith("/embeddings"):
-            api_base = f"{api_base}/embeddings"
-
-        return api_base
+        return ensure_api_route(api_base, "embeddings")
 
     def transform_embedding_request(
         self,

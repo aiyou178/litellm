@@ -37,9 +37,8 @@ Usage:
 """
 
 from abc import abstractmethod
-from typing import Any
 
-import httpx
+import httpx2 as httpx
 
 from litellm._logging import verbose_logger
 from litellm.secret_managers.base_secret_manager import BaseSecretManager
@@ -154,7 +153,7 @@ class CustomSecretManager(BaseSecretManager):
         optional_params: dict | None = None,
         timeout: float | httpx.Timeout | None = None,
         tags: dict | list | None = None,
-    ) -> dict[str, Any]:
+    ) -> dict[str, object]:
         """
         Asynchronously write a secret to your custom secret manager.
 

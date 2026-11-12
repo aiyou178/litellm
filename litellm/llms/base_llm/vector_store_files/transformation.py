@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
 
-import httpx
+import httpx2 as httpx
 
 from litellm.types.router import GenericLiteLLMParams
 from litellm.types.vector_store_files import (
@@ -53,7 +53,7 @@ class BaseVectorStoreFilesConfig(ABC):
         return optional_params
 
     @abstractmethod
-    def get_auth_credentials(self, litellm_params: dict[str, Any]) -> VectorStoreFileAuthCredentials: ...
+    def get_auth_credentials(self, litellm_params: Mapping[str, object]) -> VectorStoreFileAuthCredentials: ...
 
     @abstractmethod
     def get_vector_store_file_endpoints_by_type(
@@ -75,7 +75,7 @@ class BaseVectorStoreFilesConfig(ABC):
         *,
         api_base: str | None,
         vector_store_id: str,
-        litellm_params: dict[str, Any],
+        litellm_params: Mapping[str, object],
     ) -> str:
         if api_base is None:
             raise ValueError("api_base is required")
@@ -183,7 +183,7 @@ class BaseVectorStoreFilesConfig(ABC):
         *,
         error_message: str,
         status_code: int,
-        headers: dict[str, Any] | httpx.Headers,
+        headers: dict[str, str] | httpx.Headers,
     ) -> BaseLLMException:
         from ..chat.transformation import BaseLLMException
 

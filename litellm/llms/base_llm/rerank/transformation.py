@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm.types.rerank import RerankBilledUnits, RerankResponse
 from litellm.types.utils import ModelInfo
@@ -80,7 +80,7 @@ class BaseRerankConfig(ABC):
         model: str,
         drop_params: bool,
         query: str,
-        documents: list[str | dict[str, Any]],
+        documents: list[str | dict[str, object]],
         custom_llm_provider: str | None = None,
         top_n: int | None = None,
         rank_fields: list[str] | None = None,

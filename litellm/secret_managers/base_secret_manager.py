@@ -1,8 +1,8 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Any, Final
+from typing import Final
 
-import httpx
+import httpx2 as httpx
 
 from litellm import verbose_logger
 
@@ -73,7 +73,7 @@ class BaseSecretManager(ABC):
         optional_params: dict | None = None,
         timeout: float | httpx.Timeout | None = None,
         tags: dict | list | None = None,
-    ) -> dict[str, Any]:
+    ) -> dict[str, object]:
         """
         Asynchronously write a secret to the secret manager.
 

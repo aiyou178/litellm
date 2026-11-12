@@ -5,8 +5,7 @@ Handles the chat completion request for groq
 from collections.abc import Callable
 from typing import cast
 
-from httpx._config import Timeout
-
+from litellm.litellm_core_utils.httpx2_compat import Timeout
 from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 from litellm.types.llms.openai import AllMessageValues
 from litellm.types.utils import CustomStreamingDecoder
@@ -44,7 +43,7 @@ class GroqChatCompletion(OpenAILikeChatHandler):
         streaming_decoder: CustomStreamingDecoder | None = None,
         fake_stream: bool = False,
     ):
-        messages = GroqChatConfig()._transform_messages(messages=cast(list[AllMessageValues], messages), model=model)
+        messages = GroqChatConfig().transform_messages(messages=cast(list[AllMessageValues], messages), model=model)
 
         if optional_params.get("stream") is True:
             fake_stream = GroqChatConfig()._should_fake_stream(optional_params)

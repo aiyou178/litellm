@@ -5,12 +5,11 @@ from collections.abc import Coroutine
 from functools import partial
 from typing import Final, Literal, overload
 
-from httpx._types import FileContent
-
 import litellm
 from litellm.constants import DEFAULT_VIDEO_ENDPOINT_MODEL
 from litellm.constants import request_timeout as DEFAULT_REQUEST_TIMEOUT
 from litellm.litellm_core_utils.get_llm_provider_logic import get_llm_provider
+from litellm.litellm_core_utils.httpx2_compat import FileContent
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.base_llm.videos.transformation import BaseVideoConfig
 from litellm.llms.custom_httpx.llm_http_handler import BaseLLMHTTPHandler
@@ -225,6 +224,7 @@ def video_generation(
             model=model,
             video_generation_provider_config=video_generation_provider_config,
             video_generation_optional_params=video_generation_optional_params,
+            drop_params=litellm_params.drop_params is True,
         )
 
         # Pre Call logging

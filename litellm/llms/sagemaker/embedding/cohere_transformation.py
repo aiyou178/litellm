@@ -10,21 +10,22 @@ be of type Object`.
 Reference: https://docs.cohere.com/v2/reference/embed
 """
 
-from typing import TYPE_CHECKING, Any, cast
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:
     from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
     from litellm.types.llms.openai import AllEmbeddingInputValues
 
-from httpx._models import Headers, Response
-
 import litellm
+from litellm.litellm_core_utils.httpx2_compat import Headers, Response
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.base_llm.embedding.transformation import BaseEmbeddingConfig
 from litellm.llms.bedrock.embed.cohere_transformation import (
     BedrockCohereEmbeddingConfig,
 )
 from litellm.llms.cohere.embed.v1_transformation import CohereEmbeddingConfig
+from litellm.types.llms.openai import AllMessageValues
 from litellm.types.utils import EmbeddingResponse
 
 from ..common_utils import SagemakerError
@@ -79,7 +80,7 @@ class SagemakerCohereEmbeddingConfig(BaseEmbeddingConfig):
             input_list = [str(input)]
 
         return dict(
-            BedrockCohereEmbeddingConfig()._transform_request(
+            BedrockCohereEmbeddingConfig().transform_request(
                 model=model,
                 input=input_list,
                 inference_params=optional_params,
@@ -111,7 +112,7 @@ class SagemakerCohereEmbeddingConfig(BaseEmbeddingConfig):
         if isinstance(input_value, str):
             input_value = [input_value]
 
-        return CohereEmbeddingConfig()._populate_embedding_response(
+        return CohereEmbeddingConfig().populate_embedding_response(
             response_json=raw_response.json(),
             model_response=model_response,
             model=model,
@@ -123,7 +124,7 @@ class SagemakerCohereEmbeddingConfig(BaseEmbeddingConfig):
         self,
         headers: dict,
         model: str,
-        messages: list[Any],
+        messages: Sequence[AllMessageValues],
         optional_params: dict,
         litellm_params: dict,
         api_key: str | None = None,

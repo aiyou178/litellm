@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from aiohttp import ClientResponse
-from httpx import Headers, Response
+from httpx2 import Headers, Response
 
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.llms.base_llm.image_variations.transformation import LiteLLMLoggingObj
@@ -12,7 +12,7 @@ from ...base_llm.image_variations.transformation import BaseImageVariationConfig
 from ..common_utils import OpenAIError
 
 if TYPE_CHECKING:
-    import tiktoken
+    from litellm.litellm_core_utils.tokenizer import Encoding as Tokenizer
 
 
 class OpenAIImageVariationConfig(BaseImageVariationConfig):
@@ -53,7 +53,7 @@ class OpenAIImageVariationConfig(BaseImageVariationConfig):
         image: FileTypes,
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
     ) -> ImageResponse:
         return model_response
@@ -68,7 +68,7 @@ class OpenAIImageVariationConfig(BaseImageVariationConfig):
         image: FileTypes,
         optional_params: dict,
         litellm_params: dict,
-        encoding: "tiktoken.Encoding | None",
+        encoding: "Tokenizer | None",
         api_key: str | None = None,
     ) -> ImageResponse:
         return model_response

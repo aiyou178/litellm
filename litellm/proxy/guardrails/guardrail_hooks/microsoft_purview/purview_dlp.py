@@ -14,7 +14,7 @@ from collections.abc import AsyncGenerator, AsyncIterable, Mapping, Sequence
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Final, cast
 
-import httpx
+import httpx2 as httpx
 from fastapi import HTTPException
 
 from litellm._logging import verbose_proxy_logger
@@ -46,6 +46,13 @@ if TYPE_CHECKING:
         CallTypesLiteral,
         LLMResponseTypes,
     )
+
+
+def _header_value(headers: httpx.Headers, name: str) -> str | None:
+    try:
+        return headers[name]
+    except KeyError:
+        return None
 
 
 class MicrosoftPurviewDLPGuardrail(PurviewGuardrailBase, CustomGuardrail):
@@ -150,7 +157,7 @@ class MicrosoftPurviewDLPGuardrail(PurviewGuardrailBase, CustomGuardrail):
                 upstream_status: Final = exc.response.status_code
                 client_status: Final = 502 if upstream_status in (401, 403) else upstream_status
                 headers: dict[str, str] | None = None
-                retry_after: Final[str | None] = exc.response.headers.get("retry-after")
+                retry_after: Final = _header_value(exc.response.headers, "retry-after")
                 if retry_after:
                     headers = {"Retry-After": retry_after}
                 raise HTTPException(
