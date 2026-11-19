@@ -7,12 +7,11 @@ from typing import (
     cast,  # noqa: TID251  # non_default_params reaches the mapper as an untyped dict
 )
 
-from httpx._models import Headers, Response
-
 import litellm
 from litellm.integrations.anthropic_cache_control_hook import deployment_prompt_cache_breakpoint_support
 from litellm.litellm_core_utils.allowed_tools_tool_choice import is_allowed_tools_tool_choice
 from litellm.litellm_core_utils.core_helpers import drops_unsupported_params
+from litellm.litellm_core_utils.httpx2_compat import Headers, Response
 from litellm.litellm_core_utils.prompt_templates.common_utils import (
     drop_tool_reference_parts_from_tool_messages,
     hoist_images_from_tool_messages,

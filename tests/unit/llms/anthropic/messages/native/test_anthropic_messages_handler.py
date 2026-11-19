@@ -8,8 +8,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Final, List
 
-import httpx
 import openai
+import httpx2 as httpx
 import responses
 import respx
 import pytest

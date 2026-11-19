@@ -1,8 +1,7 @@
 from io import BufferedReader
 from typing import TYPE_CHECKING, Any, Final, Protocol, cast, runtime_checkable
 
-import httpx
-from httpx._types import RequestFiles
+import httpx2 as httpx
 from pydantic import TypeAdapter
 
 from litellm.images.utils import ImageEditRequestUtils

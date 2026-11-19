@@ -8,7 +8,7 @@ from functools import partial
 from pathlib import Path
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from openai import DEFAULT_MAX_RETRIES as OPENAI_SDK_DEFAULT_MAX_RETRIES
@@ -66,6 +66,7 @@ def mock_sdk_token_exchange_transport(monkeypatch: pytest.MonkeyPatch) -> None:
             response: Final = respx.mock.handler(
                 httpx.Request(request.method, str(request.url), headers=dict(request.headers), content=request.content)
             )
+            response.read()
             return httpx2.Response(response.status_code, headers=dict(response.headers), content=response.content)
 
         monkeypatch.setattr(

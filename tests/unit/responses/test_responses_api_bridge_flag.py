@@ -14,8 +14,8 @@ from pathlib import Path
 from typing import Final, cast
 from unittest.mock import MagicMock, patch
 
-import httpx
 import openai
+import httpx2 as httpx
 import pytest
 import respx
 from pydantic import JsonValue

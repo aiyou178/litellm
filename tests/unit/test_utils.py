@@ -23,7 +23,7 @@ from typing import Final, SupportsIndex, cast
 from unittest import mock
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from jsonschema import Draft7Validator, validate
@@ -10052,7 +10052,7 @@ def test_usage_object_null_tokens():
     assert usage_obj.completion_tokens == 0
 
 
-@mock.patch("httpx.AsyncClient")
+@mock.patch("httpx2.AsyncClient")
 @mock.patch.dict(
     os.environ,
     {"SSL_VERIFY": "/certificate.pem", "SSL_CERTIFICATE": "/client.pem"},
@@ -10082,7 +10082,7 @@ def test_async_http_handler(mock_async_client):
         assert call_args["follow_redirects"] is True
 
 
-@mock.patch("httpx.AsyncClient")
+@mock.patch("httpx2.AsyncClient")
 @mock.patch.dict(os.environ, {}, clear=True)
 def test_async_http_handler_force_ipv4(mock_async_client):
     """
@@ -10090,7 +10090,6 @@ def test_async_http_handler_force_ipv4(mock_async_client):
 
     This is prod test - we need to ensure that httpx always uses ipv4 when litellm.force_ipv4 is True
     """
-    import httpx
     import ssl
     from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
 
@@ -11609,7 +11608,7 @@ def test_the_catalog_with_register_model_entries_lists_each_model_once_and_leave
 )
 def test_runtime_model_cost_registrations_resolve_bedrock_routing(monkeypatch: pytest.MonkeyPatch, key: str) -> None:
     from litellm import utils as model_utils
-    from litellm.litellm_core_utils.get_model_cost_map import AliasedCostEntry
+    from litellm.utils import AliasedCostEntry
 
     rates: Final = {"input_cost_per_token": 0.001, "output_cost_per_token": 0.002}
     alias: Final = "openai.test-converse-alias"

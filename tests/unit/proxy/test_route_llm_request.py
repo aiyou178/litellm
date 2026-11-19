@@ -11,10 +11,10 @@ from typing import Final
 from unittest.mock import MagicMock
 from uuid import uuid4
 
-import httpx
 import pytest
 import redis
 import respx
+import httpx2 as httpx
 from fakeredis import TcpFakeServer
 from fastapi import HTTPException
 
@@ -773,8 +773,7 @@ async def test_route_request_realtime_wildcard_model_resolves_credentials(
     """
     from unittest.mock import AsyncMock, patch
 
-    import httpx
-
+    import httpx2 as httpx
     import litellm
 
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
@@ -813,8 +812,7 @@ async def test_route_request_realtime_team_scoped_model_resolves_credentials(
     """
     from unittest.mock import AsyncMock, patch
 
-    import httpx
-
+    import httpx2 as httpx
     import litellm
 
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
@@ -861,8 +859,7 @@ async def test_route_request_realtime_litellm_credential_name_resolves_api_key(
     """
     from unittest.mock import AsyncMock, patch
 
-    import httpx
-
+    import httpx2 as httpx
     import litellm
 
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
@@ -930,8 +927,7 @@ async def test_route_request_realtime_calls_resolves_api_base(monkeypatch):
     """
     from unittest.mock import AsyncMock, patch
 
-    import httpx
-
+    import httpx2 as httpx
     import litellm
 
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
@@ -975,8 +971,7 @@ async def test_route_request_realtime_transcription_session_resolves_credentials
     """
     from unittest.mock import AsyncMock, patch
 
-    import httpx
-
+    import httpx2 as httpx
     import litellm
 
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)

@@ -8,7 +8,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 import respx
-from httpx import Response
+from httpx2 import Response
 
 import litellm
 from litellm import Router
@@ -161,7 +161,7 @@ async def test_azure_ai_acompletion_posts_the_conversation_to_the_models_endpoin
         pytest.param(
             "https://example-resource.services.ai.azure.com/openai/deployments/gpt-4.1-mini/chat/completions"
             "?api-version=2023-03-15-preview",
-            "/openai/deployments/gpt-4.1-mini/chat/completions",
+            "/openai/deployments/gpt-4.1-mini/chat/completions/",
             id="full-deployment-url",
         ),
     ],
@@ -334,8 +334,6 @@ def test_foundry_gpt_6_astra_refuses_reasoning_effort_none_before_the_call(_loca
         )
 
 
-
-
 def test_azure_ai_grok_stop_parameter_handling():
     """
     Test that Grok models properly handle stop parameter filtering in Azure AI Studio.
@@ -353,9 +351,7 @@ def test_azure_ai_grok_stop_parameter_handling():
     # Test supported parameters for Grok models
     for model in ("grok-4-fast", "grok-4.3"):
         grok_params = config.get_supported_openai_params(model)
-        assert (
-            "stop" not in grok_params
-        ), "Grok models should not support stop parameter"
+        assert "stop" not in grok_params, "Grok models should not support stop parameter"
 
     # Test supported parameters for non-Grok models
     gpt_params = config.get_supported_openai_params("gpt-4")
@@ -562,7 +558,7 @@ def test_azure_model_router_response_shows_actual_model():
 
     Regression test for: Azure Model Router should show actual model in response
     """
-    from httpx import Response
+    from httpx2 import Response
 
     from litellm.llms.base_llm.chat.transformation import LiteLLMLoggingObj
     from litellm.types.utils import ModelResponse
@@ -623,8 +619,7 @@ def test_azure_model_router_response_shows_actual_model():
 
     # Verify that the response contains the actual model used, not the router model
     assert result.model == "azure_ai/gpt-5-nano-2025-08-07", (
-        f"Expected model to be 'azure_ai/gpt-5-nano-2025-08-07' (actual model used), "
-        f"but got '{result.model}'"
+        f"Expected model to be 'azure_ai/gpt-5-nano-2025-08-07' (actual model used), but got '{result.model}'"
     )
 
 
@@ -634,7 +629,7 @@ def test_azure_model_router_stamps_selected_model_on_hidden_params():
     re-derive by looking for "model-router" in the model string. Deployments whose alias
     does not contain that text are invisible to the string check.
     """
-    from httpx import Response
+    from httpx2 import Response
 
     from litellm.llms.azure_ai.common_utils import (
         AZURE_MODEL_ROUTER_SELECTED_MODEL_KEY,
@@ -682,19 +677,11 @@ def test_azure_model_router_stamps_selected_model_on_hidden_params():
     )
 
     assert result._hidden_params[AZURE_MODEL_ROUTER_SELECTED_MODEL_KEY] == result.model
-    assert (
-        result._hidden_params[AZURE_MODEL_ROUTER_SELECTED_MODEL_KEY]
-        == "azure_ai/grok-4-1-fast-reasoning"
+    assert result._hidden_params[AZURE_MODEL_ROUTER_SELECTED_MODEL_KEY] == "azure_ai/grok-4-1-fast-reasoning"
+    assert AzureFoundryModelInfo.get_model_router_selected_model(result._hidden_params) == (
+        "azure_ai/grok-4-1-fast-reasoning"
     )
-    assert AzureFoundryModelInfo.get_model_router_selected_model(
-        result._hidden_params
-    ) == ("azure_ai/grok-4-1-fast-reasoning")
-    assert (
-        AzureFoundryModelInfo.is_model_router_call(
-            model="smart-pick", hidden_params=result._hidden_params
-        )
-        is True
-    )
+    assert AzureFoundryModelInfo.is_model_router_call(model="smart-pick", hidden_params=result._hidden_params) is True
 
 
 def test_drop_tool_level_extra_fields_strips_copilot_mcp_server_name():
@@ -702,7 +689,7 @@ def test_drop_tool_level_extra_fields_strips_copilot_mcp_server_name():
     Regression test: Azure AI returns 400 when tools contain copilot_mcp_server_name.
     LiteLLM should strip the field and retry automatically.
     """
-    import httpx
+    import httpx2 as httpx
 
     config = AzureAIStudioConfig()
 
@@ -717,14 +704,10 @@ def test_drop_tool_level_extra_fields_strips_copilot_mcp_server_name():
     mock_response.text = error_text
     mock_response.json.return_value = json.loads(error_text)
     mock_response.status_code = 400
-    e = httpx.HTTPStatusError(
-        message="400", request=MagicMock(), response=mock_response
-    )
+    e = httpx.HTTPStatusError(message="400", request=MagicMock(), response=mock_response)
 
     assert config._error_has_tool_level_extra_fields(error_text) is True
-    assert (
-        config.should_retry_llm_api_inside_llm_translation_on_http_error(e, {}) is True
-    )
+    assert config.should_retry_llm_api_inside_llm_translation_on_http_error(e, {}) is True
 
     request_data = {
         "model": "FW-Kimi-K2.6",
@@ -907,9 +890,7 @@ def test_azure_ai_stripping_does_not_mutate_caller_messages():
         {
             "role": "assistant",
             "content": "I can help.",
-            "thinking_blocks": [
-                {"type": "thinking", "thinking": "Reading the file.", "signature": "sig"}
-            ],
+            "thinking_blocks": [{"type": "thinking", "thinking": "Reading the file.", "signature": "sig"}],
             "provider_specific_fields": {"thought_signature": "sig-top"},
             "tool_calls": [
                 {
@@ -1431,9 +1412,7 @@ async def test_azure_ai_with_image_url():
                             },
                             {
                                 "type": "image_url",
-                                "image_url": {
-                                    "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
-                                },
+                                "image_url": {"url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"},
                             },
                         ],
                     },
@@ -1459,9 +1438,7 @@ async def test_azure_ai_with_image_url():
                     {"type": "text", "text": "What is in this image?"},
                     {
                         "type": "image_url",
-                        "image_url": {
-                            "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
-                        },
+                        "image_url": {"url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"},
                     },
                 ],
             }

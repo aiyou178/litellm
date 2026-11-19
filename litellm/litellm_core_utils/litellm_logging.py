@@ -21,7 +21,7 @@ from functools import lru_cache
 from types import MappingProxyType, TracebackType
 from typing import TYPE_CHECKING, Any, Final, Literal, NamedTuple, Protocol, TypeVar, cast
 
-from httpx import Response, Timeout
+from httpx2 import Response, Timeout
 from openai import AsyncStream as OpenAIAsyncStream
 from openai import Stream as OpenAIStream
 from pydantic import BaseModel, JsonValue, TypeAdapter

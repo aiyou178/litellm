@@ -13,7 +13,7 @@ from collections.abc import Awaitable, Coroutine
 from functools import partial
 from typing import Final, Literal, cast
 
-import httpx
+import httpx2 as httpx
 from openai import AsyncOpenAI, OpenAI
 
 # Type aliases for provider parameters
@@ -38,7 +38,9 @@ import litellm
 from litellm import get_secret_str
 from litellm.files.streaming import FileContentStreamingResponse
 from litellm.files.types import FileContentProvider, FileContentStreamingResult, FileRetrieveProvider
+from litellm.litellm_core_utils.get_litellm_params import add_trusted_model_credentials_to_litellm_params
 from litellm.litellm_core_utils.get_llm_provider_logic import get_llm_provider
+from litellm.litellm_core_utils.httpx2_compat import normalize_timeout
 from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.azure.common_utils import get_azure_credentials
 from litellm.llms.azure.files.handler import AzureOpenAIFilesAPI
@@ -195,21 +197,10 @@ def create_file(
                 ),
             )
 
-        ### TIMEOUT LOGIC ###
-        timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-        # set timeout for 10 minutes by default
-
-        if (
-            timeout is not None
-            and isinstance(timeout, httpx.Timeout)
-            and supports_httpx_timeout(cast(str, custom_llm_provider)) is False
-        ):
-            read_timeout: Final = timeout.read or 600
-            timeout = read_timeout  # default 10 min timeout
-        elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-            timeout = float(timeout)
-        elif timeout is None:
-            timeout = 600.0
+        raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+        timeout: Final[float | httpx.Timeout] = normalize_timeout(
+            raw_timeout, supports_timeout=supports_httpx_timeout(cast(str, custom_llm_provider)) is False
+        )
 
         if expires_after is not None:
             _create_file_request = CreateFileRequest(
@@ -356,21 +347,10 @@ def file_retrieve(
     """
     try:
         optional_params: Final = GenericLiteLLMParams(**kwargs)
-        ### TIMEOUT LOGIC ###
-        timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-        # set timeout for 10 minutes by default
-
-        if (
-            timeout is not None
-            and isinstance(timeout, httpx.Timeout)
-            and supports_httpx_timeout(custom_llm_provider) is False
-        ):
-            read_timeout: Final = timeout.read or 600
-            timeout = read_timeout  # default 10 min timeout
-        elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-            timeout = float(timeout)
-        elif timeout is None:
-            timeout = 600.0
+        raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+        timeout: Final[float | httpx.Timeout] = normalize_timeout(
+            raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+        )
 
         _is_async: Final = kwargs.pop("is_async", False) is True
 
@@ -542,19 +522,15 @@ def file_delete(
         ### TIMEOUT LOGIC ###
         timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
         # set timeout for 10 minutes by default
+        add_trusted_model_credentials_to_litellm_params(
+            litellm_params_dict=litellm_params_dict,
+            kwargs=kwargs,
+        )
         client: Final = kwargs.get("client")
-
-        if (
-            timeout is not None
-            and isinstance(timeout, httpx.Timeout)
-            and supports_httpx_timeout(custom_llm_provider) is False
-        ):
-            read_timeout: Final = timeout.read or 600
-            timeout = read_timeout  # default 10 min timeout
-        elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-            timeout = float(timeout)
-        elif timeout is None:
-            timeout = 600.0
+        raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+        timeout: Final[float | httpx.Timeout] = normalize_timeout(
+            raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+        )
         _is_async: Final = kwargs.pop("is_async", False) is True
         if custom_llm_provider in OPENAI_COMPATIBLE_BATCH_AND_FILES_PROVIDERS:
             openai_creds: Final = get_openai_credentials(
@@ -703,21 +679,10 @@ def file_list(
     """
     try:
         optional_params: Final = GenericLiteLLMParams(**kwargs)
-        ### TIMEOUT LOGIC ###
-        timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
-        # set timeout for 10 minutes by default
-
-        if (
-            timeout is not None
-            and isinstance(timeout, httpx.Timeout)
-            and supports_httpx_timeout(custom_llm_provider) is False
-        ):
-            read_timeout: Final = timeout.read or 600
-            timeout = read_timeout  # default 10 min timeout
-        elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-            timeout = float(timeout)
-        elif timeout is None:
-            timeout = 600.0
+        raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+        timeout: Final[float | httpx.Timeout] = normalize_timeout(
+            raw_timeout, supports_timeout=supports_httpx_timeout(custom_llm_provider) is False
+        )
 
         _is_async: Final = kwargs.pop("is_async", False) is True
 
@@ -879,8 +844,12 @@ def file_content(
         litellm_params_dict: Final = get_litellm_params(**kwargs)
         ### TIMEOUT LOGIC ###
         timeout = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
+        add_trusted_model_credentials_to_litellm_params(
+            litellm_params_dict=litellm_params_dict,
+            kwargs=kwargs,
+        )
         client: Final = kwargs.get("client")
-        # set timeout for 10 minutes by default
+        raw_timeout: Final[object] = optional_params.timeout or kwargs.get("request_timeout", 600) or 600
 
         try:
             if model is not None:
@@ -888,17 +857,9 @@ def file_content(
         except Exception:
             pass
 
-        if (
-            timeout is not None
-            and isinstance(timeout, httpx.Timeout)
-            and supports_httpx_timeout(cast(str, custom_llm_provider)) is False
-        ):
-            read_timeout: Final = timeout.read or 600
-            timeout = read_timeout  # default 10 min timeout
-        elif timeout is not None and not isinstance(timeout, httpx.Timeout):
-            timeout = float(timeout)
-        elif timeout is None:
-            timeout = 600.0
+        timeout: Final[float | httpx.Timeout] = normalize_timeout(
+            raw_timeout, supports_timeout=supports_httpx_timeout(cast(str, custom_llm_provider)) is False
+        )
 
         _file_content_request: Final = FileContentRequest(
             file_id=file_id,

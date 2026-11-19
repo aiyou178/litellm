@@ -19,7 +19,7 @@ from contextlib import AbstractContextManager
 from typing import Final
 from unittest.mock import AsyncMock, MagicMock
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from fastapi import HTTPException

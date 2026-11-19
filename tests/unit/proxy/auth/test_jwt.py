@@ -217,7 +217,7 @@ async def test_valid_invalid_token(audience, monkeypatch):
 
 
 @pytest.fixture
-def prisma_client():
+def prisma_client(monkeypatch: pytest.MonkeyPatch):
     import litellm
     from litellm.proxy.proxy_cli import append_query_params
     from litellm.proxy.utils import PrismaClient, ProxyLogging
@@ -228,7 +228,7 @@ def prisma_client():
     params = {"connection_limit": 100, "pool_timeout": 60}
     database_url = os.getenv("DATABASE_URL")
     modified_url = append_query_params(database_url, params)
-    os.environ["DATABASE_URL"] = modified_url
+    monkeypatch.setenv("DATABASE_URL", modified_url)
 
     # Assuming PrismaClient is a class that needs to be instantiated
     prisma_client = PrismaClient(

@@ -40,10 +40,9 @@ from pathlib import PurePath
 from types import MappingProxyType
 
 import dotenv
-import httpx
+import httpx2 as httpx
 import openai
-from httpx import Proxy
-from httpx._utils import get_environment_proxies
+from httpx2 import Proxy
 from openai.lib import _parsing, _pydantic  # pyright: ignore[reportPrivateUsage]  # OpenAI parser module is private
 from openai.types.chat.completion_create_params import ResponseFormat
 from pydantic import BaseModel, ConfigDict, JsonValue, TypeAdapter, ValidationError, with_config
@@ -103,6 +102,7 @@ from litellm.litellm_core_utils.fallback_generalizations import (
     match_fill_missing_generalizations,
 )
 from litellm.litellm_core_utils.get_model_cost_map import AliasedCostEntry, GetModelCostMap
+from litellm.litellm_core_utils.httpx2_compat import environment_proxy_urls
 from litellm.litellm_core_utils.model_param_helper import peek_reasoning_summary_aliases
 from litellm.litellm_core_utils.model_retirement import is_hidden_as_retired
 from litellm.litellm_core_utils.offline_mode import is_offline_mode
@@ -8038,7 +8038,7 @@ def get_provider_fields(custom_llm_provider: str) -> list[ProviderField]:
 
 
 def create_proxy_transport_and_mounts():
-    proxies: Final = {key: None if url is None else Proxy(url=url) for key, url in get_environment_proxies().items()}
+    proxies: Final = {key: None if url is None else Proxy(url=url) for key, url in environment_proxy_urls().items()}
 
     sync_proxy_mounts: Final = {}
     async_proxy_mounts: Final = {}

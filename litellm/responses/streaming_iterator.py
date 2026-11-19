@@ -26,7 +26,7 @@ from typing import (
     runtime_checkable,
 )
 
-import httpx
+import httpx2 as httpx
 from openai._streaming import SSEDecoder
 from pydantic import BaseModel, TypeAdapter, ValidationError
 from typing_extensions import TypeIs
@@ -254,6 +254,9 @@ _ERROR_CODE_HTTP_STATUS: Final[Mapping[str, int]] = MappingProxyType(
         "flex_unavailable": 429,
         "vector_store_timeout": 504,
         "invalid_prompt": 400,
+        "data_residency_mismatch": 403,
+        "bio_policy": 400,
+        "misalignment_policy_violation": 400,
         "invalid_image": 400,
         "invalid_image_format": 400,
         "invalid_base64_image": 400,

@@ -4,7 +4,7 @@ import logging
 from typing import Final
 from unittest.mock import MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import openai
 import pytest
 import respx
@@ -202,7 +202,7 @@ def test_evicting_a_client_built_on_the_callers_session_leaves_that_session_open
     whatever http client it was given, so treating the wrapper as litellm's to
     close would close the caller's shared session out from under them.
     """
-    import httpx
+    import httpx2 as httpx
 
     from litellm.caching.evicted_client_closer import EvictedClientCloser
     from litellm.caching.llm_caching_handler import LLMClientCache

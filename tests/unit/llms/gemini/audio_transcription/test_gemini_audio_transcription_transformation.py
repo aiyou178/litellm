@@ -2,7 +2,7 @@ import base64
 import json
 import traceback
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 

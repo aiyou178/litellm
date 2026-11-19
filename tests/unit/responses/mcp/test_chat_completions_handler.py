@@ -13,10 +13,10 @@ from types import MappingProxyType
 from typing import Final, cast
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
-from httpx import Response
+from httpx2 import Response
 from mcp.types import Tool as MCPTool
 from starlette.responses import StreamingResponse
 from starlette.types import Message

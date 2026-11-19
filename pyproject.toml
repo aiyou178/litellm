@@ -1,13 +1,22 @@
 [project]
-name = "litellm"
+name = "aiyou-litellm"
 version = "1.110.2"
-description = "Library to easily interface with LLM API providers"
+description = "AIYou distribution of LiteLLM with HTTPX2 and OpenAI Python SDK 3+ support"
 readme = "README.md"
 requires-python = ">=3.10, <3.16"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
-    { name = "BerriAI" },
+    { name = "AIYou" },
+]
+maintainers = [
+    { name = "AIYou" },
+]
+keywords = [
+    "LLM",
+    "AI Gateway",
+    "HTTPX2",
+    "OpenAI SDK",
 ]
 dependencies = [
     # Ranges (not exact pins) so SDK consumers can coexist with their other
@@ -16,8 +25,8 @@ dependencies = [
     # Python with: `uv pip install --resolution=lowest-direct .`
     "fastuuid>=0.14.0,<1.0; python_version < '3.15'",
     "filelock>=3.16.1,<5",
-    "httpx[http2]>=0.28.0,<1.0",
-    "openai>=2.20.0,<4.0.0",
+    "httpx2[http2]>=2.7.0,<3.0",
+    "openai>=3.13.0,<4.0",
     "python-dotenv>=1.0.0,<2.0",
     "pyyaml>=6.0.3,<7.0",
     "packaging>=24.0",
@@ -43,8 +52,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://litellm.ai"
-Repository = "https://github.com/BerriAI/litellm"
+Homepage = "https://github.com/aiyou178/litellm"
+Repository = "https://github.com/aiyou178/litellm"
+Upstream = "https://github.com/BerriAI/litellm"
 Documentation = "https://docs.litellm.ai"
 
 # Optional extras use compatible ranges (like the core SDK above) so downstream
@@ -83,7 +93,7 @@ proxy = [
     "azure-identity>=1.25.2,<2.0",
     "azure-storage-blob>=12.28.0,<13.0",
     "mcp>=2.3.0,<3",
-    "httpx2>=2.10.0,<3",
+    "httpx2[http2]>=2.10.0,<3",
     "pydantic>=2.12.0,<3",
     "litellm-proxy-extras==0.4.114.post1",
     "litellm-enterprise==0.1.83.post1",
@@ -132,7 +142,7 @@ utils = [
     # Not in Docker or PyPI proxy extra.
     "numpydoc>=1.8.0,<2.0",
 ]
-mcp = ["mcp>=2.3.0,<3", "httpx2>=2.10.0,<3", "pydantic>=2.12.0,<3"]
+mcp = ["mcp>=2.3.0,<3", "httpx2[http2]>=2.10.0,<3", "pydantic>=2.12.0,<3"]
 # Driver for the MongoDB Atlas vector store; Atlas Vector Search has no HTTP query API.
 # The floor is 4.9 because that is the release AsyncMongoClient landed in.
 # SAML SSO for the admin UI. python3-saml pulls in xmlsec/lxml, whose wheels
@@ -386,6 +396,7 @@ constraint-dependencies = [
     "filelock>=4.2.1; python_version >= '3.11'",
 ]
 override-dependencies = [
+    "openai>=3.13.0,<4.0",
     # a2a-sdk 1.x requires packaging>=24.0; lunary 1.4.x still caps at <24.0.
     "packaging>=24.0",
     "cryptography>=50.0.0,<51.0",

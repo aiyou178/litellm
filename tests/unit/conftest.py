@@ -161,6 +161,7 @@ from litellm.router_rust.surface.replay import (  # noqa: E402  # same import-ti
 from litellm.router_utils.global_callback_holders import (  # noqa: E402  # same import-time dependency
     routers_holding_global_callbacks,
 )
+from tests.test_litellm.httpx2_respx import HTTPX2Mocker
 
 LOOPBACK_HOSTS: Final = ["127.0.0.1", "::1", "localhost"]
 AMBIENT_AZURE_CREDENTIAL_ENV_VARS: Final = (

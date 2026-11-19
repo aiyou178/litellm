@@ -11,7 +11,7 @@ import requests
 import responses
 import respx
 from fastapi import HTTPException
-from httpx import HTTPStatusError, Request, Response
+from httpx2 import HTTPStatusError, Request, Response
 
 import litellm
 from litellm import ModelResponse

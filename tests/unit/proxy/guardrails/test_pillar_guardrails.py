@@ -18,7 +18,8 @@ from urllib.parse import unquote
 
 import pytest
 from fastapi.exceptions import HTTPException
-from httpx import Request, Response, Timeout
+from litellm.litellm_core_utils.httpx2_compat import Timeout
+from httpx2 import Request, Response
 
 # LiteLLM imports
 import litellm

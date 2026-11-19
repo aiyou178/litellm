@@ -2137,7 +2137,7 @@ class TestAnthropicThinkingSignatureSelfHeal:
         assert normalize_anthropic_tool_use_id(f"{base}{THOUGHT_SIGNATURE_SEPARATOR}{sig}") == base
 
     def test_anthropic_messages_config_http_retry_helpers(self):
-        import httpx
+        import httpx2 as httpx
 
         from litellm.llms.anthropic.messages.native.transformation import (
             AnthropicMessagesConfig,
@@ -3719,7 +3719,7 @@ class TestWifProviderAllowlist:
 
 
 def _models_page_response(page: dict, status_code: int = 200):
-    import httpx
+    import httpx2 as httpx
 
     return httpx.Response(status_code, json=page, request=httpx.Request("GET", "https://api.anthropic.com/v1/models"))
 

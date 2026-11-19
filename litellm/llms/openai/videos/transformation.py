@@ -5,9 +5,9 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Final, cast
 from urllib.parse import quote
 
-import httpx
-from httpx._types import FileContent, FileTypes, RequestFiles
+import httpx2 as httpx
 
+from litellm.litellm_core_utils.httpx2_compat import FileContent, FileTypes, RequestFiles
 from litellm.litellm_core_utils.url_utils import encode_url_path_segment, join_api_base
 from litellm.llms.base_llm.videos.async_task_utils import unsupported_video_fields
 from litellm.llms.base_llm.videos.transformation import BaseVideoConfig

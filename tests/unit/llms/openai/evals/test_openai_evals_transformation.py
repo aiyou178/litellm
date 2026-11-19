@@ -4,7 +4,7 @@ Unit tests for OpenAI Evals API transformation
 
 from typing import Final
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
 from pydantic import TypeAdapter

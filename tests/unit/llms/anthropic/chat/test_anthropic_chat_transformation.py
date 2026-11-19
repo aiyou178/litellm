@@ -8,10 +8,10 @@ from itertools import chain
 from typing import Final, cast
 from unittest.mock import MagicMock, patch
 
-import httpx
+import httpx2 as httpx
 import pytest
 import respx
-from httpx import Headers
+from httpx2 import Headers
 from pydantic import BaseModel, ConfigDict
 
 import litellm

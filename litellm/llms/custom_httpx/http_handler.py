@@ -15,12 +15,9 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, ClassVar, Final, NoReturn, Optional, TypeAlias, TypedDict, TypeVar
 
 import certifi
-import httpx
+import httpx2 as httpx
 from aiohttp import ClientSession, DummyCookieJar, TCPConnector
-from httpx import USE_CLIENT_DEFAULT, AsyncHTTPTransport, HTTPTransport
-from httpx._config import DEFAULT_LIMITS
-from httpx._types import CertTypes, RequestFiles
-from httpx._utils import get_environment_proxies
+from httpx2 import USE_CLIENT_DEFAULT, AsyncHTTPTransport, HTTPTransport
 from pydantic import TypeAdapter
 
 import litellm
@@ -40,6 +37,14 @@ from litellm.constants import (
     DEFAULT_SSL_CIPHERS,
     HTTP_HANDLER_CONNECT_TIMEOUT_SECONDS,
 )
+from litellm.litellm_core_utils.httpx2_compat import (
+    CertTypes,
+    RequestFiles,
+    environment_proxy_urls,
+    is_legacy_httpx_client,
+    normalize_async_transport,
+    normalize_legacy_sync_client,
+)
 from litellm.litellm_core_utils.logging_utils import track_llm_api_timing
 from litellm.litellm_core_utils.request_timeout_resolver import (
     get_configured_request_timeout,
@@ -49,6 +54,8 @@ from litellm.llms.base_llm.auth.types import MintedToken
 from litellm.llms.custom_httpx.aiohttp_pool_diagnostics import build_pool_wait_trace_config
 from litellm.llms.custom_httpx.http2_connection_spread import AsyncHTTP2ConnectionSpread
 from litellm.types.llms.custom_http import *
+
+_DEFAULT_LIMITS: Final = httpx.Limits()
 
 if TYPE_CHECKING:
     from litellm import LlmProviders
@@ -126,7 +133,7 @@ def _environment_proxy_mounts(
     return MappingProxyType(
         {
             pattern: None if proxy_url is None else build_proxy_transport(proxy_url)
-            for pattern, proxy_url in get_environment_proxies().items()
+            for pattern, proxy_url in environment_proxy_urls().items()
         }
     )
 
@@ -734,6 +741,7 @@ class AsyncHTTPHandler:
         self.shared_session = shared_session
         self.transport = transport
         self.token_exchange_engine = token_exchange_engine
+        self.transport = None if transport is None else normalize_async_transport(transport)
         self.follow_redirects = follow_redirects
         self.http2 = http2
         self._owns_client = True
@@ -780,7 +788,7 @@ class AsyncHTTPHandler:
             )
         use_http2: Final = _resolve_http2(self.http2, ssl_verify)
         replaces_aiohttp: Final = use_http2 and AsyncHTTPHandler.should_use_aiohttp_transport()
-        limits: Final = _AIOHTTP_EQUIVALENT_LIMITS if replaces_aiohttp else DEFAULT_LIMITS
+        limits: Final = _AIOHTTP_EQUIVALENT_LIMITS if replaces_aiohttp else _DEFAULT_LIMITS
         # Get unified SSL configuration
         ssl_config: Final = get_ssl_configuration(ssl_verify, http2=use_http2)
 
@@ -1324,7 +1332,7 @@ class AsyncHTTPHandler:
         shared_session: Optional["ClientSession"] = None,
         http2: bool = False,
         cert: CertTypes | None = None,
-        limits: httpx.Limits = DEFAULT_LIMITS,
+        limits: httpx.Limits = _DEFAULT_LIMITS,
     ) -> LiteLLMAiohttpTransport | AsyncHTTPTransport | AsyncHTTP2ConnectionSpread | None:
         """
         - Creates a transport for httpx.AsyncClient
@@ -1510,7 +1518,7 @@ class AsyncHTTPHandler:
         http2: bool = False,
         verify: ssl.SSLContext | bool = True,
         cert: CertTypes | None = None,
-        limits: httpx.Limits = DEFAULT_LIMITS,
+        limits: httpx.Limits = _DEFAULT_LIMITS,
     ) -> AsyncHTTPTransport | AsyncHTTP2ConnectionSpread | None:
         """
         Creates an AsyncHTTPTransport
@@ -1542,7 +1550,7 @@ class AsyncHTTPHandler:
         verify: VerifyTypes,
         cert: CertTypes | None,
         http2: bool = False,
-        limits: httpx.Limits = DEFAULT_LIMITS,
+        limits: httpx.Limits = _DEFAULT_LIMITS,
     ) -> Mapping[str, httpx.AsyncBaseTransport | None] | None:
         if not isinstance(transport, (AsyncHTTPTransport, AsyncHTTP2ConnectionSpread)):
             return None
@@ -1577,9 +1585,16 @@ class HTTPHandler:
         self.ssl_verify = ssl_verify
         self.disable_default_headers = disable_default_headers
         self.follow_redirects = follow_redirects
-        self._owns_client = client is None
         self._heal_lock = threading.Lock()
-        self._client = self.create_client() if client is None else client
+        self._legacy_client = (
+            client if client is not None and is_legacy_httpx_client(client, async_client=False) else None
+        )
+        if client is None:
+            self._client = self.create_client()
+            self._owns_client = True
+        else:
+            self._client = normalize_legacy_sync_client(client) if self._legacy_client is not None else client
+            self._owns_client = self._legacy_client is not None
 
     def create_client(self) -> httpx.Client:
         use_http2: Final = http2_enabled()
@@ -1610,6 +1625,8 @@ class HTTPHandler:
 
     @property
     def client(self) -> httpx.Client:
+        if self._legacy_client is not None:
+            return self._legacy_client
         if self._owns_client and self._client.is_closed:
             with self._heal_lock:
                 if self._owns_client and self._client.is_closed:
@@ -1618,8 +1635,19 @@ class HTTPHandler:
 
     @client.setter
     def client(self, client: httpx.Client) -> None:
+        self._legacy_client = None
         self._client = client
         self._owns_client = False
+
+    @property
+    def _request_client(self) -> httpx.Client:
+        if self._legacy_client is None:
+            return self.client
+        if self._client.is_closed:
+            with self._heal_lock:
+                if self._client.is_closed:
+                    self._client = normalize_legacy_sync_client(self._legacy_client)
+        return self._client
 
     def close(self):
         # Close the client when you're done with it
@@ -1644,7 +1672,7 @@ class HTTPHandler:
                 url, params=query, headers=headers, follow_redirects=follow_redirects, timeout=timeout
             )
 
-        response: Final = self.client.get(
+        response: Final = self._request_client.get(
             url,
             params=query,
             headers=headers,
@@ -1664,11 +1692,11 @@ class HTTPHandler:
         timeout: float | httpx.Timeout | None,
     ) -> httpx.Response:
         start_time: Final = time.time()
-        request: Final = self.client.build_request(
+        request: Final = self._request_client.build_request(
             "GET", url, params=params, headers=headers, timeout=USE_CLIENT_DEFAULT if timeout is None else timeout
         )
         try:
-            response: Final = self.client.send(
+            response: Final = self._request_client.send(
                 request,
                 stream=True,
                 follow_redirects=USE_CLIENT_DEFAULT if follow_redirects is None else follow_redirects,
@@ -1714,7 +1742,7 @@ class HTTPHandler:
             request_data, request_content = _prepare_request_data_and_content(data, content)
 
             if timeout is not None:
-                req = self.client.build_request(
+                req = self._request_client.build_request(
                     "POST",
                     url,
                     data=request_data,
@@ -1726,7 +1754,7 @@ class HTTPHandler:
                     content=request_content,
                 )
             else:
-                req = self.client.build_request(
+                req = self._request_client.build_request(
                     "POST",
                     url,
                     data=request_data,
@@ -1736,7 +1764,7 @@ class HTTPHandler:
                     files=files,
                     content=request_content,
                 )
-            response: Final = self.client.send(req, stream=stream)
+            response: Final = self._request_client.send(req, stream=stream)
             if stream:
                 anchor_handler_to(response, self)
             response.raise_for_status()
@@ -1765,7 +1793,7 @@ class HTTPHandler:
             request_data, request_content = _prepare_request_data_and_content(data, content)
 
             if timeout is not None:
-                req = self.client.build_request(
+                req = self._request_client.build_request(
                     "PATCH",
                     url,
                     data=request_data,
@@ -1776,7 +1804,7 @@ class HTTPHandler:
                     content=request_content,
                 )
             else:
-                req = self.client.build_request(
+                req = self._request_client.build_request(
                     "PATCH",
                     url,
                     data=request_data,
@@ -1785,7 +1813,7 @@ class HTTPHandler:
                     headers=headers,
                     content=request_content,
                 )
-            response: Final = self.client.send(req, stream=stream)
+            response: Final = self._request_client.send(req, stream=stream)
             if stream:
                 anchor_handler_to(response, self)
             response.raise_for_status()
@@ -1814,7 +1842,7 @@ class HTTPHandler:
             request_data, request_content = _prepare_request_data_and_content(data, content)
 
             if timeout is not None:
-                req = self.client.build_request(
+                req = self._request_client.build_request(
                     "PUT",
                     url,
                     data=request_data,
@@ -1825,7 +1853,7 @@ class HTTPHandler:
                     content=request_content,
                 )
             else:
-                req = self.client.build_request(
+                req = self._request_client.build_request(
                     "PUT",
                     url,
                     data=request_data,
@@ -1834,7 +1862,7 @@ class HTTPHandler:
                     headers=headers,
                     content=request_content,
                 )
-            response: Final = self.client.send(req, stream=stream)
+            response: Final = self._request_client.send(req, stream=stream)
             if stream:
                 anchor_handler_to(response, self)
             return response
@@ -1862,7 +1890,7 @@ class HTTPHandler:
             request_data, request_content = _prepare_request_data_and_content(data, content)
 
             if timeout is not None:
-                req = self.client.build_request(
+                req = self._request_client.build_request(
                     "DELETE",
                     url,
                     data=request_data,
@@ -1873,7 +1901,7 @@ class HTTPHandler:
                     content=request_content,
                 )
             else:
-                req = self.client.build_request(
+                req = self._request_client.build_request(
                     "DELETE",
                     url,
                     data=request_data,
@@ -1882,7 +1910,7 @@ class HTTPHandler:
                     headers=headers,
                     content=request_content,
                 )
-            response: Final = self.client.send(req, stream=stream)
+            response: Final = self._request_client.send(req, stream=stream)
             if stream:
                 anchor_handler_to(response, self)
             response.raise_for_status()

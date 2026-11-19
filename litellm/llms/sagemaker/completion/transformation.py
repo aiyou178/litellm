@@ -10,10 +10,9 @@ import types
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Final
 
-from httpx._models import Headers, Response
-
 import litellm
 from litellm.litellm_core_utils.asyncify import asyncify
+from litellm.litellm_core_utils.httpx2_compat import Headers, Response
 from litellm.litellm_core_utils.prompt_templates.factory import (
     prompt_factory,
     render_custom_prompt_template,

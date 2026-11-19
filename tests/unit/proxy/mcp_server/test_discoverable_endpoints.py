@@ -8,6 +8,8 @@ from datetime import datetime, timedelta, timezone
 from typing import TYPE_CHECKING, Final, Literal
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import httpx
+import httpx2
 import pytest
 from fastapi import HTTPException, Request, Response
 from typing_extensions import ReadOnly, TypedDict
@@ -22,6 +24,8 @@ if TYPE_CHECKING:
     from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
     from fastapi import APIRouter
     from respx import MockRouter
+
+    import httpx2
 
     from litellm.proxy.auth.handle_jwt import JWTHandler
     from litellm.types.mcp_server.mcp_server_manager import MCPServer
@@ -5896,7 +5900,9 @@ async def _bridge_register_response(
         ),
         patch(
             "litellm.proxy.utils.get_prisma_client_or_throw",
-            **({"return_value": MagicMock()} if database_connected else {"side_effect": HTTPException(status_code=500)}),
+            **(
+                {"return_value": MagicMock()} if database_connected else {"side_effect": HTTPException(status_code=500)}
+            ),
         ),
     ):
         response = await register_client_with_server(
@@ -8578,7 +8584,6 @@ async def test_resolve_active_litellm_key_transport_error_over_permanent_fault_i
     """A reconnect that dies on a missing engine binary raises the transport error last, with the
     BinaryNotFoundError as __context__. The binary is what blocks recovery, so the key read is "faulted",
     not the "unavailable" that the outer ConnectError alone would suggest."""
-    import httpx
     from prisma.engine.errors import BinaryNotFoundError
 
     from litellm.proxy.common_utils.user_api_key_cache import UserApiKeyCache
@@ -8591,7 +8596,7 @@ async def test_resolve_active_litellm_key_transport_error_over_permanent_fault_i
             try:
                 raise BinaryNotFoundError("query engine binary not found")
             except BinaryNotFoundError:
-                raise httpx.ConnectError("All connection attempts failed")
+                raise httpx2.ConnectError("All connection attempts failed")
 
     proxy_globals.user_api_key_cache = UserApiKeyCache()
     proxy_globals.prisma_client = _ReconnectFailedPrisma()
@@ -12772,7 +12777,12 @@ async def test_enforced_login_warms_verified_token_readable_without_database_loo
 @pytest.mark.parametrize("dcr_bridge", [False, True])
 @pytest.mark.parametrize("flow", ["register", "mint"])
 async def test_dcr_refusal_is_actionable_without_upstream_body(
-    upstream_status: int, auth_type: MCPAuth, dcr_bridge: bool, flow: str, monkeypatch: pytest.MonkeyPatch
+    upstream_status: int,
+    auth_type: MCPAuth,
+    dcr_bridge: bool,
+    flow: str,
+    monkeypatch: pytest.MonkeyPatch,
+    respx_mock: MockRouter,
 ) -> None:
     from typing import Final
 
@@ -12789,10 +12799,8 @@ async def test_dcr_refusal_is_actionable_without_upstream_body(
         server_id=f"refused-{auth_type}-{dcr_bridge}-{flow}-{upstream_status}",
         client_id=None,
     )
-    import respx
-
     monkeypatch.setenv("DISABLE_AIOHTTP_TRANSPORT", "True")
-    with respx.mock as upstream:
+    with respx_mock as upstream:
         registration: Final = upstream.post(server.registration_url).mock(
             return_value=httpx.Response(upstream_status, text="Forbidden private upstream details")
         )
@@ -15436,10 +15444,16 @@ def test_root_metadata_is_the_gateways_own_and_lists_the_jwt_bearer_grant_when_i
     request.base_url = "https://llm.example.com/"
     request.headers = {}
     with (
-        patch.object(discoverable_endpoints, "jwt_bearer_available", return_value=available),  # test-quality-ok: deployment gate seam
-        patch.object(discoverable_endpoints, "token_exchange_available", return_value=True),  # test-quality-ok: deployment gate seam
+        patch.object(
+            discoverable_endpoints, "jwt_bearer_available", return_value=available
+        ),  # test-quality-ok: deployment gate seam
+        patch.object(
+            discoverable_endpoints, "token_exchange_available", return_value=True
+        ),  # test-quality-ok: deployment gate seam
     ):
-        document = discoverable_endpoints._build_oauth_authorization_server_response(request=request, mcp_server_name=None)
+        document = discoverable_endpoints._build_oauth_authorization_server_response(
+            request=request, mcp_server_name=None
+        )
     assert document["issuer"] == "https://llm.example.com"
     assert document["token_endpoint"] == "https://llm.example.com/token"
     assert (JWT_BEARER_GRANT_TYPE in document["grant_types_supported"]) is available
@@ -15467,11 +15481,19 @@ def test_root_metadata_owned_by_a_resolved_oauth2_server_never_lists_the_gateway
     request.headers = {}
     try:
         with (
-            patch.object(discoverable_endpoints, "jwt_bearer_available", return_value=True),  # test-quality-ok: deployment gate seam
-            patch.object(discoverable_endpoints, "token_exchange_available", return_value=True),  # test-quality-ok: deployment gate seam
-            patch.object(global_mcp_server_manager, "get_mcp_server_by_name", return_value=server),  # test-quality-ok: resolver seam
+            patch.object(
+                discoverable_endpoints, "jwt_bearer_available", return_value=True
+            ),  # test-quality-ok: deployment gate seam
+            patch.object(
+                discoverable_endpoints, "token_exchange_available", return_value=True
+            ),  # test-quality-ok: deployment gate seam
+            patch.object(
+                global_mcp_server_manager, "get_mcp_server_by_name", return_value=server
+            ),  # test-quality-ok: resolver seam
         ):
-            document = discoverable_endpoints._build_oauth_authorization_server_response(request=request, mcp_server_name=None)
+            document = discoverable_endpoints._build_oauth_authorization_server_response(
+                request=request, mcp_server_name=None
+            )
     finally:
         global_mcp_server_manager.registry.clear()
     assert document["token_endpoint"] == "https://llm.example.com/test_oauth/token"

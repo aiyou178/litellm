@@ -1,8 +1,9 @@
 import json
 from unittest.mock import MagicMock, patch
 
-import httpx
 import pytest
+import httpx2 as httpx
+from respx import MockRouter
 
 import litellm
 

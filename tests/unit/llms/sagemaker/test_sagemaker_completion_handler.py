@@ -15,7 +15,7 @@ import struct
 from typing import AsyncIterator, Final, Iterator
 from unittest.mock import MagicMock
 
-import httpx
+import httpx2 as httpx
 import litellm
 import pytest
 import respx

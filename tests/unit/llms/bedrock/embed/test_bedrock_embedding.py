@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-import httpx
+import httpx2 as httpx
 import respx
 
 import litellm

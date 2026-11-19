@@ -4,7 +4,7 @@ lazily on its first export (in the BatchSpanProcessor worker thread)."""
 
 import json
 
-import httpx
+import httpx2 as httpx
 import pytest
 import requests_mock
 import respx

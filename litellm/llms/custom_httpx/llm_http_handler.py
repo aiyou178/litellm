@@ -25,10 +25,9 @@ from typing import (
 )
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
-import httpx
+import httpx2 as httpx
 from h2.events import ConnectionTerminated
-from httpx import USE_CLIENT_DEFAULT
-from httpx._types import FileContent
+from httpx2 import USE_CLIENT_DEFAULT
 from openai.types.file_deleted import FileDeleted
 from pydantic import TypeAdapter
 from typing_extensions import ReadOnly
@@ -70,6 +69,7 @@ from litellm.litellm_core_utils.core_helpers import as_str_mapping, set_provider
 from litellm.litellm_core_utils.dot_notation_indexing import delete_nested_value
 from litellm.litellm_core_utils.get_litellm_params import AWS_CREDENTIAL_KWARGS_KEYS
 from litellm.litellm_core_utils.get_llm_provider_logic import get_provider_affinity_header
+from litellm.litellm_core_utils.httpx2_compat import FileContent
 from litellm.litellm_core_utils.llm_request_utils import serialize_multipart_form_fields
 from litellm.litellm_core_utils.provider_affinity import add_provider_affinity_header
 from litellm.litellm_core_utils.realtime_errors import (
@@ -6321,7 +6321,7 @@ class BaseLLMHTTPHandler:
         Used when an interceptor forced stream=False to run the agentic loop on
         the non-streaming path, but the caller originally asked for streaming.
         """
-        import httpx
+        import httpx2 as httpx
 
         from litellm.responses.streaming_iterator import (
             MockResponsesAPIStreamingIterator,

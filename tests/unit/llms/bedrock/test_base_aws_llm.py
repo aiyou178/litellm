@@ -6,7 +6,7 @@ import threading
 import time
 
 import boto3
-import httpx
+import httpx2 as httpx
 import pytest
 import re
 import respx
@@ -4121,7 +4121,7 @@ def test_dynamic_aws_params_propagation(model, param_name, param_value, expected
 
 
 def test_bearer_request_preparation_does_not_require_botocore():
-    import httpx
+    import httpx2 as httpx
 
     with patch.dict("sys.modules", {"botocore.credentials": None, "botocore.awsrequest": None}):
         target = BaseAWSLLM()._get_boto_credentials_from_optional_params(
